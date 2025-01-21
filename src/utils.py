@@ -14,13 +14,18 @@ from src.prompt import get_role_prompt
 from src.milvus_utils import embeddings,query_article_data
 
 DEBUG = True
+# HEADERS = [
+#     '用户问题/症状', '子场景症状合并', '标签（附加参考，用于引导生成或校正句子内容）', '自我肯定语',
+#     '参考句子1', '参考句子2', '参考句子3', '参考句子4', '参考句子5',
+#     '参考句子6', '参考句子7', '参考句子8', '参考句子9', '参考句子10',
+#     '参考句子11', '参考句子12', '参考句子13', '参考句子14', '参考句子15',
+#     '参考句子16', '参考句子17', '参考句子18', '参考句子19', '参考句子20'
+# ]
+
 HEADERS = [
     '用户问题/症状', '子场景症状合并', '标签（附加参考，用于引导生成或校正句子内容）', '自我肯定语',
-    '参考句子1', '参考句子2', '参考句子3', '参考句子4', '参考句子5',
-    '参考句子6', '参考句子7', '参考句子8', '参考句子9', '参考句子10',
-    '参考句子11', '参考句子12', '参考句子13', '参考句子14', '参考句子15',
-    '参考句子16', '参考句子17', '参考句子18', '参考句子19', '参考句子20'
 ]
+
 
 def debug(*args, **kwargs):
     """仅在 DEBUG = True 时打印调试信息"""
@@ -131,33 +136,20 @@ def generate_self_affirmative_phrase_concurrent(symptoms_data, csv_file,
 
 
 
-def make_data_item(user_problem,symptom,additional_info, self_affirmative_phrase, encouragement_quotes):
+def make_data_item(user_problem, symptom, additional_info, self_affirmative_phrase, reference=None):
+    # 基础字段
     data_item = {
         '用户问题/症状': user_problem,
         '子场景症状合并': symptom['子场景症状合并'],
         '标签（附加参考，用于引导生成或校正句子内容）': additional_info,
         '自我肯定语': self_affirmative_phrase,
-        '参考句子1': encouragement_quotes[0],
-        '参考句子2': encouragement_quotes[1],
-        '参考句子3': encouragement_quotes[2],
-        '参考句子4': encouragement_quotes[3],
-        '参考句子5': encouragement_quotes[4],
-        '参考句子6': encouragement_quotes[5],
-        '参考句子7': encouragement_quotes[6],
-        '参考句子8': encouragement_quotes[7],
-        '参考句子9': encouragement_quotes[8],
-        '参考句子10': encouragement_quotes[9],
-        '参考句子11': encouragement_quotes[10],
-        '参考句子12': encouragement_quotes[11],
-        '参考句子13': encouragement_quotes[12],
-        '参考句子14': encouragement_quotes[13],
-        '参考句子15': encouragement_quotes[14],
-        '参考句子16': encouragement_quotes[15],
-        '参考句子17': encouragement_quotes[16],
-        '参考句子18': encouragement_quotes[17],
-        '参考句子19': encouragement_quotes[18],
-        '参考句子20': encouragement_quotes[19],
     }
+    
+    if reference is not None:
+        # 动态生成参考句子字段
+        for i, quote in enumerate(reference):
+            data_item[f'参考句子{i+1}'] = quote
+    
     return data_item
 
 
@@ -210,7 +202,7 @@ def generate_affirmation_for_symptom(i, symptom, user_problem, additional_info,
 
             for item in response_data["results"]:
                 self_affirmative_phrase = item["self_affirmative_phrase"]
-                data_item = make_data_item(user_problem,symptom,additional_info, self_affirmative_phrase, encouragement_quotes)
+                data_item = make_data_item(user_problem,symptom,additional_info, self_affirmative_phrase)
                 # 每生成一个自我肯定语后立即保存
                 save_to_csv(csv_file, data_item)
 

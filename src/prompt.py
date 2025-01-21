@@ -1,6 +1,6 @@
 
 
-def get_role_prompt(role,init,articles):
+def get_role_prompt(role,init=None,articles=None):
     if role == "productor":
         role_prompt = """
         Role: 
