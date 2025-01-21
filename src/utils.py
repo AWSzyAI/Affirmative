@@ -14,6 +14,13 @@ from src.prompt import get_role_prompt
 from src.milvus_utils import embeddings,query_article_data
 
 DEBUG = True
+HEADERS = [
+    '用户问题/症状', '子场景症状合并', '标签（附加参考，用于引导生成或校正句子内容）', '自我肯定语',
+    '参考句子1', '参考句子2', '参考句子3', '参考句子4', '参考句子5',
+    '参考句子6', '参考句子7', '参考句子8', '参考句子9', '参考句子10',
+    '参考句子11', '参考句子12', '参考句子13', '参考句子14', '参考句子15',
+    '参考句子16', '参考句子17', '参考句子18', '参考句子19', '参考句子20'
+]
 
 def debug(*args, **kwargs):
     """仅在 DEBUG = True 时打印调试信息"""
@@ -39,44 +46,11 @@ def save_to_csv(output_file, data_item):
     """将生成的自我肯定语及其对应数据保存到CSV文件"""
     with open(output_file, mode='a', encoding='utf-8', newline='') as file:
         writer = csv.writer(file)
-        
         # 如果文件为空，则写入表头
         if file.tell() == 0:
-            writer.writerow([
-                '用户问题/症状', '子场景症状合并', '标签（附加参考，用于引导生成或校正句子内容）', '自我肯定语',
-                '参考句子1', '参考句子2', '参考句子3', '参考句子4', '参考句子5',
-                '参考句子6', '参考句子7', '参考句子8', '参考句子9', '参考句子10',
-                '参考句子11', '参考句子12', '参考句子13', '参考句子14', '参考句子15',
-                '参考句子16', '参考句子17', '参考句子18', '参考句子19', '参考句子20'
-            ])
+            writer.writerow(HEADERS)
         
-        # 写入单行数据
-        cleaned_row = [
-            data_item['用户问题/症状'],
-            data_item['子场景症状合并'],
-            data_item['标签（附加参考，用于引导生成或校正句子内容）'],
-            data_item['自我肯定语'],
-            data_item['参考句子1'],
-            data_item['参考句子2'],
-            data_item['参考句子3'],
-            data_item['参考句子4'],
-            data_item['参考句子5'],
-            data_item['参考句子6'],
-            data_item['参考句子7'],
-            data_item['参考句子8'],
-            data_item['参考句子9'],
-            data_item['参考句子10'],
-            data_item['参考句子11'],
-            data_item['参考句子12'],
-            data_item['参考句子13'],
-            data_item['参考句子14'],
-            data_item['参考句子15'],
-            data_item['参考句子16'],
-            data_item['参考句子17'],
-            data_item['参考句子18'],
-            data_item['参考句子19'],
-            data_item['参考句子20']
-        ]
+        cleaned_row = [clean_value(data_item.get(header, '')) for header in HEADERS]
         writer.writerow(cleaned_row)
 def get_checkpoint(checkpoint_file):
     """从 checkpoint 文件中获取已生成的用户问题/症状的索引"""
@@ -121,7 +95,7 @@ def get_encouragements(message,k=5):
 
 def generate_self_affirmative_phrase_concurrent(symptoms_data, csv_file, 
                                                 checkpoint_file, n=5, delay=0.5, 
-                                                max_retries=5, debug=False):
+                                                max_retries=5, DEBUG=False):
     """生成n条不相似的自我肯定语，添加延时以防止触发RateLimit，并保存结果到CSV，使用并发"""
     client = OpenAI(api_key=KIMI_API_KEY, base_url=BASE_URL)
     result_data = []
@@ -140,7 +114,7 @@ def generate_self_affirmative_phrase_concurrent(symptoms_data, csv_file,
             additional_info = symptom['标签（附加参考，用于引导生成或校正句子内容）']
 
             # 构造生成任务
-            futures.append(executor.submit(generate_affirmation_for_symptom, i, symptom, user_problem, additional_info, client, n, delay, max_retries, result_data, csv_file, checkpoint_file))
+            futures.append(executor.submit(generate_affirmation_for_symptom, i, symptom, user_problem, additional_info, client, n, delay, max_retries, result_data, csv_file, checkpoint_file,DEBUG=DEBUG))
 
         # 等待所有任务完成
         for future in concurrent.futures.as_completed(futures):
@@ -202,13 +176,14 @@ def query_article(query_text,top_k = 2):
 
 def generate_affirmation_for_symptom(i, symptom, user_problem, additional_info, 
                                      client, n, delay, max_retries, result_data, 
-                                     csv_file, checkpoint_file, debug=False):
+                                     csv_file, checkpoint_file, DEBUG=False):
     """生成单个症状的自我肯定语并保存到 CSV"""
     message = f"症状: {user_problem}\n附加信息: {additional_info}"
-    encouragement_quotes = get_encouragements(message, 20)
+    # encouragement_quotes = get_encouragements(message, 20)
     articles = query_article(message,2)
-    role_prompt = get_role_prompt("productor", init=encouragement_quotes,articles = articles)
-
+    # role_prompt = get_role_prompt("productor", init=encouragement_quotes,articles = articles)
+    role_prompt = get_role_prompt("productor-pro-0121", articles = articles)
+    
     # 重试机制
     attempt = 0
     while attempt < max_retries:
@@ -222,7 +197,7 @@ def generate_affirmation_for_symptom(i, symptom, user_problem, additional_info,
                 n=1  # 请求返回1个结果，因为返回的是JSON格式
             )
             response = completion.choices[0].message.content.strip()
-            # print("API Response:", response)  # 打印响应内容
+            debug("API Response:", response)  # 打印响应内容
             try:
                 response_data = json.loads(response)
             except json.JSONDecodeError as e:

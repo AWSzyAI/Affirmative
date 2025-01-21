@@ -17,7 +17,7 @@ client = MilvusClient(uri=f"tcp://{MILVUS_HOST}:{MILVUS_PORT}")
 
 # 加载Embedding模型
 load_dotenv(find_dotenv())
-api_key = os.environ["API_key"]
+api_key = os.environ["ZHIPU_API_key"]
 embeddings = ZhipuAIEmbeddings(
     model="embedding-3",
     api_key=api_key
