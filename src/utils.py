@@ -14,8 +14,9 @@ import concurrent.futures
 from src.prompt import get_role_prompt
 from src.milvus_utils import embeddings,query_article_data
 
-PRODUCTOR = "productor-pro-0121-example"
+PRODUCTOR = "productor-pro-0121-no-CoT"
 DEBUG = True
+DEBUG = False
 # HEADERS = [
 #     '用户问题/症状', '子场景症状合并', '标签（附加参考，用于引导生成或校正句子内容）', '自我肯定语',
 #     '参考句子1', '参考句子2', '参考句子3', '参考句子4', '参考句子5',
@@ -74,6 +75,12 @@ def get_checkpoint(checkpoint_file):
 
 def update_checkpoint(checkpoint_file, index):
     """更新 checkpoint 文件"""
+    # current_time = time.time()  # 获取当前时间
+    # elapsed_time = current_time - start_time  # 计算总用时
+    # average_time_per_update = elapsed_time / total_updates  # 计算平均用时
+    # print(f"当前索引: {index}")
+    # print(f"总用时: {elapsed_time:.2f} 秒")
+    # print(f"平均用时: {average_time_per_update:.2f} 秒/次")
     with open(checkpoint_file, 'w') as f:
         f.write(str(index))  # 记录当前处理到的索引
 
@@ -127,8 +134,6 @@ def generate_self_affirmative_phrase_concurrent(symptoms_data, csv_file,
             additional_info = symptom['标签（附加参考，用于引导生成或校正句子内容）']
             debug(additional_info)
             
-
-
             # 构造生成任务
             futures.append(executor.submit(generate_affirmation_for_symptom, i, symptom, user_problem, additional_info, client, n, delay, max_retries, result_data, csv_file, checkpoint_file,DEBUG=DEBUG))
 
@@ -186,8 +191,8 @@ def generate_affirmation_for_symptom(i, symptom, user_problem, additional_info,
     message = f"症状: {user_problem}\n附加信息: {additional_info}"
     # encouragement_quotes = get_encouragements(message, 20)
     
-    article_data = query_article(message,2)
-    zhihu_link = ' '.join([article['entity']['zhihu_link'] for article in article_data])
+    article_data = query_article(message,1)
+    zhihu_link = ' '.join([article['entity']['zhihu_link'] for article in article_data]) if article_data else "无链接"
     articles = ' '.join([article['entity']['content'] for article in article_data])
 
     # role_prompt = get_role_prompt("productor", init=encouragement_quotes,articles = articles)
@@ -213,7 +218,7 @@ def generate_affirmation_for_symptom(i, symptom, user_problem, additional_info,
                 response_data = json.loads(response)
             except json.JSONDecodeError as e:
                 print(f"JSON Decode Error: {e}")
-                print("Response is not valid JSON:", response)
+                debug("Response is not valid JSON:", response)
                 continue  # 这里要修改：重新request一遍，而不是continue
 
             think_log = response_data.get("think_log", "无思考日志")  # 获取思考日志
