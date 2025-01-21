@@ -314,7 +314,7 @@ def get_role_prompt(role,init=None,articles=None):
             - 不提及任何情境或症状的具体描述，专注于“我”的正面需求和内心的力量。句子虽是针对性生成的，但效果必须具有通用性和持久性。
             - 为每个情境提供具体而有针对性的句子，避免使用过于普遍或抽象的表达，确保语句具有高度的实用性和针对性。
         - OutputFormat: 
-            {
+            {{
                 "think_log": "
                     反思日志：
 
@@ -349,13 +349,13 @@ def get_role_prompt(role,init=None,articles=None):
 
                 ",
                 "results": [
-                    {"self_affirmative_phrase": "自我肯定语1"},
-                    {"self_affirmative_phrase": "自我肯定语2"},
-                    {"self_affirmative_phrase": "自我肯定语3"},
-                    {"self_affirmative_phrase": "自我肯定语4"},
-                    {"self_affirmative_phrase": "自我肯定语5"}
+                    {{"self_affirmative_phrase": "自我肯定语1"}},
+                    {{"self_affirmative_phrase": "自我肯定语2"}},
+                    {{"self_affirmative_phrase": "自我肯定语3"}},
+                    {{"self_affirmative_phrase": "自我肯定语4"}},
+                    {{"self_affirmative_phrase": "自我肯定语5"}}
                 ]
-            }
+            }}
         - Workflow:
             1. 深入阅读这些文章，精准理解其中的核心思想，提取所有有价值的金句，转换人称，生成初步的自我鼓励语句：
                 {articles}

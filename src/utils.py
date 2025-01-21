@@ -120,8 +120,13 @@ def generate_self_affirmative_phrase_concurrent(symptoms_data, csv_file,
         # 将每个任务提交到线程池
         for i in range(last_processed_index, len(symptoms_data)):
             symptom = symptoms_data[i]
+            # 用户问题/症状,用户1级需求,用户2级需求
             user_problem = symptom['用户问题/症状']
+            symptom['标签（附加参考，用于引导生成或校正句子内容）'] = '用户1级需求：'+ symptom['用户1级需求'] + ' 用户2级需求：' + symptom['用户2级需求']
             additional_info = symptom['标签（附加参考，用于引导生成或校正句子内容）']
+            debug(additional_info)
+            
+
 
             # 构造生成任务
             futures.append(executor.submit(generate_affirmation_for_symptom, i, symptom, user_problem, additional_info, client, n, delay, max_retries, result_data, csv_file, checkpoint_file,DEBUG=DEBUG))
@@ -145,7 +150,7 @@ def make_data_item(user_problem, symptom, additional_info, self_affirmative_phra
     # 基础字段
     data_item = {
         '用户问题/症状': user_problem,
-        '子场景症状合并': symptom['子场景症状合并'],
+        # '子场景症状合并': symptom['子场景症状合并'],
         '标签（附加参考，用于引导生成或校正句子内容）': additional_info,
         '自我肯定语': self_affirmative_phrase,
         'zhihu_link':zhihu_link
@@ -188,8 +193,8 @@ def generate_affirmation_for_symptom(i, symptom, user_problem, additional_info,
     print("拼接后的articles:", articles)
 
     # role_prompt = get_role_prompt("productor", init=encouragement_quotes,articles = articles)
-    # role_prompt = get_role_prompt("productor-pro-0121", articles = articles)
-    role_prompt = get_role_prompt("productor-pro-0121-kimi", articles = articles)
+    role_prompt = get_role_prompt("productor-pro-0121", articles = articles)
+    # role_prompt = get_role_prompt("productor-pro-0121-kimi", articles = articles)
     
     # 重试机制
     attempt = 0
