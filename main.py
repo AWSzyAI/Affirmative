@@ -26,7 +26,7 @@ def main():
     output_file = symptoms_file.replace('.csv','_result.csv')
     checkpoint_file =  output_file.replace('_result.csv','_checkpoint.txt')
     # generate_self_affirmative_phrase(symptoms_data, output_file, checkpoint_file, n=5)
-    generate_self_affirmative_phrase_concurrent(symptoms_data, output_file, checkpoint_file, n=5)
+    generate_self_affirmative_phrase_concurrent(symptoms_data, output_file, checkpoint_file, n=5,debug=True)
 
 if __name__ == "__main__":
     main()

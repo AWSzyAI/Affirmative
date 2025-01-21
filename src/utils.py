@@ -11,7 +11,14 @@ import requests
 import os
 import concurrent.futures
 from src.prompt import get_role_prompt
+from src.milvus_utils import embeddings,query_article_data
 
+DEBUG = True
+
+def debug(*args, **kwargs):
+    """仅在 DEBUG = True 时打印调试信息"""
+    if DEBUG:
+        print(*args, **kwargs)
 
 def load_csv(file_path):
     """加载CSV文件，返回列表格式的数据"""
@@ -28,21 +35,49 @@ def clean_value(value):
         return value.replace('\n', ' ').replace('\r', ' ')  # 删除换行符和回车符
     return value
 
-def save_to_csv(output_file, data):
+def save_to_csv(output_file, data_item):
     """将生成的自我肯定语及其对应数据保存到CSV文件"""
     with open(output_file, mode='a', encoding='utf-8', newline='') as file:
         writer = csv.writer(file)
         
         # 如果文件为空，则写入表头
         if file.tell() == 0:
-            writer.writerow(['用户问题/症状', '子场景症状合并', '标签（附加参考，用于引导生成或校正句子内容）', '自我肯定语','参考句子1', '参考句子2', '参考句子3', '参考句子4', '参考句子5','参考句子6', '参考句子7', '参考句子8', '参考句子9', '参考句子10','参考句子11', '参考句子12', '参考句子13', '参考句子14', '参考句子15','参考句子16', '参考句子17', '参考句子18', '参考句子19', '参考句子20'])
+            writer.writerow([
+                '用户问题/症状', '子场景症状合并', '标签（附加参考，用于引导生成或校正句子内容）', '自我肯定语',
+                '参考句子1', '参考句子2', '参考句子3', '参考句子4', '参考句子5',
+                '参考句子6', '参考句子7', '参考句子8', '参考句子9', '参考句子10',
+                '参考句子11', '参考句子12', '参考句子13', '参考句子14', '参考句子15',
+                '参考句子16', '参考句子17', '参考句子18', '参考句子19', '参考句子20'
+            ])
         
-        # 写入每行数据
-        for row in data:
-            cleaned_row = [clean_value(row[field]) for field in ['用户问题/症状', '子场景症状合并', '标签（附加参考，用于引导生成或校正句子内容）', '自我肯定语', '参考句子1', '参考句子2', '参考句子3', '参考句子4', '参考句子5','参考句子6', '参考句子7', '参考句子8', '参考句子9', '参考句子10','参考句子11', '参考句子12', '参考句子13', '参考句子14', '参考句子15','参考句子16', '参考句子17', '参考句子18', '参考句子19', '参考句子20']]
-            writer.writerow(cleaned_row)
-            # writer.writerow([row['用户问题/症状'], row['子场景症状合并'], row['标签（附加参考，用于引导生成或校正句子内容）'], row['自我肯定语'],row['参考句子1'],row['参考句子2'],row['参考句子3'],row['参考句子4'],row['参考句子5']])
-
+        # 写入单行数据
+        cleaned_row = [
+            data_item['用户问题/症状'],
+            data_item['子场景症状合并'],
+            data_item['标签（附加参考，用于引导生成或校正句子内容）'],
+            data_item['自我肯定语'],
+            data_item['参考句子1'],
+            data_item['参考句子2'],
+            data_item['参考句子3'],
+            data_item['参考句子4'],
+            data_item['参考句子5'],
+            data_item['参考句子6'],
+            data_item['参考句子7'],
+            data_item['参考句子8'],
+            data_item['参考句子9'],
+            data_item['参考句子10'],
+            data_item['参考句子11'],
+            data_item['参考句子12'],
+            data_item['参考句子13'],
+            data_item['参考句子14'],
+            data_item['参考句子15'],
+            data_item['参考句子16'],
+            data_item['参考句子17'],
+            data_item['参考句子18'],
+            data_item['参考句子19'],
+            data_item['参考句子20']
+        ]
+        writer.writerow(cleaned_row)
 def get_checkpoint(checkpoint_file):
     """从 checkpoint 文件中获取已生成的用户问题/症状的索引"""
     try:
@@ -80,11 +115,13 @@ def get_encouragements(message,k=5):
     else:
         print("请求失败:", response.status_code, response.text)
     
-    print(encouragement_quotes)
+    debug(encouragement_quotes)
     return encouragement_quotes
 
 
-def generate_self_affirmative_phrase_concurrent(symptoms_data, csv_file, checkpoint_file, n=5, delay=0.5, max_retries=5):
+def generate_self_affirmative_phrase_concurrent(symptoms_data, csv_file, 
+                                                checkpoint_file, n=5, delay=0.5, 
+                                                max_retries=5, debug=False):
     """生成n条不相似的自我肯定语，添加延时以防止触发RateLimit，并保存结果到CSV，使用并发"""
     client = OpenAI(api_key=KIMI_API_KEY, base_url=BASE_URL)
     result_data = []
@@ -126,15 +163,45 @@ def query_article(query_text,top_k = 2):
     try:
         query_vector = embeddings.embed_query(query_text)
         article_data = query_article_data('article_collection', query_vector, top_k)
-        print(article_data)
+        debug(article_data)
         # return jsonify({"message": "查询成功", "data": article_data})
     except Exception as e:
         print(e)
         # return jsonify({"message": "查询失败", "error": str(e)})   
 
+def make_data_item(user_problem,symptom,additional_info, self_affirmative_phrase, encouragement_quotes):
+    data_item = {
+        '用户问题/症状': user_problem,
+        '子场景症状合并': symptom['子场景症状合并'],
+        '标签（附加参考，用于引导生成或校正句子内容）': additional_info,
+        '自我肯定语': self_affirmative_phrase,
+        '参考句子1': encouragement_quotes[0],
+        '参考句子2': encouragement_quotes[1],
+        '参考句子3': encouragement_quotes[2],
+        '参考句子4': encouragement_quotes[3],
+        '参考句子5': encouragement_quotes[4],
+        '参考句子6': encouragement_quotes[5],
+        '参考句子7': encouragement_quotes[6],
+        '参考句子8': encouragement_quotes[7],
+        '参考句子9': encouragement_quotes[8],
+        '参考句子10': encouragement_quotes[9],
+        '参考句子11': encouragement_quotes[10],
+        '参考句子12': encouragement_quotes[11],
+        '参考句子13': encouragement_quotes[12],
+        '参考句子14': encouragement_quotes[13],
+        '参考句子15': encouragement_quotes[14],
+        '参考句子16': encouragement_quotes[15],
+        '参考句子17': encouragement_quotes[16],
+        '参考句子18': encouragement_quotes[17],
+        '参考句子19': encouragement_quotes[18],
+        '参考句子20': encouragement_quotes[19],
+    }
+    return data_item
 
 
-def generate_affirmation_for_symptom(i, symptom, user_problem, additional_info, client, n, delay, max_retries, result_data, csv_file, checkpoint_file):
+def generate_affirmation_for_symptom(i, symptom, user_problem, additional_info, 
+                                     client, n, delay, max_retries, result_data, 
+                                     csv_file, checkpoint_file, debug=False):
     """生成单个症状的自我肯定语并保存到 CSV"""
     message = f"症状: {user_problem}\n附加信息: {additional_info}"
     encouragement_quotes = get_encouragements(message, 20)
@@ -165,42 +232,11 @@ def generate_affirmation_for_symptom(i, symptom, user_problem, additional_info, 
             think_log = response_data.get("think_log", "无思考日志")  # 获取思考日志
             # print(f"思考日志: {think_log}")  # 打印或保存思考日志，便于分析
 
-
-
             for item in response_data["results"]:
                 self_affirmative_phrase = item["self_affirmative_phrase"]
-
-                # 将生成的结果保存到CSV文件
-                result_data.append({
-                    '用户问题/症状': user_problem,
-                    '子场景症状合并': symptom['子场景症状合并'],
-                    '标签（附加参考，用于引导生成或校正句子内容）': additional_info,
-                    '自我肯定语': self_affirmative_phrase,
-                    '参考句子1': encouragement_quotes[0],
-                    '参考句子2': encouragement_quotes[1],
-                    '参考句子3': encouragement_quotes[2],
-                    '参考句子4': encouragement_quotes[3],
-                    '参考句子5': encouragement_quotes[4],
-                    '参考句子6': encouragement_quotes[5],
-                    '参考句子7': encouragement_quotes[6],
-                    '参考句子8': encouragement_quotes[7],
-                    '参考句子9': encouragement_quotes[8],
-                    '参考句子10': encouragement_quotes[9],
-                    '参考句子11': encouragement_quotes[10],
-                    '参考句子12': encouragement_quotes[11],
-                    '参考句子13': encouragement_quotes[12],
-                    '参考句子14': encouragement_quotes[13],
-                    '参考句子15': encouragement_quotes[14],
-                    '参考句子16': encouragement_quotes[15],
-                    '参考句子17': encouragement_quotes[16],
-                    '参考句子18': encouragement_quotes[17],
-                    '参考句子19': encouragement_quotes[18],
-                    '参考句子20': encouragement_quotes[19],
-                })
-
+                data_item = make_data_item(user_problem,symptom,additional_info, self_affirmative_phrase, encouragement_quotes)
                 # 每生成一个自我肯定语后立即保存
-                save_to_csv(csv_file, result_data)
-                result_data.clear()  # 清空当前生成的结果，避免重复保存
+                save_to_csv(csv_file, data_item)
 
             # 更新 checkpoint 文件，记录最后处理到的索引
             update_checkpoint(checkpoint_file, i + 1)
