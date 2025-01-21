@@ -1,5 +1,5 @@
 import sys
-from utils import load_csv, generate_self_affirmative_phrase_concurrent
+from src.utils import load_csv, generate_self_affirmative_phrase_concurrent
 
 def main():
     # 检查命令行参数是否提供了自定义的句子

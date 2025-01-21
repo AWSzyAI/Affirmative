@@ -3,20 +3,15 @@ import time
 import random
 from openai import OpenAI
 import openai
-# from config import KIMI_API_KEY, BASE_URL
+from src.config import KIMI_API_KEY, BASE_URL
 from tqdm import tqdm
 from openai import RateLimitError  # 导入 RateLimitError 异常
 import json
 import requests
 import os
 import concurrent.futures
-from prompt import get_role_prompt
-from dotenv import load_dotenv
+from src.prompt import get_role_prompt
 
-load_dotenv()
-
-KIMI_API_KEY = os.getenv("KIMI_API_KEY")
-BASE_URL = "https://api.moonshot.cn/v1"
 
 def load_csv(file_path):
     """加载CSV文件，返回列表格式的数据"""
