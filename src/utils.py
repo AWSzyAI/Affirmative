@@ -7,6 +7,7 @@ from src.config import KIMI_API_KEY, BASE_URL
 from tqdm import tqdm
 from openai import RateLimitError  # 导入 RateLimitError 异常
 import json
+from flask import jsonify
 import requests
 import os
 import concurrent.futures
@@ -23,7 +24,7 @@ DEBUG = True
 # ]
 
 HEADERS = [
-    '用户问题/症状', '子场景症状合并', '标签（附加参考，用于引导生成或校正句子内容）', '自我肯定语',
+    '用户问题/症状', '子场景症状合并', '标签（附加参考，用于引导生成或校正句子内容）', '自我肯定语','zhihu_link'
 ]
 
 
@@ -47,16 +48,20 @@ def clean_value(value):
         return value.replace('\n', ' ').replace('\r', ' ')  # 删除换行符和回车符
     return value
 
-def save_to_csv(output_file, data_item):
+def save_to_csv(output_file, data_item,zhihu_link=None):
     """将生成的自我肯定语及其对应数据保存到CSV文件"""
     with open(output_file, mode='a', encoding='utf-8', newline='') as file:
         writer = csv.writer(file)
         # 如果文件为空，则写入表头
         if file.tell() == 0:
             writer.writerow(HEADERS)
-        
+
         cleaned_row = [clean_value(data_item.get(header, '')) for header in HEADERS]
         writer.writerow(cleaned_row)
+
+        
+
+
 def get_checkpoint(checkpoint_file):
     """从 checkpoint 文件中获取已生成的用户问题/症状的索引"""
     try:
@@ -136,13 +141,14 @@ def generate_self_affirmative_phrase_concurrent(symptoms_data, csv_file,
 
 
 
-def make_data_item(user_problem, symptom, additional_info, self_affirmative_phrase, reference=None):
+def make_data_item(user_problem, symptom, additional_info, self_affirmative_phrase, reference=None,zhihu_link=None):
     # 基础字段
     data_item = {
         '用户问题/症状': user_problem,
         '子场景症状合并': symptom['子场景症状合并'],
         '标签（附加参考，用于引导生成或校正句子内容）': additional_info,
         '自我肯定语': self_affirmative_phrase,
+        'zhihu_link':zhihu_link
     }
     
     if reference is not None:
@@ -160,7 +166,8 @@ def query_article(query_text,top_k = 2):
         query_vector = embeddings.embed_query(query_text)
         article_data = query_article_data('article_collection', query_vector, top_k)
         debug(article_data)
-        # return jsonify({"message": "查询成功", "data": article_data})
+        return article_data
+        # return jsonify({"message": "查询成功", "data": article_data})   
     except Exception as e:
         print(e)
         # return jsonify({"message": "查询失败", "error": str(e)})   
@@ -172,9 +179,17 @@ def generate_affirmation_for_symptom(i, symptom, user_problem, additional_info,
     """生成单个症状的自我肯定语并保存到 CSV"""
     message = f"症状: {user_problem}\n附加信息: {additional_info}"
     # encouragement_quotes = get_encouragements(message, 20)
-    articles = query_article(message,2)
+    
+    article_data = query_article(message,2)
+    zhihu_link = ' '.join([article['entity']['zhihu_link'] for article in article_data])
+    articles = ' '.join([article['entity']['content'] for article in article_data])
+
+    print("拼接后的zhihu_link:", zhihu_link)
+    print("拼接后的articles:", articles)
+
     # role_prompt = get_role_prompt("productor", init=encouragement_quotes,articles = articles)
-    role_prompt = get_role_prompt("productor-pro-0121", articles = articles)
+    # role_prompt = get_role_prompt("productor-pro-0121", articles = articles)
+    role_prompt = get_role_prompt("productor-pro-0121-kimi", articles = articles)
     
     # 重试机制
     attempt = 0
@@ -202,9 +217,9 @@ def generate_affirmation_for_symptom(i, symptom, user_problem, additional_info,
 
             for item in response_data["results"]:
                 self_affirmative_phrase = item["self_affirmative_phrase"]
-                data_item = make_data_item(user_problem,symptom,additional_info, self_affirmative_phrase)
+                data_item = make_data_item(user_problem,symptom,additional_info, self_affirmative_phrase, zhihu_link=zhihu_link)
                 # 每生成一个自我肯定语后立即保存
-                save_to_csv(csv_file, data_item)
+                save_to_csv(csv_file, data_item,zhihu_link = zhihu_link)
 
             # 更新 checkpoint 文件，记录最后处理到的索引
             update_checkpoint(checkpoint_file, i + 1)
