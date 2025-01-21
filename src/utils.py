@@ -157,18 +157,6 @@ def generate_self_affirmative_phrase_concurrent(symptoms_data, csv_file,
 
 
 
-query_text = '失恋-悲观（觉得自己遇不到更好的了）'
-
-def query_article(query_text,top_k = 2):
-    try:
-        query_vector = embeddings.embed_query(query_text)
-        article_data = query_article_data('article_collection', query_vector, top_k)
-        debug(article_data)
-        # return jsonify({"message": "查询成功", "data": article_data})
-    except Exception as e:
-        print(e)
-        # return jsonify({"message": "查询失败", "error": str(e)})   
-
 def make_data_item(user_problem,symptom,additional_info, self_affirmative_phrase, encouragement_quotes):
     data_item = {
         '用户问题/症状': user_problem,
@@ -197,6 +185,19 @@ def make_data_item(user_problem,symptom,additional_info, self_affirmative_phrase
         '参考句子20': encouragement_quotes[19],
     }
     return data_item
+
+
+# query_text = '失恋-悲观（觉得自己遇不到更好的了）'
+
+def query_article(query_text,top_k = 2):
+    try:
+        query_vector = embeddings.embed_query(query_text)
+        article_data = query_article_data('article_collection', query_vector, top_k)
+        debug(article_data)
+        # return jsonify({"message": "查询成功", "data": article_data})
+    except Exception as e:
+        print(e)
+        # return jsonify({"message": "查询失败", "error": str(e)})   
 
 
 def generate_affirmation_for_symptom(i, symptom, user_problem, additional_info, 
