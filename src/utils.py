@@ -14,6 +14,7 @@ import concurrent.futures
 from src.prompt import get_role_prompt
 from src.milvus_utils import embeddings,query_article_data
 
+PRODUCTOR = "productor-pro-0121-example"
 DEBUG = True
 # HEADERS = [
 #     '用户问题/症状', '子场景症状合并', '标签（附加参考，用于引导生成或校正句子内容）', '自我肯定语',
@@ -189,19 +190,17 @@ def generate_affirmation_for_symptom(i, symptom, user_problem, additional_info,
     zhihu_link = ' '.join([article['entity']['zhihu_link'] for article in article_data])
     articles = ' '.join([article['entity']['content'] for article in article_data])
 
-    print("拼接后的zhihu_link:", zhihu_link)
-    print("拼接后的articles:", articles)
-
     # role_prompt = get_role_prompt("productor", init=encouragement_quotes,articles = articles)
-    role_prompt = get_role_prompt("productor-pro-0121", articles = articles)
+    # role_prompt = get_role_prompt("productor-pro-0121-example", articles = articles)
     # role_prompt = get_role_prompt("productor-pro-0121-kimi", articles = articles)
-    
+    role_prompt = get_role_prompt(PRODUCTOR, articles = articles)
+
     # 重试机制
     attempt = 0
     while attempt < max_retries:
         try:
             completion = client.chat.completions.create(
-                model="moonshot-v1-8k",
+                model="moonshot-v1-auto",
                 messages=[{"role": "system", "content": role_prompt},
                           {"role": "user", "content": message}],
                 temperature=1,
