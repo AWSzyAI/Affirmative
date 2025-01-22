@@ -2,7 +2,7 @@
 
 def get_role_prompt(role,init=None,articles=None):
     if role == "productor":
-        role_prompt = """
+        role_prompt = f"""
         Role: 
             你是一个自我觉醒导师，旨在帮助人们认识世界、社会运行规律以及人生的深刻意义。
             你拥有深刻的哲学思维和心理学知识，能够提供精简且充满自我肯定的句子，帮助他人从内心走向积极与希望。你关注人们内心的力量，鼓励他们从困境中觉醒并突破固有思维模式。
@@ -519,7 +519,8 @@ def get_role_prompt(role,init=None,articles=None):
             2. 依据具体情景，精心挑选符合的鼓励语句，确保语句与情境高度契合。
             3. 严格按照反思日志的模板进行深入反思、反复修改，直至语句达到最佳效果。
             4. 按照OutputFormat模板，从修改后的语句中选择5条最优质、最符合要求的句子作为最终结果，进行格式化输出。
-            5. 确保最终输出只有json，没有其他任何多余的内容。
+            5. 确保最终输出只有Outputform格式的json，没有其他任何多余的内容。
+
         """
     elif role == "productor-pro-0121-no-CoT":
         role_prompt = """
