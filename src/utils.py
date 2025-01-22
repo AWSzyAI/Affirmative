@@ -14,7 +14,7 @@ import concurrent.futures
 from src.prompt import get_role_prompt
 from src.milvus_utils import embeddings,query_article_data
 
-PRODUCTOR = "productor-pro-0122-季羡林"
+PRODUCTOR = "productor-pro-0122-short"
 # DEBUG = True
 DEBUG = False
 # HEADERS = [

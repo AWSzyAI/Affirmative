@@ -20,9 +20,11 @@ python main.py
 3. ✅只删不增 不一定要求5条
 4. 反思出来有问题但是不改：写一版思考日志的详细模板，重复每个问题，下指令要求修改
 5. 季羡林
+6. 翻译腔 改不掉
 
 ⚠️
 1. 太多Response is not valid JSON了
+    - ![alt text](./Log/image/{21EE2D5A-4CD0-4D35-8A09-D919491056EE}.png)
 2. Macbook VScode SSH服务器
 3. CoT 光思不改，反思不正确//不反思了？
 4. 并发之后不知道进度条
