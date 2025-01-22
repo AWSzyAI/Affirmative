@@ -1,12 +1,35 @@
 # I-am
 Caritas 自我肯定语内容生产
 
+`.env`
+```
+KIMI_API_KEY = sk-Ar
+ZHIPU_API_key = 65
+Token = b
+```
+
 ```bash
 pip install -r requirements.txt 
-
+python main.py
 ```
 
 ## Log
+### 2025-01-22
+1. ✅DEBUG=False时出现死锁
+2. ✅症状 -> 需求 
+3. ✅只删不增 不一定要求5条
+4. 反思出来有问题但是不改：写一版思考日志的详细模板，重复每个问题，下指令要求修改
+5. 季羡林
+
+⚠️
+1. 太多Response is not valid JSON了
+2. Macbook VScode SSH服务器
+3. CoT 光思不改，反思不正确//不反思了？
+4. 并发之后不知道进度条
+5. 检索到的金句不是文章原文
+
+
+
 ### 2025-01-21 
 1. ✅高级生产员
 2. ✅引入文章
@@ -38,3 +61,6 @@ ToDo
 
 5个1级需求  5个2级需求  这是1/2级需求
 安慰效果    鼓励效果
+
+
+余华没救了，不用余华了。删掉

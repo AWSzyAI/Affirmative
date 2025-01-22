@@ -3,8 +3,11 @@ import random
 import os
 import argparse
 
+HEADERS = ['用户1级需求','用户2级需求']
+
 def select_n(data_path, n):
     data = pd.read_csv(data_path)
+    data = data[HEADERS]
     data = data.sample(n)
     data.to_csv(f"./data/select_{n}.csv", index=False)
 
