@@ -3,7 +3,7 @@ import random
 import os
 import argparse
 
-HEADERS = ['用户1级需求','用户2级需求']
+HEADERS = ['用户问题/症状','用户1级需求','用户2级需求']
 
 def select_n(data_path, n):
     data = pd.read_csv(data_path)
