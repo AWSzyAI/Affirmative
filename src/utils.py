@@ -14,9 +14,9 @@ import concurrent.futures
 from src.prompt import get_role_prompt
 from src.milvus_utils import embeddings,query_article_data
 
-PRODUCTOR = "productor-pro-0122-short"
-# DEBUG = True
-DEBUG = False
+PRODUCTOR = "productor-pro-0122"
+DEBUG = True
+# DEBUG = False
 # HEADERS = [
 #     '用户问题/症状', '子场景症状合并', '标签（附加参考，用于引导生成或校正句子内容）', '自我肯定语',
 #     '参考句子1', '参考句子2', '参考句子3', '参考句子4', '参考句子5',
