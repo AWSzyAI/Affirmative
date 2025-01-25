@@ -6,32 +6,26 @@ import json
 import requests
 import concurrent
 import threading
-
 from tqdm import tqdm
 from openai import RateLimitError  # 导入 RateLimitError 异常
-
 from src.milvus_utils import embeddings, query_article_data
 from src.kimi_api import client
 from src.prompt import get_role_prompt
 
-import logging
-
-PRODUCTOR = "productor-pro-0122-short"
-CONCURRENT_LIMIT=100
 # DEBUG = True
 DEBUG = False
-HEADERS = ['用户问题/症状', '用户1级需求', '用户2级需求', '自我肯定语', '生产者', '参考需求','反思日志', 'zhihu_link']
-logging.basicConfig(level=logging.ERROR, format="%(message)s - %(asctime)s - %(levelname)s")
-checkpoint_lock = threading.Lock()  # 线程锁，用于保护检查点文件的更新
-# 最大重试次数和重试延时
+
+HEADERS = ['自我肯定语', '生产者', '参考需求','用户问题/症状', '用户1级需求', '用户2级需求', 'zhihu_link']
+# HEADERS = ['自我肯定语']
 max_retries = 3
 retry_delay = 5  # 重试延时（秒）
-style = "余华"
+checkpoint_lock = threading.Lock()  # 线程锁，用于保护检查点文件的更新
 
 def debug(*args, **kwargs):
     if DEBUG:
         print(*args, **kwargs)
 
+# FILE I/O
 def make_data_item(user_problem, need_1, need_2, need, self_affirmative_phrase, type, zhihu_link=None, think_log=None):
     """构造数据项"""
     if type=='3':
@@ -57,26 +51,6 @@ def make_data_item(user_problem, need_1, need_2, need, self_affirmative_phrase, 
             '反思日志': think_log
         }
 
-def get_encouragements(message, k=5):
-    """利用 message 检索鼓励语 quote"""
-    encouragement_url = "http://test.caritas.pro:5001/query_excerpt_data"
-    payload = {
-        "query_text": message,
-        "top_k": k
-    }
-    headers = {
-        "Content-Type": "application/json"
-    }
-    response = requests.post(encouragement_url, json=payload, headers=headers)
-    encouragement_quotes = []
-    if response.status_code == 200:
-        data = response.json()
-        for item in data["data"]:
-            encouragement_quotes.append(item["entity"]["quote"])
-    else:
-        print("请求失败: %s %s", response.status_code, response.text)
-    return encouragement_quotes
-
 def load_csv(file_path):
     """加载CSV文件，返回列表格式的数据"""
     data = []
@@ -98,12 +72,31 @@ def save_to_csv(output_file, data_item,HEADERS):
         cleaned_row = [clean_value(data_item.get(header, '')) for header in HEADERS]
         writer.writerow(cleaned_row)
 
+# Warpper
 def clean_value(value):
     """清理字段中的换行符"""
     if isinstance(value, str):
         return value.replace('\n', ' ').replace('\r', ' ')  # 删除换行符和回车符
     return value
 
+def remove_duplicates(article_data):
+    """
+    根据文章的 id 去重
+    :param article_data: 包含文章数据的列表
+    :return: 去重后的文章数据列表
+    """
+    seen_ids = set()  # 用于存储已经见过的 id
+    unique_articles = []  # 用于存储去重后的文章
+
+    for article in article_data:
+        article_id = article['entity']['id']  # 获取文章的 id
+        if article_id not in seen_ids:
+            seen_ids.add(article_id)  # 将 id 添加到已见集合
+            unique_articles.append(article)  # 添加到去重后的列表
+
+    return unique_articles
+
+# 断点续传
 def get_checkpoint(checkpoint_file):
     """获取 checkpoint 文件中记录的所有已完成索引"""
     if os.path.exists(checkpoint_file):
@@ -128,6 +121,27 @@ def update_checkpoint(checkpoint_file, index):
         with open(checkpoint_file, 'w') as f:
             json.dump(checkpoint_data, f)
 
+# Caritas API
+def get_encouragements(message, k=5):
+    """利用 message 检索鼓励语 quote"""
+    encouragement_url = "http://test.caritas.pro:5001/query_excerpt_data"
+    payload = {
+        "query_text": message,
+        "top_k": k
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    response = requests.post(encouragement_url, json=payload, headers=headers)
+    encouragement_quotes = []
+    if response.status_code == 200:
+        data = response.json()
+        for item in data["data"]:
+            encouragement_quotes.append(item["entity"]["quote"])
+    else:
+        print("请求失败: %s %s", response.status_code, response.text)
+    return encouragement_quotes
+
 def query_article(query_text, top_k=2):
     """查询文章数据"""
     try:
@@ -149,7 +163,8 @@ def query_article(query_text, top_k=2):
     except Exception as e:
         print("Error: %s", e)
         return []
-    
+
+# main Job
 def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpoint_file, n, delay, max_retries, DEBUG):
     symptoms_data = load_csv(symptoms_file)
 
@@ -158,9 +173,7 @@ def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpo
     
     with tqdm(total=len(symptoms_data), initial=len(completed_indices), desc="生成进度", unit="症状", position=0) as pbar:
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            # futures = {}
-            # task_count = 0  # 用于计数当前提交的任务数
-            # start_time = time.time()  # 记录开始时间
+            futures = {}
             for i in range(len(symptoms_data)):
                 if i in completed_indices:  # 如果任务已完成，跳过
                     pbar.update(1)  # 更新进度条
@@ -171,35 +184,21 @@ def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpo
                 need_1 = symptom['用户1级需求']
                 need_2 = symptom['用户2级需求']
 
-                # 直接调用任务函数，顺序执行
-                try:
-                    generate_affirmation_for_symptom(i, user_problem, n, delay, max_retries, csv_file, checkpoint_file, need_1, need_2, DEBUG=DEBUG)
-                except Exception as e:
-                    print(f"任务 {i} 失败: {e}")
-                finally:
-                    pbar.update(1)  # 更新进度条
-                    update_checkpoint(checkpoint_file, i + 1)  # 更新检查点文件
-                # if task_count >=2:
-                #     elapsed_time = time.time() - start_time
-                #     if elapsed_time < 1:
-                #         time.sleep(1 - elapsed_time)  # 等待剩余时间
-                #     task_count = 0  # 重置任务计数
-                #     start_time = time.time()  # 重置开始时间
-                # future = executor.submit(
-                #     generate_affirmation_for_symptom, i, user_problem, n, delay, max_retries, csv_file, checkpoint_file, need_1, need_2, DEBUG=DEBUG
-                # )
-                # futures[future] = i  # 将 future 和索引关联起来
+                future = executor.submit(
+                    generate_affirmation_for_symptom, i, user_problem, n, delay, max_retries, csv_file, checkpoint_file, need_1, need_2, DEBUG=DEBUG
+                )
+                futures[future] = i  # 将 future 和索引关联起来
 
-            # # 等待所有任务完成，并更新进度条和检查点
-            # for future in concurrent.futures.as_completed(futures):
-            #     index = futures[future]  # 获取当前任务的索引
-            #     try:
-            #         future.result()  # 捕获异常，如果任务有异常，会抛出
-            #     except Exception as e:
-            #         print(f"任务 {index} 失败: {e}")
-            #     finally:
-            #         pbar.update(1)  # 更新进度条
-            #         update_checkpoint(checkpoint_file, index + 1)  # 更新检查点文件
+            for future in concurrent.futures.as_completed(futures):
+                index = futures[future]  # 获取当前任务的索引
+                try:
+                    future.result()  # 捕获异常，如果任务有异常，会抛出
+                except Exception as e:
+                    print(f"任务 {index} 失败: {e}")
+                finally:
+                    # with checkpoint_lock:
+                    pbar.update(1)  # 更新进度条
+                    update_checkpoint(checkpoint_file, index)  # 更新检查点文件
 
     print(f"所有未生成过的自我肯定语已保存到 {csv_file}")
     if os.path.exists(checkpoint_file):
@@ -207,23 +206,6 @@ def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpo
         print(f"已删除文件: {checkpoint_file}")
     else:
         print(f"文件不存在: {checkpoint_file}")
-
-def remove_duplicates(article_data):
-    """
-    根据文章的 id 去重
-    :param article_data: 包含文章数据的列表
-    :return: 去重后的文章数据列表
-    """
-    seen_ids = set()  # 用于存储已经见过的 id
-    unique_articles = []  # 用于存储去重后的文章
-
-    for article in article_data:
-        article_id = article['entity']['id']  # 获取文章的 id
-        if article_id not in seen_ids:
-            seen_ids.add(article_id)  # 将 id 添加到已见集合
-            unique_articles.append(article)  # 添加到去重后的列表
-
-    return unique_articles
 
 def generate_affirmation_for_symptom(i, user_problem, n, delay, max_retries, csv_file, checkpoint_file, need_1, need_2, DEBUG=False):
     """生成单个症状的自我肯定语并保存到 CSV"""
@@ -263,18 +245,18 @@ def generate_affirmation_for_symptom(i, user_problem, n, delay, max_retries, csv
     # think_log += clean_value(str(message))
     # think_log += clean_value(str(article_data))
     # think_log += clean_value(str(structured_articles))
-    think_log += clean_value(str(sentences))
+    # think_log += clean_value(str(sentences))
     
     
     need = "1级需求: " + need_1
     think_log_1 = think_log + clean_value(str(need))
-    make_Affirmative_by_need(articles, need_1, need_2, need, sentences, client, user_problem, zhihu_link, think_log_1, csv_file,"style-fliter",messages)
+    make_Affirmative_by_need(articles, need_1, need_2, need, sentences, client, user_problem, zhihu_link, think_log_1, csv_file,"chinese_culture",messages)
     
     need = "2级需求: " + need_2
     think_log_2 = think_log + clean_value(str(need))
-    make_Affirmative_by_need(articles, need_1, need_2, need, sentences, client, user_problem, zhihu_link, think_log_2, csv_file,"style-fliter",messages)
-    
+    make_Affirmative_by_need(articles, need_1, need_2, need, sentences, client, user_problem, zhihu_link, think_log_2, csv_file,"chinese_culture",messages)
 
+#  pipeline LLM API
 def get_structured_articles(article_data, client, role):
     max_retries = 3
     retry_delay = 5 
@@ -330,7 +312,7 @@ def make_Affirmative(content, client,role,articles):
         return [" "]
 
     role_prompt = get_role_prompt(role,articles=articles)
-    message = "句子："+"\n".join(content)+f"\n 文章{articles}"
+    message = "句子："+"\n".join(content)+f"\n 文章”“”{articles}“”“，生成10个句子"
     attempt = 0
     while attempt < max_retries:
         try:
@@ -380,7 +362,9 @@ def make_Affirmative(content, client,role,articles):
 def make_Affirmative_by_need(article, need_1, need_2, need, sentences, client, user_problem, zhihu_link, think_log, output_file,role,messages=None):
     max_retries = 3
     retry_delay = 5 
+    style = '余华'
     role_prompt = get_role_prompt(role, style=style, articles=article, sentence=sentences, need=need)
+    print(messages)
     messages.append({"role": "user", "content": role_prompt})
 
     # debug(role_prompt)
@@ -396,10 +380,11 @@ def make_Affirmative_by_need(article, need_1, need_2, need, sentences, client, u
                 n=1  # 请求返回1个结果
             )
             response = completion.choices[0].message.content.strip()
-            # debug("API Response: %s", response)
+            debug("API Response: ", response)
             # think_log += clean_value(str(response))
             try:
                 response_dict = json.loads(response)
+                print("Response is valid JSON.")
                 if "self_affirmation" in response_dict and isinstance(response_dict["self_affirmation"], list):
                     response_data = response_dict["self_affirmation"]
                 else:
@@ -418,7 +403,8 @@ def make_Affirmative_by_need(article, need_1, need_2, need, sentences, client, u
                             zhihu_link=zhihu_link,
                             think_log=think_log
                         )
-                        save_to_csv(output_file, data_item,HEADERS)
+                        
+                        save_to_csv(output_file.replace('.csv','_3.csv'), data_item,HEADERS)
                     else:
                         print(f"Error: Invalid item format in response data: {item}")
                 
@@ -433,7 +419,7 @@ def make_Affirmative_by_need(article, need_1, need_2, need, sentences, client, u
                         zhihu_link=zhihu_link,
                         think_log=think_log
                     )
-                    save_to_csv(output_file, data_item,HEADERS)
+                    save_to_csv(output_file.replace('.csv','_2.csv'), data_item,HEADERS)
             except json.JSONDecodeError:
                 print("Error: Failed to parse API response as JSON.")
             except KeyError as e:
