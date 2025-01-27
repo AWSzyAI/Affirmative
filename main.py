@@ -1,8 +1,8 @@
 from src.utils import generate_self_affirmative_phrase_concurrent
 
 def main():
-    symptoms_file = "./data/select_100.csv"
-    # symptoms_file = "./data/肯定语体系【Caritas】 - 场景-症状-需求.csv"
+    # symptoms_file = "./data/select_100.csv"
+    symptoms_file = "./data/肯定语体系【Caritas】 - 场景-症状-需求_去重后.csv"
     output_file = symptoms_file.replace('.csv','_result.csv')
     checkpoint_file =  output_file.replace('_result.csv','_checkpoint.txt')
     delay=0.5

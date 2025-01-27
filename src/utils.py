@@ -165,15 +165,85 @@ def query_article(query_text, top_k=2):
         return []
 
 # main Job
-def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpoint_file, n, delay, max_retries, DEBUG):
+# def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpoint_file, n, delay, max_retries, DEBUG):
+#     symptoms_data = load_csv(symptoms_file)
+
+#     completed_indices = set(get_checkpoint(checkpoint_file)) 
+#     print(f"从检查点文件读取到已完成的索引: {completed_indices}")
+    
+#     with tqdm(total=len(symptoms_data), initial=len(completed_indices), desc="生成进度", unit="症状", position=0) as pbar:
+#         with concurrent.futures.ThreadPoolExecutor() as executor:
+#             futures = {}
+#             for i in range(len(symptoms_data)):
+#                 if i in completed_indices:  # 如果任务已完成，跳过
+#                     pbar.update(1)  # 更新进度条
+#                     continue
+#                 symptom = symptoms_data[i]
+
+#                 user_problem = symptom['用户问题/症状']
+#                 need_1 = symptom['用户1级需求']
+#                 need_2 = symptom['用户2级需求']
+
+#                 future = executor.submit(
+#                     generate_affirmation_for_symptom, i, user_problem, n, delay, max_retries, csv_file, checkpoint_file, need_1, need_2, DEBUG=DEBUG
+#                 )
+#                 futures[future] = i  # 将 future 和索引关联起来
+
+#             for future in concurrent.futures.as_completed(futures):
+#                 index = futures[future]  # 获取当前任务的索引
+#                 try:
+#                     future.result()  # 捕获异常，如果任务有异常，会抛出
+#                 except Exception as e:
+#                     print(f"任务 {index} 失败: {e}")
+#                 finally:
+#                     # with checkpoint_lock:
+#                     pbar.update(1)  # 更新进度条
+#                     update_checkpoint(checkpoint_file, index)  # 更新检查点文件
+
+#     print(f"所有未生成过的自我肯定语已保存到 {csv_file}")
+#     if os.path.exists(checkpoint_file):
+#         os.remove(checkpoint_file)
+#         print(f"已删除文件: {checkpoint_file}")
+#     else:
+#         print(f"文件不存在: {checkpoint_file}")
+
+def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpoint_file, n, delay, max_retries, DEBUG, use_concurrency=False):
     symptoms_data = load_csv(symptoms_file)
 
     completed_indices = set(get_checkpoint(checkpoint_file)) 
     print(f"从检查点文件读取到已完成的索引: {completed_indices}")
     
     with tqdm(total=len(symptoms_data), initial=len(completed_indices), desc="生成进度", unit="症状", position=0) as pbar:
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = {}
+        if use_concurrency:
+            # 并发执行逻辑
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                futures = {}
+                for i in range(len(symptoms_data)):
+                    if i in completed_indices:  # 如果任务已完成，跳过
+                        pbar.update(1)  # 更新进度条
+                        continue
+                    symptom = symptoms_data[i]
+
+                    user_problem = symptom['用户问题/症状']
+                    need_1 = symptom['用户1级需求']
+                    need_2 = symptom['用户2级需求']
+
+                    future = executor.submit(
+                        generate_affirmation_for_symptom, i, user_problem, n, delay, max_retries, csv_file, checkpoint_file, need_1, need_2, DEBUG=DEBUG
+                    )
+                    futures[future] = i  # 将 future 和索引关联起来
+
+                for future in concurrent.futures.as_completed(futures):
+                    index = futures[future]  # 获取当前任务的索引
+                    try:
+                        future.result()  # 捕获异常，如果任务有异常，会抛出
+                    except Exception as e:
+                        print(f"任务 {index} 失败: {e}")
+                    finally:
+                        pbar.update(1)  # 更新进度条
+                        update_checkpoint(checkpoint_file, index)  # 更新检查点文件
+        else:
+            # 串行执行逻辑
             for i in range(len(symptoms_data)):
                 if i in completed_indices:  # 如果任务已完成，跳过
                     pbar.update(1)  # 更新进度条
@@ -184,21 +254,13 @@ def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpo
                 need_1 = symptom['用户1级需求']
                 need_2 = symptom['用户2级需求']
 
-                future = executor.submit(
-                    generate_affirmation_for_symptom, i, user_problem, n, delay, max_retries, csv_file, checkpoint_file, need_1, need_2, DEBUG=DEBUG
-                )
-                futures[future] = i  # 将 future 和索引关联起来
-
-            for future in concurrent.futures.as_completed(futures):
-                index = futures[future]  # 获取当前任务的索引
                 try:
-                    future.result()  # 捕获异常，如果任务有异常，会抛出
+                    generate_affirmation_for_symptom(i, user_problem, n, delay, max_retries, csv_file, checkpoint_file, need_1, need_2, DEBUG=DEBUG)
                 except Exception as e:
-                    print(f"任务 {index} 失败: {e}")
+                    print(f"任务 {i} 失败: {e}")
                 finally:
-                    # with checkpoint_lock:
                     pbar.update(1)  # 更新进度条
-                    update_checkpoint(checkpoint_file, index)  # 更新检查点文件
+                    update_checkpoint(checkpoint_file, i)  # 更新检查点文件
 
     print(f"所有未生成过的自我肯定语已保存到 {csv_file}")
     if os.path.exists(checkpoint_file):
@@ -250,11 +312,11 @@ def generate_affirmation_for_symptom(i, user_problem, n, delay, max_retries, csv
     
     need = "1级需求: " + need_1
     think_log_1 = think_log + clean_value(str(need))
-    make_Affirmative_by_need(articles, need_1, need_2, need, sentences, client, user_problem, zhihu_link, think_log_1, csv_file,"chinese_culture",messages)
+    make_Affirmative_by_need(articles, need_1, need_2, need, sentences, client, user_problem, zhihu_link, think_log_1, csv_file,"style-fliter",messages)
     
     need = "2级需求: " + need_2
     think_log_2 = think_log + clean_value(str(need))
-    make_Affirmative_by_need(articles, need_1, need_2, need, sentences, client, user_problem, zhihu_link, think_log_2, csv_file,"chinese_culture",messages)
+    make_Affirmative_by_need(articles, need_1, need_2, need, sentences, client, user_problem, zhihu_link, think_log_2, csv_file,"style-fliter",messages)
 
 #  pipeline LLM API
 def get_structured_articles(article_data, client, role):
@@ -364,7 +426,7 @@ def make_Affirmative_by_need(article, need_1, need_2, need, sentences, client, u
     retry_delay = 5 
     style = '余华'
     role_prompt = get_role_prompt(role, style=style, articles=article, sentence=sentences, need=need)
-    print(messages)
+    # print(messages)
     messages.append({"role": "user", "content": role_prompt})
 
     # debug(role_prompt)
