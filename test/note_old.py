@@ -1,19 +1,22 @@
 import pandas as pd
 import sys
+import json
 sys.path.append('../src')
 from kimi_api import client
 from tqdm import tqdm
-import json
 
-# 读取待处理数据
-df = pd.read_csv('../data/协作表 - V1 - 待审查.csv')
-df = df[['自我肯定语-V1', '字数']]
+df = pd.read_csv('../data/协作表 - 上线句子清单.csv')
+df = df[['知乎资料', '来源', '最终结果', '权重', '合集']]
 
 role_prompt = """
 你是一个情感分析专家，负责对句子进行四个维度的标注。请务必全面考虑句子的语义，确保每个可能的选项都被评估，避免漏选。
 
-1. 合集
-选项：句子特征
+有开心就要有很好，有很好就要有开心
+提到社交、联系就要有人际交往
+
+1. 合集（只能在[情感疗愈 自信 平和心境 治愈之旅 人际交往 自我关怀 个人成长 成为英雄]中选一个，不要出现其余的内容）
+   根据句子的主要语义与各个类别的特征进行比对，将其分类到最合适的一类中。
+   选项：句子特征
    - 情感疗愈: 语义涉及情感修复、亲密关系或情感联结，即使未直接提及“情感”或“亲密关系”。
    - 自信: 语义涉及自我肯定、力量感或自我认知的提升，即使未直接提及“我能”或类似词语。
    - 平和心境: 语义涉及情绪调节、内心安宁或对现状的满足感，即使未直接提及“平和”、“安宁”或“感恩”。
@@ -23,11 +26,11 @@ role_prompt = """
    - 个人成长: 语义涉及自我提升、事业发展或学习创造，即使未直接提及“成长”、“工作”或“学习”。
    - 成为英雄: 语义涉及勇敢行动、宽恕他人、追求理想，付出、牺牲。即使未直接提及“勇气”、“原谅”或“理想”。
 
-2. 感情状况
+2. 感情状况（只在[正在恋爱 处在一段艰难的亲密关系中 快乐地单身着 单身但准备好了开始新的恋情 最近刚分手 有点辛苦的暗恋]这些词语中多选，尽量多选，不要出现其余的内容）
    这个句子适合推送给哪些感情状态的用户？请务必全面评估句子的语义，确保每个可能的选项都被考虑。
    选项：
    - 正在恋爱: 语义涉及甜蜜、稳定、幸福的亲密关系，或对伴侣的积极情感表达。
-   - 处在一段艰难的亲密关系中: 语义涉及关系中的矛盾、困惑、挣扎，或对关系改善的渴望。可能会自卑、自我怀疑、因此也需要提升自信相关的句子
+   - 处在一段艰难的亲密关系中: 语义涉及关系中的矛盾、困惑、挣扎，或对关系改善的渴望。
      - 排除：个人成长、成为英雄合集的句子。
    - 快乐地单身着: 语义涉及享受独处、自我成长、独立自主，或对单身状态的积极态度。
    - 单身但准备好了开始新的恋情: 语义涉及对爱情的期待、开放心态，或为新的关系做准备的积极情绪。
@@ -40,7 +43,7 @@ role_prompt = """
    - 句子：“爱自己是一切美好的开始。”  
      - 适合：**快乐地单身着**（享受独处）、**最近刚分手**（疗愈）、**单身但准备好了开始新的恋情**（积极心态）。
 
-3. 最近的感觉
+3. 最近的感觉（在[开心 很好 一般 不好 糟糕]多选, 【开心 很好】，【不好 糟糕】绑定同时出现或不出现，不要出现额外的标签）
    选项：句子特征
    - 开心: 语义涉及自信、力量感、成就感（自信合集、个人成长合集）。
      - 排除：治愈之旅、平和心境合集的句子。
@@ -56,7 +59,6 @@ role_prompt = """
    **注意**：如果一个句子同时适合多个感觉，请务必全部选择。例如：
    - 句子：“最近总是觉得很累，需要好好休息一下。”  
      - 适合：**不好**（需要安慰）、**糟糕**（强烈情感低落）。
-    
 
 4. 什么让你有这种感觉（多选）
    选项：句子特征
@@ -70,88 +72,74 @@ role_prompt = """
    - 自己: 自信、自我关怀合集的句子
 
    **注意**：如果一个句子同时涉及多个原因，请务必全部选择。例如：
-    - 句子：“最近工作压力大，但朋友的支持让我感到温暖。”  
-        - 适合：**工作**（压力）、**朋友**（支持）。
-    - 并不只有在感觉不好/糟糕的时候才分析是学业/工作产生的，当用户觉得开心、很好的时候，也可能是学业/工作上有所成就造成的。
-"""
-# 定义标注函数
-def get_annotations(sentence,i=None,j=None):
-    if i==None and j==None:
-        message =f"""
-            句子内容: {sentence}
-            
-            从"情感疗愈","自信","平和心境","治愈之旅","人际交往","自我关怀","个人成长","成为英雄" 选一个，不要捏造其他的标签。
+   - 句子：“最近工作压力大，但朋友的支持让我感到温暖。”  
+     - 适合：**工作**（压力）、**朋友**（支持）。
 
-            请根据提供的句子特征进行标注，用以匹配其适用的场景，并返回JSON格式的结果。以下是返回结果的JSON示例：
-            {{
-                "合集": "情感疗愈",
-            }}
-        """
-    else:
-        # print(sentence,i,j)
-        message = f"""
-        句子 "{sentence}" 是否适合推荐给情感状况为 {i}, 心情为 {j} 的用户？
-        return 
-        {{
-            "感情状况": "{i}",
-            "最近的感觉": "{j}",
-            "什么让你有这种感觉": ["家庭","朋友","工作","健康","感情","学业","自己"], #分析{sentence}得到
-            "suitable": True  # 或 False，根据需要调整
-            "exlapin": "False 的理由"
-        }}
-        """
-    
+例子：
+我相信即使独自一人，我也能过得很充实。,自信,['快乐地单身着'],['开心','很好'],['自己']
+我选择爱护自己，珍视生命的每一步。,自我关怀,['快乐地单身着','处在一段艰难的亲密关系中', '单身但准备好了开始新的恋情','最近刚分手','有点辛苦的暗恋'],['开心','很好','一般','不好','糟糕'],['自己','感情','朋友','家庭','工作','学业','健康']
+我的话语有力量，我选择积极地使用它。,人际交往,['快乐地单身着','处在一段艰难的亲密关系中', '单身但准备好了开始新的恋情','最近刚分手','有点辛苦的暗恋'],['开心','很好','一般','不好','糟糕'],['自己','感情','朋友','家庭','工作']
+
+请根据提供的句子特征进行标注，用以匹配其适用的场景，并返回JSON格式的结果。以下是返回结果的JSON示例：
+
+{
+  "合集": "情感疗愈",
+  "感情状况": ["正在恋爱", "快乐地单身着"],
+  "最近的感觉": ["开心", "很好"],
+  "什么让你有这种感觉": ["家庭", "朋友"]
+}
+
+**重要提示**：请务必全面评估句子的语义，确保每个可能的选项都被考虑，避免漏选。
+
+1. 社交合作、他人、感情：根据语义内容，归类到人际交往合集。
+正在恋爱：排除新的感情
+"""
+
+def get_annotations(sentence):
+    message = f"请对以下句子进行标注：{sentence}"
     messages = [
         {"role": "system", "content": role_prompt},
         {"role": "user", "content": message}
     ]
-    
+    completion = client.chat.completions.create(
+        model="moonshot-v1-auto",
+        messages=messages,
+        temperature=1,
+        response_format={"type": "json_object"},  # 确保返回 JSON 格式
+        n=1  # 请求返回1个结果
+    )
+    response = completion.choices[0].message.content.strip()
     try:
-        completion = client.chat.completions.create(
-            model="moonshot-v1-auto",
-            messages=messages,
-            temperature=1,
-            response_format={"type": "json_object"},  # 确保返回 JSON 格式
-            n=1  # 请求返回1个结果
-        )
-        response = completion.choices[0].message.content.strip()
         response_dict = json.loads(response)
-        # print(response_dict)
         return response_dict
-    except (json.JSONDecodeError, AttributeError):
+    except json.JSONDecodeError:
         return {"error": "Invalid JSON response"}
-
-# 存储标注结果
+    
 results = []
 batch_size = 100
 batch_number = 1
 
 for index, row in tqdm(df.iterrows(), total=len(df), desc="处理进度"):
-    sentence = row['自我肯定语-V1']
+    sentence = row['最终结果']
     annotations = get_annotations(sentence)
     results.append({
+        '知乎资料':row['知乎资料'], 
+        '来源':row['来源'], 
+        '最终结果':row['最终结果'], 
+        '权重':row['权重'], 
         "句子": sentence,
         "合集": annotations.get("合集", ""),
-        "感情状况": [],
-        "最近的感觉": [],
-        "什么让你有这种感觉": [],
-        'log':[]
+        "感情状况": annotations.get("感情状况", ""),
+        "最近的感觉": annotations.get("最近的感觉", ""),
+        "什么让你有这种感觉": annotations.get("什么让你有这种感觉", "")
     })
-    for i in ["正在恋爱","处在一段艰难的亲密关系中","快乐地单身着","单身但准备好了开始新的恋情","最近刚分手","有点辛苦的暗恋"]:
-        for j in ["开心/很好","一般","不好/糟糕"]:
-            annotations = get_annotations(sentence,i,j)
-            flag = annotations.get("suitable", False)
-            results[-1]['log'].append(annotations)
-            if flag:
-                if i not in results[-1]["感情状况"]:
-                  results[-1]["感情状况"].append(i)
-                if j not in results[-1]["最近的感觉"]:
-                  results[-1]["最近的感觉"].append(j)
-                  results[-1]["什么让你有这种感觉"].append(annotations.get("什么让你有这种感觉", None))
+    
+    # 每处理 batch_size 个句子后保存一次结果
+    if (index + 1) % batch_size == 0 or (index + 1) == len(df):
+        results_df = pd.DataFrame(results)
+        results_df.to_csv(f'../data/标注结果_batch_{batch_number}.csv', index=False)
+        print(f"批次 {batch_number} 标注完成，结果已导出为 标注结果_batch_{batch_number}.csv")
+        batch_number += 1
+        # results = []  # 清空 results 列表以准备处理下一批次
 
-
-# 导出最终结果
-results_df = pd.DataFrame(results)
-output_file = f'../data/con标注结果_final.csv'
-results_df.to_csv(output_file, index=False)
-print(f"标注完成，最终结果已导出为 {output_file}")
+print("所有批次标注完成")

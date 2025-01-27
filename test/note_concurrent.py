@@ -1,9 +1,12 @@
 import pandas as pd
 import sys
+import json
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from tqdm import tqdm
+
 sys.path.append('../src')
 from kimi_api import client
-from tqdm import tqdm
-import json
 
 # 读取待处理数据
 df = pd.read_csv('../data/协作表 - V1 - 待审查.csv')
@@ -74,84 +77,121 @@ role_prompt = """
         - 适合：**工作**（压力）、**朋友**（支持）。
     - 并不只有在感觉不好/糟糕的时候才分析是学业/工作产生的，当用户觉得开心、很好的时候，也可能是学业/工作上有所成就造成的。
 """
-# 定义标注函数
-def get_annotations(sentence,i=None,j=None):
-    if i==None and j==None:
-        message =f"""
-            句子内容: {sentence}
+
+# 定义标注函数（带重试机制）
+def get_annotations(sentence, i=None, j=None, max_retries=3):
+    retries = 0
+    while retries < max_retries:
+        try:
+            if i is None and j is None:
+                message = f"""
+                    句子内容: {sentence}
+                    
+                    从"情感疗愈","自信","平和心境","治愈之旅","人际交往","自我关怀","个人成长","成为英雄" 选一个，不要捏造其他的标签。
+
+                    请根据提供的句子特征进行标注，用以匹配其适用的场景，并返回JSON格式的结果。以下是返回结果的JSON示例：
+                    {{
+                        "合集": "情感疗愈",
+                    }}
+                """
+            else:
+                message = f"""
+                句子 "{sentence}" 是否适合推荐给情感状况为 {i}, 心情为 {j} 的用户？
+                return 
+                {{
+                    "感情状况": "{i}",
+                    "最近的感觉": "{j}",
+                    "什么让你有这种感觉": ["家庭","朋友","工作","健康","感情","学业","自己"], #分析{sentence}得到
+                    "suitable": True  # 或 False，根据需要调整
+                    "exlapin": "False 的理由"
+                }}
+                """
             
-            从"情感疗愈","自信","平和心境","治愈之旅","人际交往","自我关怀","个人成长","成为英雄" 选一个，不要捏造其他的标签。
+            messages = [
+                {"role": "system", "content": role_prompt},
+                {"role": "user", "content": message}
+            ]
+            
+            completion = client.chat.completions.create(
+                model="moonshot-v1-auto",
+                messages=messages,
+                temperature=1,
+                response_format={"type": "json_object"},  # 确保返回 JSON 格式
+                n=1  # 请求返回1个结果
+            )
+            response = completion.choices[0].message.content.strip()
+            response_dict = json.loads(response)
+            return response_dict
+        except Exception as e:
+            if "rate_limit_reached_error" in str(e):
+                retries += 1
+                print(f"Rate limit reached. Retrying ({retries}/{max_retries})...")
+                time.sleep(1)  # 减少重试间隔到 1 秒
+            else:
+                print(f"Error: {e}")
+                return {"error": str(e)}
+    print("Max retries reached")
+    return {"error": "Max retries reached"}
 
-            请根据提供的句子特征进行标注，用以匹配其适用的场景，并返回JSON格式的结果。以下是返回结果的JSON示例：
-            {{
-                "合集": "情感疗愈",
-            }}
-        """
-    else:
-        # print(sentence,i,j)
-        message = f"""
-        句子 "{sentence}" 是否适合推荐给情感状况为 {i}, 心情为 {j} 的用户？
-        return 
-        {{
-            "感情状况": "{i}",
-            "最近的感觉": "{j}",
-            "什么让你有这种感觉": ["家庭","朋友","工作","健康","感情","学业","自己"], #分析{sentence}得到
-            "suitable": True  # 或 False，根据需要调整
-            "exlapin": "False 的理由"
-        }}
-        """
-    
-    messages = [
-        {"role": "system", "content": role_prompt},
-        {"role": "user", "content": message}
-    ]
-    
-    try:
-        completion = client.chat.completions.create(
-            model="moonshot-v1-auto",
-            messages=messages,
-            temperature=1,
-            response_format={"type": "json_object"},  # 确保返回 JSON 格式
-            n=1  # 请求返回1个结果
-        )
-        response = completion.choices[0].message.content.strip()
-        response_dict = json.loads(response)
-        # print(response_dict)
-        return response_dict
-    except (json.JSONDecodeError, AttributeError):
-        return {"error": "Invalid JSON response"}
-
-# 存储标注结果
-results = []
-batch_size = 100
-batch_number = 1
-
-for index, row in tqdm(df.iterrows(), total=len(df), desc="处理进度"):
-    sentence = row['自我肯定语-V1']
-    annotations = get_annotations(sentence)
-    results.append({
+# 并发处理函数
+def process_sentence(sentence):
+    results = {
         "句子": sentence,
-        "合集": annotations.get("合集", ""),
+        "合集": "",
         "感情状况": [],
         "最近的感觉": [],
         "什么让你有这种感觉": [],
-        'log':[]
-    })
-    for i in ["正在恋爱","处在一段艰难的亲密关系中","快乐地单身着","单身但准备好了开始新的恋情","最近刚分手","有点辛苦的暗恋"]:
-        for j in ["开心/很好","一般","不好/糟糕"]:
-            annotations = get_annotations(sentence,i,j)
-            flag = annotations.get("suitable", False)
-            results[-1]['log'].append(annotations)
-            if flag:
-                if i not in results[-1]["感情状况"]:
-                  results[-1]["感情状况"].append(i)
-                if j not in results[-1]["最近的感觉"]:
-                  results[-1]["最近的感觉"].append(j)
-                  results[-1]["什么让你有这种感觉"].append(annotations.get("什么让你有这种感觉", None))
+    }
+    
+    # 获取合集标注
+    annotations = get_annotations(sentence)
+    results["合集"] = annotations.get("合集", "")
+    
+    # 并发获取感情状况和最近的感觉标注
+    with ThreadPoolExecutor(max_workers=4) as executor:  # 增加并发数到 4
+        futures = []
+        for i in ["正在恋爱", "处在一段艰难的亲密关系中", "快乐地单身着", "单身但准备好了开始新的恋情", "最近刚分手", "有点辛苦的暗恋"]:
+            for j in ["开心/很好", "一般", "不好/糟糕"]:
+                futures.append(executor.submit(get_annotations, sentence, i, j))
+                time.sleep(0.5)  # 减少等待时间到 0.5 秒
+        
+        for future in as_completed(futures):
+            annotations = future.result()
+            if annotations.get("suitable", False):
+                i = annotations.get("感情状况", "")
+                j = annotations.get("最近的感觉", "")
+                if i not in results["感情状况"]:
+                    results["感情状况"].append(i)
+                if j not in results["最近的感觉"]:
+                    results["最近的感觉"].append(j)
+                results["什么让你有这种感觉"].extend(annotations.get("什么让你有这种感觉", []))
+    
+    return results
 
+# 存储标注结果
+batch_size = 100  # 每批次处理 100 条数据
+results = []
 
-# 导出最终结果
+for start in range(0, len(df), batch_size):
+    end = start + batch_size
+    batch_df = df[start:end]
+    
+    with ThreadPoolExecutor(max_workers=4) as executor:  # 增加并发数到 4
+        futures = [executor.submit(process_sentence, row['自我肯定语-V1']) for _, row in batch_df.iterrows()]
+        for future in tqdm(as_completed(futures), total=len(batch_df), desc=f"处理批次 {start//batch_size + 1}"):
+            results.append(future.result())
+    
+    if end < len(df):  # 如果不是最后一批，等待一段时间
+        print("等待 5 秒以缓解速率限制...")
+        # 此时保存一下数据
+        batch_results_df = pd.DataFrame(results)
+        batch_output_file = f'../data/con标注结果_batch_{start//batch_size + 1}.csv'
+        batch_results_df.to_csv(batch_output_file, index=False)
+        print(f"当前批次结果已保存为 {batch_output_file}")
+        time.sleep(5)  # 减少等待时间到 1 秒
+
+# 导出结果
 results_df = pd.DataFrame(results)
-output_file = f'../data/con标注结果_final.csv'
+output_file = f'../data/con标注结果_batch_1.csv'
 results_df.to_csv(output_file, index=False)
-print(f"标注完成，最终结果已导出为 {output_file}")
+print(f"标注完成，结果已导出为 {output_file}")
