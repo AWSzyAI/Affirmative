@@ -3,7 +3,7 @@ import random
 import os
 import argparse
 
-HEADERS = ['用户问题/症状','用户1级需求','用户2级需求']
+HEADERS = ['场景', '子场景', '场景描述', '用户需求', '心理作用机制与功能', '句子级别']
 
 def select_n(data_path, n):
     data = pd.read_csv(data_path)
@@ -14,7 +14,7 @@ def select_n(data_path, n):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Select n rows from a CSV file.')
     # parser.add_argument('--data_path', type=str, default="./data/肯定语体系【Caritas】 - 场景-症状.csv", help='Path to the CSV file.')
-    parser.add_argument('--data_path', type=str, default="./data/肯定语体系【Caritas】 - 场景-症状-需求.csv", help='Path to the CSV file.')
+    parser.add_argument('--data_path', type=str, default="./data/肯定语体系【Caritas】 - 场景需求表V2_去重后.csv", help='Path to the CSV file.')
     parser.add_argument('-n', type=int, default=10, help='Number of rows to select.')
     
     args = parser.parse_args()

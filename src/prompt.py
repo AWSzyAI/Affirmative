@@ -1798,7 +1798,7 @@ def get_role_prompt(role,init=None,articles=None,style=None,need=None,sentence=N
             1. 深入阅读这些文章，精准理解其中的核心思想作为素材。
             2. 根据需求等级，判断其对应的句子等级，生成符合等级的自我肯定语。
             3. 根据需求的内容，生成与内容相关的部分，但不要直接重复需求中的词汇。
-            4. 提高句子的易读性，不要太长，以两个分句为主，不要超过三个分句。不要让读者读起来觉得累。
+            4. 提高句子的易读性，不要太长，以两个分句为主，不要超过三个分句。不要让读者读起来觉得累,字数限制在20字。
         - init:
             严格按照OutputFormat格式的纯json格式文本，json格式结果必须完整。
         - OutputFormat: 
@@ -1863,7 +1863,7 @@ def get_role_prompt(role,init=None,articles=None,style=None,need=None,sentence=N
         针对用户需求{need}，模仿余华的写作风格和口吻，创作五条第一人称的自我肯定语，句子中不要出现‘余华’二字。
         提高句子的易读性，不要太长，以两个分句为主，不要超过三个分句。不要让读者读起来觉得累。
         
-    
+
         输出格式为 JSON，例如：
         {{
             "self_affirmation": [
@@ -1873,7 +1873,8 @@ def get_role_prompt(role,init=None,articles=None,style=None,need=None,sentence=N
                 {{"self_affirmative_phrase": "自我肯定语4", "need": "{need}"}},
                 {{"self_affirmative_phrase": "自我肯定语5", "need": "{need}"}}
             ]
-        }}     
+        }}
+        确保返回的结果中只有符合json标准的格式化输出。
         """
     elif role == "chinese_culture":
         message = f"""
@@ -2035,5 +2036,23 @@ def get_role_prompt(role,init=None,articles=None,style=None,need=None,sentence=N
                 {{"self_affirmative_phrase": "",}},
             ]
         }}  
+        """
+    elif role == "style-fliter-0203":
+        role_prompt = f"""
+        针对用户需求{need}，模仿余华的写作风格和口吻，创作五条第一人称的自我肯定语，句子中不要出现‘余华’二字。
+        提高句子的易读性，不要太长，以两个分句为主，不要超过三个分句。不要让读者读起来觉得累。
+        
+
+        输出格式为 JSON，例如：
+        {{
+            "self_affirmation": [
+                {{"self_affirmative_phrase": "自我肯定语1", "need": "{need}"}},
+                {{"self_affirmative_phrase": "自我肯定语2", "need": "{need}"}},
+                {{"self_affirmative_phrase": "自我肯定语3", "need": "{need}"}},
+                {{"self_affirmative_phrase": "自我肯定语4", "need": "{need}"}},
+                {{"self_affirmative_phrase": "自我肯定语5", "need": "{need}"}}
+            ]
+        }}
+        确保返回的结果中只有符合json标准的格式化输出。
         """
     return role_prompt

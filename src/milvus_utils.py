@@ -8,7 +8,7 @@ import os,json
 from dotenv import load_dotenv, find_dotenv
 from zhipuai import ZhipuAI
 
- # 设置Milvus服务器的连接参数
+# 设置Milvus服务器的连接参数
 MILVUS_HOST = 'api.caritas.pro'  # 替换为实际的服务器IP地址
 MILVUS_PORT = 19530  # 通常Milvus默认监听此端口，若服务器端有修改，请使用修改后的端口
 # 建立与Milvus服务器的连接（Milvus v2.4.x方式）
