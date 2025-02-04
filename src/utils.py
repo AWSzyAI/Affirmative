@@ -69,6 +69,18 @@ def make_data_item(type,symptom,self_affirmative_phrase=None,user_problem=None, 
             '自我肯定语': self_affirmative_phrase,
             '生产者':type,
         }
+    elif type=='0203-2':
+        return {
+            '场景': symptom['场景'],
+            '子场景': symptom['子场景'],
+            '场景描述': symptom['场景描述'],
+            '用户需求': symptom['用户需求'],
+            '心理作用机制与功能': symptom['心理作用机制与功能'],
+            '句子级别': symptom['句子级别'],
+            '自我肯定语': self_affirmative_phrase,
+            '生产者':type,
+            'zhihu_link':zhihu_link
+        }
 
 def load_csv(file_path):
     """加载CSV文件，返回列表格式的数据"""
@@ -163,12 +175,12 @@ def get_encouragements(message, k=5):
 
 def query_article(query_text, top_k=2):
     """查询文章数据"""
-    debug(f"{query_text}")
+    # debug(f"{query_text}")
     try:
         query_vector = embeddings.embed_query(query_text)
         article_data = query_article_data('article_collection', query_vector, top_k)
         # debug(article_data)
-        debug(f"{query_text} Done")
+        # debug(f"{query_text} Done")
 
         # 过滤掉包含 "想法集" 标签的文章
         filtered_article_data = [
@@ -192,7 +204,7 @@ def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpo
     completed_indices = set(get_checkpoint(checkpoint_file)) 
     print(f"从检查点文件读取到已完成的索引: {completed_indices}")
     
-    with tqdm(total=len(symptoms_data), initial=len(completed_indices), desc="生成进度", unit="症状", position=0) as pbar:
+    with tqdm(total=len(symptoms_data), initial=len(completed_indices), desc="生成进度", unit="item", position=0) as pbar:
         if use_concurrency:
             # 并发执行逻辑
             with concurrent.futures.ThreadPoolExecutor() as executor:
@@ -234,7 +246,7 @@ def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpo
                     pbar.update(1)  # 更新进度条
                     update_checkpoint(checkpoint_file, i)  # 更新检查点文件
 
-    print(f"所有未生成过的自我肯定语已保存到 {csv_file}")
+    print(f"所有未生成过的自我肯定语已保存到 {csv_file.replace('.csv','_*.csv')}")
     if os.path.exists(checkpoint_file):
         os.remove(checkpoint_file)
         print(f"已删除文件: {checkpoint_file}")
@@ -291,21 +303,26 @@ def get_structured_articles(article_data, client, role):
 
     return structured_articles
 
-def make_Affirmative(content, client,role,articles):
+def make_Affirmative(role,symptom,content,articles,messages):
     max_retries = 3
     if not content:
         return [" "]
 
     role_prompt = get_role_prompt(role,articles=articles)
-    message = "句子："+"\n".join(content)+f"\n 文章”“”{articles}“”“，生成10个句子"
+    message = "素材句子（核心内容、含义）："+"\n".join(content)+f"\n 文章”“”{articles}“”“，生成10个句子，句子级别为{symptom['句子级别']}级"
+    
+    # 如果messages为空（None 或 空列表[]），则初始化
+    if not messages:  # 这种判断既能捕捉 None 也能捕捉空列表 []
+        messages = [{"role": "system", "content": role_prompt}, {"role": "user", "content": message}]
+    else:
+        # 如果messages已经有内容，追加新的消息
+        messages.append({"role": "user", "content": message})
+    
+        
+    
     attempt = 0
     while attempt < max_retries:
-        try:
-            messages=[
-                    {"role": "system", "content": role_prompt},
-                    {"role": "user", "content": message}
-                ]
-            
+        try:       
             completion = client.chat.completions.create(
                 model=MODEL_NAME,
                 messages = messages,
@@ -352,11 +369,11 @@ def make_Affirmative(content, client,role,articles):
                 raise
     return [],[]  # 如果所有重试都失败，返回空列表
 
-def make_Affirmative_by_need(symptom, article, sentences, zhihu_link, think_log, output_file,role,messages=None):
+def make_Affirmative_by_need(symptom, article, sentences, zhihu_link, output_file,role,messages=None):
     max_retries = 3
     retry_delay = 5 
     style = '余华'
-    role_prompt = get_role_prompt(role, style=style, articles=article, sentence=sentences)
+    role_prompt = get_role_prompt(role, symptom=symptom, style=style, articles=article, sentence=sentences)
     # print(messages)
     messages.append({"role": "user", "content": role_prompt})
 
@@ -385,28 +402,19 @@ def make_Affirmative_by_need(symptom, article, sentences, zhihu_link, think_log,
                     debug("API Response: ", response)
                     return
                 for i, item in enumerate(response_data):
-                    if isinstance(item, dict) and "self_affirmative_phrase" in item:
-                        self_affirmative_phrase = item["self_affirmative_phrase"]
-                        data_item = make_data_item(
-                            type="0203",
-                            self_affirmative_phrase=self_affirmative_phrase,
-                            symptom=symptom,
-                            zhihu_link=zhihu_link,
-                        )
-                        
-                        save_to_csv(output_file.replace('.csv','_3.csv'), data_item,HEADERS)
-                    else:
+                    if not (isinstance(item, dict) and "self_affirmative_phrase" in item):
                         print(f"Error: Invalid item format in response data: {item}")
+                        return
+                    self_affirmative_phrase = item["self_affirmative_phrase"]
+                    type="0203"
+                    data_item = make_data_item(self_affirmative_phrase=self_affirmative_phrase,type=type,symptom=symptom,zhihu_link=zhihu_link)
+                    save_to_csv(output_file.replace('.csv','_3.csv'), data_item,HEADERS)                
                 
                 sentences = list(set(sentences))
                 for sentence in sentences:
                     # debug(sentence)
-                    data_item = make_data_item(
-                        self_affirmative_phrase=sentence,
-                        type="2",
-                        symptom=symptom,
-                        zhihu_link=zhihu_link,
-                    )
+                    type="0203-2"
+                    data_item = make_data_item(self_affirmative_phrase=sentence,type=type,symptom=symptom,zhihu_link=zhihu_link)
                     save_to_csv(output_file.replace('.csv','_2.csv'), data_item,HEADERS)
                 return 
             except json.JSONDecodeError:
@@ -432,34 +440,30 @@ def make_Affirmative_by_need(symptom, article, sentences, zhihu_link, think_log,
 def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file, DEBUG=False):
     """生成单个症状的自我肯定语并保存到 CSV"""
     
-    INPUT_HEADERS = ['子场景', '用户需求', '心理作用机制与功能']
-    scene = symptom['场景']
-    subscene = symptom['子场景']
-    scene_descrption = symptom['场景描述']
-    need = symptom['用户需求']
-    psychological_mechanism = symptom['心理作用机制与功能']
-    level =  symptom['句子级别']
-
-    # user_problem = symptom['用户问题/症状']
-    # need_1 = symptom['用户1级需求']
-    # need_2 = symptom['用户2级需求']
-    # message = '场景/症状：' + user_problem + '1级需求（安慰效果）：' + need_1 + ' 2级需求（鼓励效果）：' + need_2
-    think_log = ''
+    # INPUT_HEADERS = ['场景','子场景','场景描述','用户需求', '心理作用机制与功能','句子级别']
+    QUERY_HEADERS = ['子场景', '用户需求', '心理作用机制与功能']
     
-    article_data = []
-    for keyword in INPUT_HEADERS:
-        debug(f"query{symptom[keyword]}")
-        article_data += query_article(symptom[keyword], 1)
-    unique_article_data = remove_duplicates(article_data)
-    print(f"{len(article_data)} -> {len(unique_article_data)}", end=' ')
-    article_data = unique_article_data # 缺少这一步会导致重复
+    query_method = 1
+    if query_method == 1: # 拼起来检索
+        query_message = ' '.join([symptom[keyword] for keyword in QUERY_HEADERS])
+        article_data = query_article(query_message, 1)
+    elif query_method == 2: # 单独检索
+        article_data = []    
+        for keyword in QUERY_HEADERS:
+            debug(f"query{symptom[keyword]}")
+            article_data += query_article(symptom[keyword], 1)
+        unique_article_data = remove_duplicates(article_data)
+        debug(f"article去重：{len(article_data)} -> {len(unique_article_data)}")
+        article_data = unique_article_data # 缺少这一步会导致重复
 
     zhihu_link = ' '.join([article['entity']['zhihu_link'] for article in article_data]) if article_data else "无链接"
+    debug(zhihu_link)
     articles = ' '.join([article['entity']['content'] for article in article_data])
 
     structured_articles = get_structured_articles(article_data, client,"article-structurer")
-    debug(structured_articles)
+    # debug(structured_articles)
     sentences = []
+    messages = []
     for i, structured_article in enumerate(structured_articles):
         # debug('发问：思考、反省', structured_article.get('发问：思考、反省', 'N/A'))
         # debug('价值观', structured_article.get('价值观', 'N/A'))
@@ -468,7 +472,7 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
         # debug('状态描述：成为这样的我', structured_article.get('状态描述：成为这样的我', 'N/A'))
         for j in ['状态描述：成为这样的我']:
             if structured_article.get(j):
-                affirmative,messages = make_Affirmative(structured_article.get(j), client,"Affirmative_maker",articles=articles)
+                affirmative,messages = make_Affirmative("Affirmative_maker",symptom,structured_article.get(j),articles=articles,messages=messages)
                 sentences.extend(affirmative)
             else:
                 print(f"{j} not found")
@@ -484,7 +488,8 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
     sentences = list(set(sentences))
     print(f"len(sentences): {len(sentences)}")
     
-    make_Affirmative_by_need(symptom, articles, sentences, zhihu_link, csv_file,"style-fliter-0203",messages)
+    make_Affirmative_by_need(symptom, articles, sentences, zhihu_link, csv_file,"style-fliter-0204",messages)
+    
 
 
 
