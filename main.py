@@ -4,13 +4,13 @@ from src.utils import generate_self_affirmative_phrase_concurrent
 def main():
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description="Generate self-affirmative phrases from a CSV file.")
-    parser.add_argument('-k', type=int, required=False, help="The value of k to select the CSV file.")
+    parser.add_argument('-n', type=int, required=False, help="The value of k to select the CSV file.")
     args = parser.parse_args()
 
     # Construct file paths
     # symptoms_file = "./data/select_1.csv"
     # symptoms_file = "./data/肯定语体系【Caritas】 - 场景-症状-需求_去重后.csv"
-    symptoms_file = f"./data/select_{args.k}.csv"
+    symptoms_file = f"./data/select_{args.n}.csv"
     output_file = symptoms_file.replace('.csv', '_result.csv')
     checkpoint_file = output_file.replace('_result.csv', '_checkpoint.txt')
 

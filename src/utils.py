@@ -11,9 +11,11 @@ from openai import RateLimitError  # 导入 RateLimitError 异常
 from src.milvus_utils import embeddings, query_article_data
 from src.kimi_api import client,MODEL_NAME
 from src.prompt import get_role_prompt
+from tenacity import retry, wait_exponential, retry_if_exception_type, stop_after_attempt,before_sleep_log
+import logging
 
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
 # HEADERS = ['自我肯定语', '生产者', '参考需求','用户问题/症状', '用户1级需求', '用户2级需求', 'zhihu_link']
 HEADERS = ['自我肯定语','生产者', '场景','子场景','场景描述','用户需求','心理作用机制与功能','句子级别', 'zhihu_link']
@@ -58,7 +60,7 @@ def make_data_item(type,symptom,self_affirmative_phrase=None,user_problem=None, 
             '慈悲：理解、接受、宽恕':structured_articles.get('慈悲：理解、接受、宽恕', 'N/A'),
             '状态描述：成为这样的我':structured_articles.get('状态描述：成为这样的我', 'N/A')
         }
-    elif type == '0203':
+    elif type == '0203-3':
         return {
             '场景': symptom['场景'],
             '子场景': symptom['子场景'],
@@ -68,6 +70,7 @@ def make_data_item(type,symptom,self_affirmative_phrase=None,user_problem=None, 
             '句子级别': symptom['句子级别'],
             '自我肯定语': self_affirmative_phrase,
             '生产者':type,
+            'zhihu_link':zhihu_link
         }
     elif type=='0203-2':
         return {
@@ -190,30 +193,46 @@ def query_article(query_text, top_k=2):
         if not filtered_article_data:
             print('未检索到articles')
             return []
-        if len(filtered_article_data) < len(article_data):
-            print("Found '想法集' tag, removed from results.")
+        # if len(filtered_article_data) < len(article_data):
+            # debug("Found '想法集' tag, removed from results.")
         return filtered_article_data
     except Exception as e:
         print("Error: %s", e)
         return []
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+max_retries = 5
+@retry(
+    wait=wait_exponential(multiplier=1, min=4, max=60),  # 指数退避，初始4秒，最大60秒
+    retry=retry_if_exception_type(RateLimitError),
+    stop=stop_after_attempt(max_retries),  # 使用函数参数控制最大重试次数
+    before_sleep=before_sleep_log(logger, logging.WARNING)
+)
+def generate_affirmation_for_symptom_with_retry(*args, **kwargs):
+    """带重试机制的API调用包装函数"""
+    return generate_affirmation_for_symptom(*args, **kwargs)
+
+def update_progress(pbar):
+    pbar.update(1)
+
 # main Job
 def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpoint_file, n, delay, max_retries, DEBUG, use_concurrency=False):
     symptoms_data = load_csv(symptoms_file)
-
     completed_indices = set(get_checkpoint(checkpoint_file)) 
     print(f"从检查点文件读取到已完成的索引: {completed_indices}")
     
     with tqdm(total=len(symptoms_data), initial=len(completed_indices), desc="生成进度", unit="item", position=0) as pbar:
         if use_concurrency:
+            MAX_CONCURRENT_WORKERS = 3
             # 并发执行逻辑
-            with concurrent.futures.ThreadPoolExecutor() as executor:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_CONCURRENT_WORKERS) as executor:
                 futures = {}
                 for i in range(len(symptoms_data)):
                     if i in completed_indices:  # 如果任务已完成，跳过
                         pbar.update(1)  # 更新进度条
                         continue
-                    print(symptoms_data[i])
+                    # print(symptoms_data[i])
                     future = executor.submit(
                         generate_affirmation_for_symptom, i, symptoms_data[i], n, delay, max_retries, csv_file,  DEBUG=DEBUG
                     )
@@ -222,13 +241,14 @@ def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpo
                     index = futures[future]  # 获取当前任务的索引
                     try:
                         future.result()  # 捕获异常，如果任务有异常，会抛出
+                        threading.Thread(target=update_progress, args=(pbar,)).start()
+                        update_checkpoint(checkpoint_file, index)  # 更新检查点文件
                     except Exception as e:
                         if DEBUG:
                             raise
                         print(f"任务 {index} 失败: {e}")
-                    finally:
-                        pbar.update(1)  # 更新进度条
-                        update_checkpoint(checkpoint_file, index)  # 更新检查点文件
+                    
+                        
         else:
             # 串行执行逻辑
             for i in range(len(symptoms_data)):
@@ -238,13 +258,14 @@ def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpo
                 print(symptoms_data[i])
                 try:
                     generate_affirmation_for_symptom(i, symptoms_data[i], n, delay, max_retries, csv_file,  DEBUG=DEBUG)
+                    pbar.update(1)  # 更新进度条
+                    update_checkpoint(checkpoint_file, i)  # 更新检查点文件
                 except Exception as e:
                     if DEBUG:
                         raise
                     print(f"任务 {i} 失败: {e}")
-                finally:
-                    pbar.update(1)  # 更新进度条
-                    update_checkpoint(checkpoint_file, i)  # 更新检查点文件
+                
+                    
 
     print(f"所有未生成过的自我肯定语已保存到 {csv_file.replace('.csv','_*.csv')}")
     if os.path.exists(checkpoint_file):
@@ -406,7 +427,7 @@ def make_Affirmative_by_need(symptom, article, sentences, zhihu_link, output_fil
                         print(f"Error: Invalid item format in response data: {item}")
                         return
                     self_affirmative_phrase = item["self_affirmative_phrase"]
-                    type="0203"
+                    type="0203-3"
                     data_item = make_data_item(self_affirmative_phrase=self_affirmative_phrase,type=type,symptom=symptom,zhihu_link=zhihu_link)
                     save_to_csv(output_file.replace('.csv','_3.csv'), data_item,HEADERS)                
                 
@@ -482,11 +503,12 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
         #     )
         # save_to_csv(csv_file.replace('.csv','_structured.csv'), structured_item, HEADERS_structured_article)
 
-    print("sentences:", sentences)
-    print(f"len(sentences): {len(sentences)}")
+    # print("sentences:", sentences)
+    debug(f"len(sentences): {len(sentences)}")
     # 去重
     sentences = list(set(sentences))
-    print(f"len(sentences): {len(sentences)}")
+    if len(sentences) == 0:
+        logging.warning(f"No sentences generated for symptom index {i}")
     
     make_Affirmative_by_need(symptom, articles, sentences, zhihu_link, csv_file,"style-fliter-0204",messages)
     
