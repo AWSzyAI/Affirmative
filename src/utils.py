@@ -9,7 +9,8 @@ import threading
 from tqdm import tqdm
 from openai import RateLimitError  # 导入 RateLimitError 异常
 from src.milvus_utils import embeddings, query_article_data
-from src.kimi_api import client,MODEL_NAME
+from src.kimi_api import client,MODEL_NAME # kimi
+# from src.deepseek_api import client,MODEL_NAME # Deepseek
 from src.prompt import get_role_prompt
 from tenacity import retry, wait_exponential, retry_if_exception_type, stop_after_attempt,before_sleep_log
 import logging
@@ -21,8 +22,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 coloredlogs.install(level='INFO', logger=logger)
 
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 # HEADERS = ['自我肯定语', '生产者', '参考需求','用户问题/症状', '用户1级需求', '用户2级需求', 'zhihu_link']
 HEADERS = ['自我肯定语','生产者', '场景','子场景','场景描述','用户需求','心理作用机制与功能','句子级别', 'zhihu_link']
@@ -422,6 +423,7 @@ def make_Affirmative_by_need(symptom, article, sentences, zhihu_link, output_fil
                 # debug("Response is valid JSON.")
                 if "self_affirmation" in response_dict and isinstance(response_dict["self_affirmation"], list):
                     response_data = response_dict["self_affirmation"]
+                    debug("API Response: ", response)
                 else:
                     print("Error: Unexpected API response format.")
                     debug("API Response: ", response)

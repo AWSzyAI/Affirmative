@@ -8,9 +8,20 @@ ZHIPU_API_key = 65
 Token = b
 ```
 
+### CMD
 ```bash
 pip install -r requirements.txt 
-python main.py
+make
+# python main.py
+make run
+make clean
+
+```
+
+### kimi or Deepseek
+```python
+from src.kimi_api import client,MODEL_NAME # kimi
+# from src.deepseek_api import client,MODEL_NAME # Deepseek
 ```
 
 ## Log
