@@ -143,3 +143,5 @@ for index, row in tqdm(df.iterrows(), total=len(df), desc="处理进度"):
         # results = []  # 清空 results 列表以准备处理下一批次
 
 print("所有批次标注完成")
+
+

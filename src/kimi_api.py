@@ -10,3 +10,4 @@ BASE_URL = "https://api.moonshot.cn/v1"
 client = OpenAI(api_key=KIMI_API_KEY, base_url=BASE_URL)
 MODEL_NAME = "moonshot-v1-auto"
 # MODEL_NAME = "deepseek-r1:14b"
+

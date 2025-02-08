@@ -5,6 +5,7 @@ def main():
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description="Generate self-affirmative phrases from a CSV file.")
     parser.add_argument('-n', type=int, required=False, help="The value of k to select the CSV file.")
+    parser.add_argument('-m','--max_length', type=int, required=True, help="max_length of sentence")
     args = parser.parse_args()
 
     # Construct file paths
@@ -29,6 +30,7 @@ def main():
         max_retries=max_retries, 
         # use_concurrency=False,
         use_concurrency=True,
+        max_length=args.max_length,
     )
 
 if __name__ == "__main__":

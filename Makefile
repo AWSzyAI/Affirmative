@@ -1,14 +1,21 @@
-.PHONY: make run clean
+.PHONY: make run clean note wc
 
-k := 337
-
+k := 1
+m := 20
 make:
+	pip install -r requirements.txt
 	python test/data_unique.py
 	python test/select_datapoint.py -n $(k)
 
 run:
-	python main.py -n $(k)
-	python test/word_count_checker.py -n $(k)
+	python main.py -n $(k) -m $(m)
+	python test/word_count_checker.py -n $(k) -m $(m)
 
 clean:
 	python test/clean.py -n $(k)
+
+note: 
+	python test/note.py
+
+wc:
+	python test/word_count_checker.py -n $(k) -m $(m)

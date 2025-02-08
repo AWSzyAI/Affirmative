@@ -58,3 +58,6 @@ zhipuai==2.1.5.20230904
 langchain-openai~=0.2.8
 pymilvus==2.4.4
 Flask_Cors==5.0.0
+progressbar2
+loguru
+coloredlogs

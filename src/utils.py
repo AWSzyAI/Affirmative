@@ -13,6 +13,13 @@ from src.kimi_api import client,MODEL_NAME
 from src.prompt import get_role_prompt
 from tenacity import retry, wait_exponential, retry_if_exception_type, stop_after_attempt,before_sleep_log
 import logging
+from loguru import logger
+import coloredlogs
+import openai
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+coloredlogs.install(level='INFO', logger=logger)
 
 # DEBUG = True
 DEBUG = False
@@ -200,8 +207,7 @@ def query_article(query_text, top_k=2):
         print("Error: %s", e)
         return []
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+
 max_retries = 5
 @retry(
     wait=wait_exponential(multiplier=1, min=4, max=60),  # 指数退避，初始4秒，最大60秒
@@ -217,7 +223,7 @@ def update_progress(pbar):
     pbar.update(1)
 
 # main Job
-def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpoint_file, n, delay, max_retries, DEBUG, use_concurrency=False):
+def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpoint_file, n, delay, max_retries, DEBUG, max_length,use_concurrency=False):
     symptoms_data = load_csv(symptoms_file)
     completed_indices = set(get_checkpoint(checkpoint_file)) 
     print(f"从检查点文件读取到已完成的索引: {completed_indices}")
@@ -234,7 +240,7 @@ def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpo
                         continue
                     # print(symptoms_data[i])
                     future = executor.submit(
-                        generate_affirmation_for_symptom, i, symptoms_data[i], n, delay, max_retries, csv_file,  DEBUG=DEBUG
+                        generate_affirmation_for_symptom, i, symptoms_data[i], n, delay, max_retries, csv_file, max_length=max_length, DEBUG=DEBUG
                     )
                     futures[future] = i  # 将 future 和索引关联起来
                 for future in concurrent.futures.as_completed(futures):
@@ -257,7 +263,7 @@ def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpo
                     continue
                 print(symptoms_data[i])
                 try:
-                    generate_affirmation_for_symptom(i, symptoms_data[i], n, delay, max_retries, csv_file,  DEBUG=DEBUG)
+                    generate_affirmation_for_symptom(i, symptoms_data[i], n, delay, max_retries, csv_file,  max_length=max_length,DEBUG=DEBUG)
                     pbar.update(1)  # 更新进度条
                     update_checkpoint(checkpoint_file, i)  # 更新检查点文件
                 except Exception as e:
@@ -339,8 +345,6 @@ def make_Affirmative(role,symptom,content,articles,messages):
         # 如果messages已经有内容，追加新的消息
         messages.append({"role": "user", "content": message})
     
-        
-    
     attempt = 0
     while attempt < max_retries:
         try:       
@@ -390,14 +394,14 @@ def make_Affirmative(role,symptom,content,articles,messages):
                 raise
     return [],[]  # 如果所有重试都失败，返回空列表
 
-def make_Affirmative_by_need(symptom, article, sentences, zhihu_link, output_file,role,messages=None):
+def make_Affirmative_by_need(symptom, article, sentences, zhihu_link, output_file,role,max_length,messages=None):
     max_retries = 3
     retry_delay = 5 
     style = '余华'
-    role_prompt = get_role_prompt(role, symptom=symptom, style=style, articles=article, sentence=sentences)
-    # print(messages)
+    role_prompt = get_role_prompt(role, max_length=max_length,symptom=symptom, style=style, articles=article, sentence=sentences)
+    
     messages.append({"role": "user", "content": role_prompt})
-
+    debug(messages)
     # debug(role_prompt)
     # think_log += clean_value(str(role_prompt))
 
@@ -446,6 +450,11 @@ def make_Affirmative_by_need(symptom, article, sentences, zhihu_link, output_fil
                 if DEBUG:
                     raise
                 print(f"Error: Missing expected key in API response: {e}")
+        except openai.OpenAIError as e:
+            print(f"OpenAIError: {e}")
+            # Log or handle the error as needed
+            # if DEBUG:
+            print("Problematic prompt:", messages)
         except RateLimitError:
             if DEBUG:
                 raise
@@ -458,7 +467,7 @@ def make_Affirmative_by_need(symptom, article, sentences, zhihu_link, output_fil
                 raise
 
 
-def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file, DEBUG=False):
+def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file, max_length,DEBUG=False):
     """生成单个症状的自我肯定语并保存到 CSV"""
     
     # INPUT_HEADERS = ['场景','子场景','场景描述','用户需求', '心理作用机制与功能','句子级别']
@@ -498,10 +507,11 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
             else:
                 print(f"{j} not found")
         # save_to_csv
-        # structured_item = make_data_item(
-        #     type='structured_article', structured_articles=structured_article
-        #     )
-        # save_to_csv(csv_file.replace('.csv','_structured.csv'), structured_item, HEADERS_structured_article)
+        structured_item = make_data_item(
+            type='structured_article', structured_articles=structured_article,
+            symptom=symptom,
+            )
+        save_to_csv(csv_file.replace('.csv','_structured.csv'), structured_item, HEADERS_structured_article)
 
     # print("sentences:", sentences)
     debug(f"len(sentences): {len(sentences)}")
@@ -510,7 +520,7 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
     if len(sentences) == 0:
         logging.warning(f"No sentences generated for symptom index {i}")
     
-    make_Affirmative_by_need(symptom, articles, sentences, zhihu_link, csv_file,"style-fliter-0204",messages)
+    make_Affirmative_by_need(symptom, articles, sentences, zhihu_link, csv_file,"style-fliter-0204",messages=messages,max_length=max_length)
     
 
 
