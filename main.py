@@ -31,6 +31,7 @@ def main():
         # use_concurrency=False,
         use_concurrency=True,
         max_length=args.max_length,
+        timeout=1800  # 设置30分钟超时
     )
 
 if __name__ == "__main__":

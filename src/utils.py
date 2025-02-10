@@ -9,8 +9,8 @@ import threading
 from tqdm import tqdm
 from openai import RateLimitError  # 导入 RateLimitError 异常
 from src.milvus_utils import embeddings, query_article_data
-from src.kimi_api import client,MODEL_NAME # kimi
-# from src.deepseek_api import client,MODEL_NAME # Deepseek
+# from src.kimi_api import client,MODEL_NAME # kimi
+from src.deepseek_api import client,MODEL_NAME # Deepseek
 from src.prompt import get_role_prompt
 from tenacity import retry, wait_exponential, retry_if_exception_type, stop_after_attempt,before_sleep_log
 import logging
@@ -22,8 +22,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 coloredlogs.install(level='INFO', logger=logger)
 
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
 # HEADERS = ['自我肯定语', '生产者', '参考需求','用户问题/症状', '用户1级需求', '用户2级需求', 'zhihu_link']
 HEADERS = ['自我肯定语','生产者', '场景','子场景','场景描述','用户需求','心理作用机制与功能','句子级别', 'zhihu_link']
@@ -224,7 +224,18 @@ def update_progress(pbar):
     pbar.update(1)
 
 # main Job
-def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpoint_file, n, delay, max_retries, DEBUG, max_length,use_concurrency=False):
+def generate_self_affirmative_phrase_concurrent(
+        symptoms_file, 
+        csv_file, 
+        checkpoint_file, 
+        n, 
+        delay, 
+        max_retries,
+        DEBUG, 
+        max_length,
+        use_concurrency=False,
+        timeout=1800  # 新增超时参数，默认30分钟
+    ):
     symptoms_data = load_csv(symptoms_file)
     completed_indices = set(get_checkpoint(checkpoint_file)) 
     print(f"从检查点文件读取到已完成的索引: {completed_indices}")
@@ -262,7 +273,7 @@ def generate_self_affirmative_phrase_concurrent(symptoms_file, csv_file, checkpo
                 if i in completed_indices:  # 如果任务已完成，跳过
                     pbar.update(1)  # 更新进度条
                     continue
-                print(symptoms_data[i])
+                # print(symptoms_data[i])
                 try:
                     generate_affirmation_for_symptom(i, symptoms_data[i], n, delay, max_retries, csv_file,  max_length=max_length,DEBUG=DEBUG)
                     pbar.update(1)  # 更新进度条
@@ -304,14 +315,15 @@ def get_structured_articles(article_data, client, role):
                         {"role": "system", "content": role_prompt},
                         {"role": "user", "content": content}
                     ],
-                    temperature=1,
+                    # temperature=1, #kimi
+                    temperature=1.3, #deepseek
                     response_format={"type": "json_object"},  # 确保返回 JSON 格式
                     n=1  # 请求返回1个结果
                 )
 
                 # 解析 API 返回的内容
                 response = completion.choices[0].message.content.strip()
-                # debug(response) # ok
+                debug(response) # ok
                 
                 structured_article = json.loads(response)  # 将字符串解析为 JSON 对象
                 structured_articles.append(structured_article)
@@ -352,12 +364,13 @@ def make_Affirmative(role,symptom,content,articles,messages):
             completion = client.chat.completions.create(
                 model=MODEL_NAME,
                 messages = messages,
-                temperature=1,
+                temperature=1.3, #deepseek
                 response_format={"type": "json_object"},  # 确保返回 JSON 格式
                 n=1  # 请求返回1个结果
             )
             response = completion.choices[0].message.content.strip()
             # debug("API Response: %s", response)
+            # print(completion.choices[0])
             try:
                 response_dict = json.loads(response)
                 affirmations = response_dict.get("affirmations", [])
@@ -411,13 +424,18 @@ def make_Affirmative_by_need(symptom, article, sentences, zhihu_link, output_fil
             completion = client.chat.completions.create(
                 model=MODEL_NAME,
                 messages=messages,
-                temperature=1,
+                temperature=1.3, #deepseek
                 response_format={"type": "json_object"},  # 确保返回 JSON 格式
                 n=1  # 请求返回1个结果
             )
             response = completion.choices[0].message.content.strip()
-            
-            # think_log += clean_value(str(response))
+            # 打印 usage 信息
+            if hasattr(completion, 'usage'):
+                usage = completion.usage
+                logging.info(f"Prompt Cache Hit Tokens: {getattr(usage, 'prompt_cache_hit_tokens', 'N/A')}")
+                logging.info(f"Prompt Cache Miss Tokens: {getattr(usage, 'prompt_cache_miss_tokens', 'N/A')}")
+            else:
+                logging.warning("Usage information not available.")
             try:
                 response_dict = json.loads(response)
                 # debug("Response is valid JSON.")

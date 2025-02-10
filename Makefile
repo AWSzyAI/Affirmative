@@ -1,6 +1,6 @@
 .PHONY: make run clean note wc
 
-k := 1
+k := 10
 m := 20
 make:
 	pip install -r requirements.txt
