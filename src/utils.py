@@ -5,38 +5,88 @@ import time
 import json
 import requests
 import concurrent
+import re
 import threading
 from tqdm import tqdm
 from openai import RateLimitError  # 导入 RateLimitError 异常
 from src.milvus_utils import embeddings, query_article_data
-# from src.kimi_api import client,MODEL_NAME # kimi
-from src.deepseek_api import client,MODEL_NAME # Deepseek
-from src.prompt import get_role_prompt
+from src.kimi_api import client,MODEL_NAME,send_messages # kimi
+# from src.deepseek_api import client,MODEL_NAME,send_messages # Deepseek
+from src.prompt import get_role_prompt,get_paradigm
 from tenacity import retry, wait_exponential, retry_if_exception_type, stop_after_attempt,before_sleep_log
 import logging
 from loguru import logger
 import coloredlogs
 import openai
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# logging.basicConfig(level=logging.INFO)
+# logger = logging.getLogger(__name__)
+# coloredlogs.install(level='INFO', logger=logger)
+
+
+# 配置日志
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# 创建文件处理器并设置日志文件路径
+log_file = 'app.log'
+file_handler = logging.FileHandler(log_file)
+file_handler.setLevel(logging.INFO)
+
+# 创建控制台输出处理器
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+
+# 创建日志格式
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+console_handler.setFormatter(formatter)
+
+# 添加处理器到logger
+logger.addHandler(file_handler)
+logger.addHandler(console_handler)
 coloredlogs.install(level='INFO', logger=logger)
 
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+
+def debug(*args, **kwargs):
+    message = " ".join(str(arg) for arg in args)  # 确保所有参数都转换为字符串
+    logger.debug(message, **kwargs)
+
+# 切换日志级别的函数
+def set_log_level(level: str):
+    level = level.upper()
+    if level == 'DEBUG':
+        logger.setLevel(logging.DEBUG)
+        file_handler.setLevel(logging.DEBUG)
+        console_handler.setLevel(logging.DEBUG)
+        coloredlogs.install(level='DEBUG', logger=logger)
+    else:
+        logger.setLevel(logging.INFO)
+        file_handler.setLevel(logging.INFO)
+        console_handler.setLevel(logging.INFO)
+        coloredlogs.install(level='INFO', logger=logger)
+
+# set_log_level("DEBUG")  # 切换到DEBUG模式
+# set_log_level("INFO")   # 切换回INFO模式
+
 
 # HEADERS = ['自我肯定语', '生产者', '参考需求','用户问题/症状', '用户1级需求', '用户2级需求', 'zhihu_link']
-HEADERS = ['自我肯定语','生产者', '场景','子场景','场景描述','用户需求','心理作用机制与功能','句子级别', 'zhihu_link']
+HEADERS = ['自我肯定语','role','model','生产者', '场景','子场景','场景描述','用户需求','心理作用机制与功能','句子级别', 'zhihu_link']
 # HEADERS = ['自我肯定语']
 HEADERS_structured_article = ['发问：思考、反省', '价值观', '行动：可效仿的行动指南', '慈悲：理解、接受、宽恕', '状态描述：成为这样的我']
 checkpoint_lock = threading.Lock()  # 线程锁，用于保护检查点文件的更新
+BAN_WORDS = ["子女", "女儿", "儿子", "防疫", "3D", "儿童", "幼儿", "幼年", "父母", "情绪","疫情"]
+# def debug(*args, **kwargs):
+#     if DEBUG:
+#         print(*args, **kwargs)
 
-def debug(*args, **kwargs):
-    if DEBUG:
-        print(*args, **kwargs)
+
+
+
 
 # FILE I/O
-def make_data_item(type,symptom,self_affirmative_phrase=None,user_problem=None, need_1=None, need_2=None, need=None, structured_articles=None,zhihu_link=None, think_log=None):
+def make_data_item(type,symptom,self_affirmative_phrase=None,user_problem=None, need_1=None, need_2=None, need=None, structured_articles=None,zhihu_link=None, think_log=None,role=None,model=None):
     """构造数据项"""
     if type=='3':
         return {
@@ -47,7 +97,8 @@ def make_data_item(type,symptom,self_affirmative_phrase=None,user_problem=None, 
             '自我肯定语': self_affirmative_phrase,
             '生产者':'3号',
             'zhihu_link': zhihu_link,
-            '反思日志': think_log
+            '反思日志': think_log,
+            'model':model
         }
     elif type=='2':
         return {
@@ -78,7 +129,9 @@ def make_data_item(type,symptom,self_affirmative_phrase=None,user_problem=None, 
             '句子级别': symptom['句子级别'],
             '自我肯定语': self_affirmative_phrase,
             '生产者':type,
-            'zhihu_link':zhihu_link
+            'zhihu_link':zhihu_link,
+            'role':role,
+            'model':model
         }
     elif type=='0203-2':
         return {
@@ -90,7 +143,9 @@ def make_data_item(type,symptom,self_affirmative_phrase=None,user_problem=None, 
             '句子级别': symptom['句子级别'],
             '自我肯定语': self_affirmative_phrase,
             '生产者':type,
-            'zhihu_link':zhihu_link
+            'zhihu_link':zhihu_link,
+            'role':role,
+            'model':model
         }
 
 def load_csv(file_path):
@@ -236,6 +291,10 @@ def generate_self_affirmative_phrase_concurrent(
         use_concurrency=False,
         timeout=1800  # 新增超时参数，默认30分钟
     ):
+    if DEBUG==True:
+        set_log_level("DEBUG") 
+    else:
+        set_log_level("INFO")
     symptoms_data = load_csv(symptoms_file)
     completed_indices = set(get_checkpoint(checkpoint_file)) 
     print(f"从检查点文件读取到已完成的索引: {completed_indices}")
@@ -292,6 +351,14 @@ def generate_self_affirmative_phrase_concurrent(
     else:
         print(f"文件不存在: {checkpoint_file}")
 
+
+def extract_json(response):
+    # 使用正则表达式匹配最外层 {} 之间的内容，确保返回的是 JSON 格式
+    match = re.search(r'\{.*\}', response, re.DOTALL)
+    if match:
+        return match.group(0)  # 提取整个 JSON 部分
+    else:
+        return response  # 如果没有匹配到，返回原始内容
 #  pipeline LLM API
 def get_structured_articles(article_data, client, role):
     """
@@ -309,22 +376,28 @@ def get_structured_articles(article_data, client, role):
         for attempt in range(max_retries):
             try:
                 # 调用 API 进行结构化转换
-                completion = client.chat.completions.create(
-                    model=MODEL_NAME,
-                    messages=[
-                        {"role": "system", "content": role_prompt},
-                        {"role": "user", "content": content}
-                    ],
-                    # temperature=1, #kimi
-                    temperature=1.3, #deepseek
-                    response_format={"type": "json_object"},  # 确保返回 JSON 格式
-                    n=1  # 请求返回1个结果
-                )
-
-                # 解析 API 返回的内容
-                response = completion.choices[0].message.content.strip()
-                debug(response) # ok
+                messages=[
+                    {"role": "system", "content": role_prompt},
+                    {"role": "user", "content": content}
+                ]
                 
+                # completion = client.chat.completions.create(
+                #     model=MODEL_NAME,
+                #     messages=messages,
+                #     temperature=1, #kimi
+                #     # temperature=1.3, #deepseek
+                #     response_format={"type": "json_object"},  # 确保返回 JSON 格式
+                #     n=1  # 请求返回1个结果
+                # )
+                # debug(completion)
+                # 解析 API 返回的内容
+                # response = completion.choices[0].message.content.strip()
+                
+                response = send_messages(messages)
+                # debug(response) # ok
+                # # 如果response 是```json {*}```,就去掉{*}之外的内容
+                response = extract_json(response)
+                debug(response) # ok
                 structured_article = json.loads(response)  # 将字符串解析为 JSON 对象
                 structured_articles.append(structured_article)
                 break  # 成功后跳出循环
@@ -361,24 +434,29 @@ def make_Affirmative(role,symptom,content,articles,messages):
     attempt = 0
     while attempt < max_retries:
         try:       
-            completion = client.chat.completions.create(
-                model=MODEL_NAME,
-                messages = messages,
-                temperature=1.3, #deepseek
-                response_format={"type": "json_object"},  # 确保返回 JSON 格式
-                n=1  # 请求返回1个结果
-            )
-            response = completion.choices[0].message.content.strip()
-            # debug("API Response: %s", response)
+            # completion = client.chat.completions.create(
+            #     model=MODEL_NAME,
+            #     messages = messages,
+            #     # temperature=1.3, #deepseek
+            #     temperature=1, #kimi
+            #     response_format={"type": "json_object"},  # 确保返回 JSON 格式
+            #     n=1  # 请求返回1个结果
+            # )
+            # response = completion.choices[0].message.content.strip()
+
+            
             # print(completion.choices[0])
+            response = send_messages(messages)
+            # debug(response) # ok
+            # # 如果response 是```json {*}```,就去掉{*}之外的内容
+            response = extract_json(response)
+            # debug(response) # ok
             try:
                 response_dict = json.loads(response)
                 affirmations = response_dict.get("affirmations", [])
                 return affirmations,messages
             except json.JSONDecodeError as e:
                 debug(messages)
-                if DEBUG:
-                    raise
                 print("JSON Decode Error: %s", e)
                 attempt += 1
                 if attempt < max_retries:
@@ -396,8 +474,6 @@ def make_Affirmative(role,symptom,content,articles,messages):
             print("Rate limit reached, retrying in %s seconds...", wait_time)
             time.sleep(wait_time)
         except Exception as e:
-            if DEBUG:
-                raise
             print("Unexpected error: %s", e)
             attempt += 1
             if attempt < max_retries:
@@ -408,34 +484,38 @@ def make_Affirmative(role,symptom,content,articles,messages):
                 raise
     return [],[]  # 如果所有重试都失败，返回空列表
 
-def make_Affirmative_by_need(symptom, article, sentences, zhihu_link, output_file,role,max_length,messages=None):
+def make_Affirmative_by_need(symptom,paradigm, zhihu_link, output_file,messages=None):
     max_retries = 3
     retry_delay = 5 
     style = '余华'
-    role_prompt = get_role_prompt(role, max_length=max_length,symptom=symptom, style=style, articles=article, sentence=sentences)
-    
-    messages.append({"role": "user", "content": role_prompt})
+    symptom['用户需求']=' '
+    symptom['场景描述']=' '
+    symptom['心理作用机制与功能']=' '
+    symptom['句子级别']=' '
+    # role_prompt = get_role_prompt(role, max_length=max_length,symptom=symptom, style=style, articles=article, sentence=sentences)
+    paradigm_prompt = get_paradigm(paradigm,symptom=symptom)
+    # 忽略2号员工的历史对话
+    # messages = []
+    # messages.append({"role": "user", "content": add_article})
+    # messages.append({"role": "user", "content": role_prompt})
+    messages.append({"role": "user", "content": paradigm_prompt})
     debug(messages)
     # debug(role_prompt)
     # think_log += clean_value(str(role_prompt))
 
     for attempt in range(max_retries):
         try:
-            completion = client.chat.completions.create(
-                model=MODEL_NAME,
-                messages=messages,
-                temperature=1.3, #deepseek
-                response_format={"type": "json_object"},  # 确保返回 JSON 格式
-                n=1  # 请求返回1个结果
-            )
-            response = completion.choices[0].message.content.strip()
-            # 打印 usage 信息
-            if hasattr(completion, 'usage'):
-                usage = completion.usage
-                logging.info(f"Prompt Cache Hit Tokens: {getattr(usage, 'prompt_cache_hit_tokens', 'N/A')}")
-                logging.info(f"Prompt Cache Miss Tokens: {getattr(usage, 'prompt_cache_miss_tokens', 'N/A')}")
-            else:
-                logging.warning("Usage information not available.")
+            # completion = client.chat.completions.create(
+            #     model=MODEL_NAME,
+            #     messages=messages,
+            #     # temperature=1.3, #deepseek
+            #     temperature=1, #kimi
+            #     response_format={"type": "json_object"},  # 确保返回 JSON 格式
+            #     n=1  # 请求返回1个结果
+            # )
+            # response = completion.choices[0].message.content.strip()
+            response = extract_json(send_messages(messages))
+            
             try:
                 response_dict = json.loads(response)
                 # debug("Response is valid JSON.")
@@ -451,16 +531,32 @@ def make_Affirmative_by_need(symptom, article, sentences, zhihu_link, output_fil
                         print(f"Error: Invalid item format in response data: {item}")
                         return
                     self_affirmative_phrase = item["self_affirmative_phrase"]
+                    if any(word in self_affirmative_phrase for word in BAN_WORDS):
+                        continue
                     type="0203-3"
-                    data_item = make_data_item(self_affirmative_phrase=self_affirmative_phrase,type=type,symptom=symptom,zhihu_link=zhihu_link)
+                    data_item = make_data_item(
+                        self_affirmative_phrase=self_affirmative_phrase,
+                        type=type,
+                        symptom=symptom,
+                        zhihu_link=zhihu_link,
+                        role = paradigm,
+                        model = MODEL_NAME
+                        )
                     save_to_csv(output_file.replace('.csv','_3.csv'), data_item,HEADERS)                
                 
-                sentences = list(set(sentences))
-                for sentence in sentences:
-                    # debug(sentence)
-                    type="0203-2"
-                    data_item = make_data_item(self_affirmative_phrase=sentence,type=type,symptom=symptom,zhihu_link=zhihu_link)
-                    save_to_csv(output_file.replace('.csv','_2.csv'), data_item,HEADERS)
+                # sentences = list(set(sentences))
+                # for sentence in sentences:
+                #     # debug(sentence)
+                #     type="0203-2"
+                #     data_item = make_data_item(
+                #         self_affirmative_phrase=sentence,
+                #         type=type,
+                #         symptom=symptom,
+                #         zhihu_link=zhihu_link,
+                #         role = role,
+                #         model = MODEL_NAME
+                #         )
+                #     save_to_csv(output_file.replace('.csv','_2.csv'), data_item,HEADERS)
                 return 
             except json.JSONDecodeError:
                 if DEBUG:
@@ -491,9 +587,10 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
     """生成单个症状的自我肯定语并保存到 CSV"""
     
     # INPUT_HEADERS = ['场景','子场景','场景描述','用户需求', '心理作用机制与功能','句子级别']
-    QUERY_HEADERS = ['子场景', '用户需求', '心理作用机制与功能']
+    # QUERY_HEADERS = ['子场景', '用户需求', '心理作用机制与功能']
+    QUERY_HEADERS = ['子场景']
     
-    query_method = 1
+    query_method = 2
     if query_method == 1: # 拼起来检索
         query_message = ' '.join([symptom[keyword] for keyword in QUERY_HEADERS])
         article_data = query_article(query_message, 1)
@@ -511,9 +608,10 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
     articles = ' '.join([article['entity']['content'] for article in article_data])
 
     structured_articles = get_structured_articles(article_data, client,"article-structurer")
-    # debug(structured_articles)
+    debug(structured_articles)
     sentences = []
     messages = []
+    role_maker = "Affirmative_maker-0213"
     for i, structured_article in enumerate(structured_articles):
         # debug('发问：思考、反省', structured_article.get('发问：思考、反省', 'N/A'))
         # debug('价值观', structured_article.get('价值观', 'N/A'))
@@ -522,7 +620,8 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
         # debug('状态描述：成为这样的我', structured_article.get('状态描述：成为这样的我', 'N/A'))
         for j in ['状态描述：成为这样的我']:
             if structured_article.get(j):
-                affirmative,messages = make_Affirmative("Affirmative_maker",symptom,structured_article.get(j),articles=articles,messages=messages)
+                # affirmative,messages = make_Affirmative("Affirmative_maker",symptom,structured_article.get(j),articles=articles,messages=messages)
+                affirmative,messages = make_Affirmative(role_maker,symptom,structured_article.get(j),articles=articles,messages=messages)
                 sentences.extend(affirmative)
             else:
                 print(f"{j} not found")
@@ -539,10 +638,70 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
     sentences = list(set(sentences))
     if len(sentences) == 0:
         logging.warning(f"No sentences generated for symptom index {i}")
+    else:
+        sentences = list(set(sentences))
+        for sentence in sentences:
+            if any(word in sentence for word in BAN_WORDS):
+                continue
+            # debug(sentence)
+            type="0203-2"
+            data_item = make_data_item(
+                self_affirmative_phrase=sentence,
+                type=type,
+                symptom=symptom,
+                zhihu_link=zhihu_link,
+                role = role_maker,
+                model = MODEL_NAME
+                )
+            save_to_csv(csv_file.replace('.csv','_2.csv'), data_item,HEADERS)
+    # make_Affirmative_by_need(symptom, articles, sentences, zhihu_link, csv_file,"style-fliter-0204",messages=messages,max_length=max_length)
+    # 根据symptom判断范式
+    paradigms = [
+        '情绪应对式: 简单-情绪应对式',
+        '安抚接纳式: 简单-自我接纳式',
+        '安抚接纳式: 简单-环境接纳式',
+	    '安抚接纳式: 人本主义-自我接纳式',
+	    '安抚接纳式: 积极心理-自我接纳式',
+        "外源锚定式: 简单-外源锚定式",
+        "心态稳定式: 简单-心态稳定式",
+        '积极感知式: 简单-积极感知式',
+        '主体自信式: 简单-主体自信式',
+        '主体自信式: 他者-主体自信式',
+        '潜能确认式: 简单-潜能承认式',
+        "心念宣告式: 简单-心念宣告式",
+        '行动宣告式（雨婷来填）: 简单-行动宣告式',
+        "动态改变式（雨婷来填）: 简单-动态改变式",
+        '意义构建式: 简单-主体意义式',
+        '意义构建式: 简单-经历意义式',
+        "感恩整合式: 简单-感恩整合式",
+        '心态恒定式',
+        '主权宣告式: 简单-主权宣告式',
+        '主权宣告式: 逻辑-主权宣告式',
+        "独特价值宣言式: 简单-独特价值宣言式",
+        "对抗超升式: 权力意志-对抗超升式",
+        ]
+
+    # matched_paradigms = paradigms_matcher(paradigms,symptom)
+    matched_paradigms = [
+        '情绪应对式: 简单-情绪应对式',
+        '安抚接纳式: 简单-自我接纳式',
+        '安抚接纳式: 简单-环境接纳式',
+        # "外源锚定式: 简单-外源锚定式",
+        # "心态稳定式: 简单-心态稳定式",
+        # '积极感知式: 简单-积极感知式',
+        # '主体自信式: 简单-主体自信式',
+        # '潜能确认式: 简单-潜能承认式',
+        # "心念宣告式: 简单-心念宣告式",
+        # '意义构建式: 简单-主体意义式',
+        # '意义构建式: 简单-经历意义式',
+        # "感恩整合式: 简单-感恩整合式",
+        # '主权宣告式: 简单-主权宣告式',
+        # "独特价值宣言式: 简单-独特价值宣言式",
+        # "对抗超升式: 权力意志-对抗超升式",
+        ]
+    for paradigm in matched_paradigms:
+        role = f"paradigm-{paradigm}"
+        make_Affirmative_by_need(symptom, paradigm, zhihu_link, csv_file,messages=messages)
     
-    make_Affirmative_by_need(symptom, articles, sentences, zhihu_link, csv_file,"style-fliter-0204",messages=messages,max_length=max_length)
     
-
-
-
 

@@ -13,6 +13,7 @@ click==8.1.7
 colorama==0.4.6
 dataclasses-json==0.6.7
 Flask==3.0.0
+flask-cors
 frozenlist==1.4.1
 greenlet==3.1.1
 h11==0.14.0
