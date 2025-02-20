@@ -3,7 +3,7 @@ import random
 import os
 import argparse
 
-HEADERS = ['场景', '子场景', '场景描述', '用户需求', '心理作用机制与功能', '句子级别']
+HEADERS = ['场景', '子场景', '场景描述', '用户需求', '心理作用机制与功能', '句子级别','句子范式']
 
 def select_n(data_path, n):
     data = pd.read_csv(data_path)

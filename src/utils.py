@@ -18,7 +18,8 @@ import logging
 from loguru import logger
 import coloredlogs
 import openai
-
+import ast
+from datetime import datetime
 # logging.basicConfig(level=logging.INFO)
 # logger = logging.getLogger(__name__)
 # coloredlogs.install(level='INFO', logger=logger)
@@ -29,7 +30,10 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 # 创建文件处理器并设置日志文件路径
-log_file = 'app.log'
+
+log_file = './Log/'+datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '.log'
+print(log_file)
+
 file_handler = logging.FileHandler(log_file)
 file_handler.setLevel(logging.INFO)
 
@@ -56,31 +60,95 @@ def debug(*args, **kwargs):
 # 切换日志级别的函数
 def set_log_level(level: str):
     level = level.upper()
-    if level == 'DEBUG':
-        logger.setLevel(logging.DEBUG)
-        file_handler.setLevel(logging.DEBUG)
-        console_handler.setLevel(logging.DEBUG)
-        coloredlogs.install(level='DEBUG', logger=logger)
-    else:
-        logger.setLevel(logging.INFO)
-        file_handler.setLevel(logging.INFO)
-        console_handler.setLevel(logging.INFO)
-        coloredlogs.install(level='INFO', logger=logger)
+    logger.setLevel(logging.DEBUG)
+    file_handler.setLevel(logging.DEBUG)
+    console_handler.setLevel(logging.DEBUG)
+    coloredlogs.install(level='DEBUG', logger=logger)
+    # if level == 'DEBUG':
+    #     logger.setLevel(logging.DEBUG)
+    #     file_handler.setLevel(logging.DEBUG)
+    #     console_handler.setLevel(logging.DEBUG)
+    #     coloredlogs.install(level='DEBUG', logger=logger)
+    # else:
+    #     logger.setLevel(logging.INFO)
+    #     file_handler.setLevel(logging.INFO)
+    #     console_handler.setLevel(logging.INFO)
+    #     coloredlogs.install(level='INFO', logger=logger)
 
 # set_log_level("DEBUG")  # 切换到DEBUG模式
 # set_log_level("INFO")   # 切换回INFO模式
 
 
 # HEADERS = ['自我肯定语', '生产者', '参考需求','用户问题/症状', '用户1级需求', '用户2级需求', 'zhihu_link']
-HEADERS = ['自我肯定语','role','model','生产者', '场景','子场景','场景描述','用户需求','心理作用机制与功能','句子级别', 'zhihu_link']
+HEADERS = ['自我肯定语','句子范式','role','model','生产者', '场景','子场景','场景描述','用户需求','心理作用机制与功能','句子级别', 'zhihu_link']
 # HEADERS = ['自我肯定语']
 HEADERS_structured_article = ['发问：思考、反省', '价值观', '行动：可效仿的行动指南', '慈悲：理解、接受、宽恕', '状态描述：成为这样的我']
 checkpoint_lock = threading.Lock()  # 线程锁，用于保护检查点文件的更新
-BAN_WORDS = ["子女", "女儿", "儿子", "防疫", "3D", "儿童", "幼儿", "幼年", "父母", "情绪","疫情"]
+BAN_WORDS = ["子女", "女儿", "儿子", "孩子","防疫", "3D", "儿童", "幼儿", "幼年", "父母", "妈妈","情绪","疫情"]
 # def debug(*args, **kwargs):
 #     if DEBUG:
 #         print(*args, **kwargs)
+paradigms = [
+    '情绪应对式: 简单-情绪应对式',
+    # 认知行为-情绪应对式
+    # 正念-情绪应对式
+    # 道家-情绪应对式
+    '安抚接纳式: 简单-自我接纳式',
+    '安抚接纳式: 简单-环境接纳式',
+    '安抚接纳式: 人本主义-自我接纳式',
+    '安抚接纳式: 积极心理-自我接纳式',
+    "外源锚定式: 简单-外源锚定式",
+    "心态稳定式: 简单-心态稳定式",
+    '积极感知式: 简单-积极感知式',
+    '主体自信式: 简单-主体自信式',
+    '主体自信式: 他者-主体自信式',
+    '潜能确认式: 简单-潜能承认式',
+    "心念宣告式: 简单-心念宣告式",
+    '行动宣告式: 简单-行动宣告式',
+    "动态改变式: 简单-动态改变式",
+    '意义构建式: 简单-主体意义式',
+    '意义构建式: 简单-经历意义式',
+    "感恩整合式: 简单-感恩整合式",
+    '主权宣告式: 简单-主权宣告式',
+    '主权宣告式: 逻辑-主权宣告式',
+    "独特价值宣言式: 简单-独特价值宣言式",
+    "对抗超升式: 权力意志-对抗超升式",
+    ]
 
+# matched_paradigms = paradigms_matcher(paradigms,symptom)
+matched_paradigms = [
+    '情绪应对式: 简单-情绪应对式',
+    '安抚接纳式: 简单-自我接纳式',
+    '安抚接纳式: 简单-环境接纳式',
+    "外源锚定式: 简单-外源锚定式",
+    "心态稳定式: 简单-心态稳定式",
+    '积极感知式: 简单-积极感知式',
+    '主体自信式: 简单-主体自信式',
+    '主体自信式: 逻辑-主体自信式',
+    '潜能确认式: 简单-潜能确认式',
+    "心念成长式: 简单-心念培育式",
+    "心念成长式: 逻辑-心念培育式",
+    "心念成长式: 简单-心念锚定式",
+    "心念成长式: 逻辑-心念锚定式",
+    "行动宣告式: 简单-行动宣告式",
+    "自然改变式: 简单-自然改变式",
+    "意义构建式: 简单-主体意义式",
+    "意义构建式: 简单-经历意义式",
+    "价值锚定式: 简单-价值锚定式",
+    "价值锚定式: 逻辑-价值锚定式",
+    "感恩整合式: 简单-感恩整合式",
+    "独特价值宣言式: 简单-独特价值宣言式",
+    "主权宣告式: 简单-主权宣告式",
+    "对抗超升式: 权力意志-对抗超升式",
+    "爱之循环式: 简单-爱之循环式",
+    # "心念宣告式: 简单-心念宣告式",
+    # '意义构建式: 简单-主体意义式',
+    # '意义构建式: 简单-经历意义式',
+    # "感恩整合式: 简单-感恩整合式",
+    # '主权宣告式: 简单-主权宣告式',
+    # "独特价值宣言式: 简单-独特价值宣言式",
+    # "对抗超升式: 权力意志-对抗超升式",
+    ]
 
 
 
@@ -127,6 +195,7 @@ def make_data_item(type,symptom,self_affirmative_phrase=None,user_problem=None, 
             '用户需求': symptom['用户需求'],
             '心理作用机制与功能': symptom['心理作用机制与功能'],
             '句子级别': symptom['句子级别'],
+            '句子范式': symptom['句子范式'],
             '自我肯定语': self_affirmative_phrase,
             '生产者':type,
             'zhihu_link':zhihu_link,
@@ -338,9 +407,10 @@ def generate_self_affirmative_phrase_concurrent(
                     pbar.update(1)  # 更新进度条
                     update_checkpoint(checkpoint_file, i)  # 更新检查点文件
                 except Exception as e:
+                    print(f"任务 {i} 失败: {e}")
                     if DEBUG:
                         raise
-                    print(f"任务 {i} 失败: {e}")
+                    
                 
                     
 
@@ -402,14 +472,14 @@ def get_structured_articles(article_data, client, role):
                 structured_articles.append(structured_article)
                 break  # 成功后跳出循环
             except RateLimitError as e:
-                if DEBUG:
-                    raise # 调试时直接抛出异常
                 if attempt < max_retries - 1:
                     print(f"Rate limit reached. Retrying in {retry_delay} seconds...")
                     time.sleep(retry_delay)
                 else:
                     print("Max retries reached. Failed to generate structured article.")
                     raise
+                if DEBUG:
+                    raise # 调试时直接抛出异常
 
         # 添加延时，降低请求速率
         time.sleep(1)  # 每次请求后延时 1 秒
@@ -467,12 +537,12 @@ def make_Affirmative(role,symptom,content,articles,messages):
                 else:
                     raise
         except RateLimitError:
-            if DEBUG:
-                raise
             attempt += 1
             wait_time = min(1 * (2 ** attempt), 30)
             print("Rate limit reached, retrying in %s seconds...", wait_time)
             time.sleep(wait_time)
+            if DEBUG:
+                raise
         except Exception as e:
             print("Unexpected error: %s", e)
             attempt += 1
@@ -484,20 +554,19 @@ def make_Affirmative(role,symptom,content,articles,messages):
                 raise
     return [],[]  # 如果所有重试都失败，返回空列表
 
-def make_Affirmative_by_need(symptom,paradigm, zhihu_link, output_file,messages=None):
-    max_retries = 3
-    retry_delay = 5 
-    style = '余华'
-    symptom['用户需求']=' '
-    symptom['场景描述']=' '
-    symptom['心理作用机制与功能']=' '
-    symptom['句子级别']=' '
-    # role_prompt = get_role_prompt(role, max_length=max_length,symptom=symptom, style=style, articles=article, sentence=sentences)
-    paradigm_prompt = get_paradigm(paradigm,symptom=symptom)
+def make_Affirmative_by_need(symptom,paradigm, sentences,zhihu_link, output_file,messages=None):
     # 忽略2号员工的历史对话
     # messages = []
-    # messages.append({"role": "user", "content": add_article})
+
+    max_retries = 3
+    retry_delay = 5 
+    
+    # style = '余华'
+    # role_prompt = get_role_prompt(role, max_length=max_length,symptom=symptom, style=style, articles=article, sentence=sentences)
     # messages.append({"role": "user", "content": role_prompt})
+
+    paradigm_prompt = get_paradigm(paradigm,symptom=symptom,sentences=sentences)
+    
     messages.append({"role": "user", "content": paradigm_prompt})
     debug(messages)
     # debug(role_prompt)
@@ -505,16 +574,8 @@ def make_Affirmative_by_need(symptom,paradigm, zhihu_link, output_file,messages=
 
     for attempt in range(max_retries):
         try:
-            # completion = client.chat.completions.create(
-            #     model=MODEL_NAME,
-            #     messages=messages,
-            #     # temperature=1.3, #deepseek
-            #     temperature=1, #kimi
-            #     response_format={"type": "json_object"},  # 确保返回 JSON 格式
-            #     n=1  # 请求返回1个结果
-            # )
-            # response = completion.choices[0].message.content.strip()
             response = extract_json(send_messages(messages))
+            debug(response)
             
             try:
                 response_dict = json.loads(response)
@@ -543,47 +604,66 @@ def make_Affirmative_by_need(symptom,paradigm, zhihu_link, output_file,messages=
                         model = MODEL_NAME
                         )
                     save_to_csv(output_file.replace('.csv','_3.csv'), data_item,HEADERS)                
-                
-                # sentences = list(set(sentences))
-                # for sentence in sentences:
-                #     # debug(sentence)
-                #     type="0203-2"
-                #     data_item = make_data_item(
-                #         self_affirmative_phrase=sentence,
-                #         type=type,
-                #         symptom=symptom,
-                #         zhihu_link=zhihu_link,
-                #         role = role,
-                #         model = MODEL_NAME
-                #         )
-                #     save_to_csv(output_file.replace('.csv','_2.csv'), data_item,HEADERS)
                 return 
+            
             except json.JSONDecodeError:
-                if DEBUG:
-                    raise
                 print("Error: Failed to parse API response as JSON.")
-            except KeyError as e:
                 if DEBUG:
                     raise
+                
+            except KeyError as e:
                 print(f"Error: Missing expected key in API response: {e}")
+                if DEBUG:
+                    raise
+                
         except openai.OpenAIError as e:
             print(f"OpenAIError: {e}")
             # Log or handle the error as needed
             # if DEBUG:
             print("Problematic prompt:", messages)
         except RateLimitError:
-            if DEBUG:
-                raise
+            
             if attempt < max_retries - 1:
                 print(f"Rate limit reached. Retrying in {retry_delay} seconds...")
                 time.sleep(retry_delay)
                 retry_delay = retry_delay * 2
             else:
                 print("Max retries reached. Failed to generate affirmations.")
+            if DEBUG:
                 raise
 
 
 def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file, max_length,DEBUG=False):
+
+    # for paradigm in matched_paradigms:
+    #     # print(f"原始 symptom['句子范式']: {repr(symptom['句子范式'])}")  
+    #     # print(f"paradigm: {repr(paradigm)}")  
+
+    #     # 1️⃣ 处理 symptom['句子范式']，确保它是一个字符串并去掉引号
+    #     if isinstance(symptom['句子范式'], str):
+    #         symptom_cleaned = symptom['句子范式'].strip('"').strip("'").strip("[]")  # 去掉外部的引号和 []
+    #         symptom_list = symptom_cleaned.replace('，', ',').split(',')  # 兼容全角逗号并拆分
+    #         symptom_list = [s.strip() for s in symptom_list]  # 去除前后空格
+    #     else:
+    #         symptom_list = symptom['句子范式']  # 如果已经是 list，直接使用
+
+    #     # print(f"转换后的 symptom_list: {symptom_list}")
+
+    #     # paradigm = "行动宣告式: 简单-行动宣告式"
+    #     query_paradigm = paradigm.split(":", 1)[-1].strip()
+    #     # print(query_paradigm)  # 输出：简单-行动宣告式
+
+
+    #     # 2️⃣ 检查 paradigm 是否在 symptom_list 里
+    #     if query_paradigm in symptom_list:
+    #         print(f"✅ paradigm '{paradigm}' 匹配成功！")
+    #         make_Affirmative_by_need(symptom, paradigm, zhihu_link, csv_file, messages=messages)
+    #     else:
+    #         print(f"❌ paradigm '{paradigm}' 未匹配！")
+
+    # return
+
+
     """生成单个症状的自我肯定语并保存到 CSV"""
     
     # INPUT_HEADERS = ['场景','子场景','场景描述','用户需求', '心理作用机制与功能','句子级别']
@@ -618,7 +698,7 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
         # debug('行动：可效仿的行动指南', structured_article.get('行动：可效仿的行动指南', 'N/A'))
         # debug('慈悲：理解、接受、宽恕', structured_article.get('慈悲：理解、接受、宽恕', 'N/A'))
         # debug('状态描述：成为这样的我', structured_article.get('状态描述：成为这样的我', 'N/A'))
-        for j in ['状态描述：成为这样的我']:
+        for j in ['状态描述：成为这样的我','发问：思考、反省','价值观','行动：可效仿的行动指南','慈悲：理解、接受、宽恕']:
             if structured_article.get(j):
                 # affirmative,messages = make_Affirmative("Affirmative_maker",symptom,structured_article.get(j),articles=articles,messages=messages)
                 affirmative,messages = make_Affirmative(role_maker,symptom,structured_article.get(j),articles=articles,messages=messages)
@@ -656,51 +736,43 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
             save_to_csv(csv_file.replace('.csv','_2.csv'), data_item,HEADERS)
     # make_Affirmative_by_need(symptom, articles, sentences, zhihu_link, csv_file,"style-fliter-0204",messages=messages,max_length=max_length)
     # 根据symptom判断范式
-    paradigms = [
-        '情绪应对式: 简单-情绪应对式',
-        '安抚接纳式: 简单-自我接纳式',
-        '安抚接纳式: 简单-环境接纳式',
-	    '安抚接纳式: 人本主义-自我接纳式',
-	    '安抚接纳式: 积极心理-自我接纳式',
-        "外源锚定式: 简单-外源锚定式",
-        "心态稳定式: 简单-心态稳定式",
-        '积极感知式: 简单-积极感知式',
-        '主体自信式: 简单-主体自信式',
-        '主体自信式: 他者-主体自信式',
-        '潜能确认式: 简单-潜能承认式',
-        "心念宣告式: 简单-心念宣告式",
-        '行动宣告式: 简单-行动宣告式',
-        "动态改变式: 简单-动态改变式",
-        '意义构建式: 简单-主体意义式',
-        '意义构建式: 简单-经历意义式',
-        "感恩整合式: 简单-感恩整合式",
-        '主权宣告式: 简单-主权宣告式',
-        '主权宣告式: 逻辑-主权宣告式',
-        "独特价值宣言式: 简单-独特价值宣言式",
-        "对抗超升式: 权力意志-对抗超升式",
-        ]
-
-    # matched_paradigms = paradigms_matcher(paradigms,symptom)
-    matched_paradigms = [
-        '情绪应对式: 简单-情绪应对式',
-        '安抚接纳式: 简单-自我接纳式',
-        '安抚接纳式: 简单-环境接纳式',
-        # "外源锚定式: 简单-外源锚定式",
-        # "心态稳定式: 简单-心态稳定式",
-        # '积极感知式: 简单-积极感知式',
-        # '主体自信式: 简单-主体自信式',
-        # '潜能确认式: 简单-潜能承认式',
-        # "心念宣告式: 简单-心念宣告式",
-        # '意义构建式: 简单-主体意义式',
-        # '意义构建式: 简单-经历意义式',
-        # "感恩整合式: 简单-感恩整合式",
-        # '主权宣告式: 简单-主权宣告式',
-        # "独特价值宣言式: 简单-独特价值宣言式",
-        # "对抗超升式: 权力意志-对抗超升式",
-        ]
+    
+    ALL=1
     for paradigm in matched_paradigms:
-        role = f"paradigm-{paradigm}"
-        make_Affirmative_by_need(symptom, paradigm, zhihu_link, csv_file,messages=messages)
-    
-    
+        
+        if ALL==1:
+            make_Affirmative_by_need(symptom, paradigm, sentences, zhihu_link, csv_file, messages=messages)
+            return 
+        
+        # print(f"原始 symptom['句子范式']: {repr(symptom['句子范式'])}")  
+        # print(f"paradigm: {repr(paradigm)}")  
 
+        # 1️⃣ 处理 symptom['句子范式']，确保它是一个字符串并去掉引号
+        if isinstance(symptom['句子范式'], str):
+            symptom_cleaned = symptom['句子范式'].strip('"').strip("'").strip("[]")  # 去掉外部的引号和 []
+            symptom_list = symptom_cleaned.replace('，', ',').split(',')  # 兼容全角逗号并拆分
+            symptom_list = [s.strip() for s in symptom_list]  # 去除前后空格
+        else:
+            symptom_list = symptom['句子范式']  # 如果已经是 list，直接使用
+
+        # print(f"转换后的 symptom_list: {symptom_list}")
+
+        # paradigm = "行动宣告式: 简单-行动宣告式"
+        query_paradigm = paradigm.split(":", 1)[-1].strip()
+        # print(query_paradigm)  # 输出：简单-行动宣告式
+
+
+        # 2️⃣ 检查 paradigm 是否在 symptom_list 里
+        if query_paradigm in symptom_list:
+            # print(f"✅ paradigm '{paradigm}' 匹配成功！")
+            make_Affirmative_by_need(symptom, paradigm, sentences, zhihu_link, csv_file, messages=messages)
+        else:
+            # print(f"❌ paradigm '{paradigm}' 未匹配！")
+            pass
+
+    # for paradigm in matched_paradigms:
+    #     print(symptom['句子范式'])  # 例如 [简单-行动宣告式,简单-自然改变式，简单-爱之循环式] 不是一个标准的list，仅仅是字符串，应该先加上引号
+    #     print(paradigm)  # 例如 "潜能确认式: 简单-潜能确认式"
+    #     if paradigm in ast.literal_eval(symptom['句子范式']):
+    #         print(f"paradigm {paradigm} matched")        
+    #     # make_Affirmative_by_need(symptom, paradigm, zhihu_link, csv_file, messages=messages)

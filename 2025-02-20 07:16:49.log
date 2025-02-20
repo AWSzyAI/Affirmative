@@ -1,0 +1,11 @@
+2025-02-20 07:16:50,018 - INFO - HTTP Request: POST https://open.bigmodel.cn/api/paas/v4/embeddings "HTTP/1.1 429 Too Many Requests"
+2025-02-20 07:16:50,019 - INFO - Retrying request to /embeddings in 0.889055 seconds
+2025-02-20 07:16:50,962 - INFO - HTTP Request: POST https://open.bigmodel.cn/api/paas/v4/embeddings "HTTP/1.1 429 Too Many Requests"
+2025-02-20 07:16:50,963 - INFO - Retrying request to /embeddings in 1.598404 seconds
+2025-02-20 07:16:52,612 - INFO - HTTP Request: POST https://open.bigmodel.cn/api/paas/v4/embeddings "HTTP/1.1 429 Too Many Requests"
+2025-02-20 07:16:52,613 - INFO - Retrying request to /embeddings in 3.549322 seconds
+2025-02-20 07:16:56,248 - INFO - HTTP Request: POST https://open.bigmodel.cn/api/paas/v4/embeddings "HTTP/1.1 429 Too Many Requests"
+2025-02-20 07:16:56,250 - WARNING - No sentences generated for symptom index 0
+2025-02-20 07:17:01,188 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-20 07:17:07,158 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-20 07:17:10,840 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"

@@ -151,11 +151,11 @@ def load_paradigm_md(filepath="./data/paradigm.md"):
     with open(filepath, "r", encoding="utf-8") as f:
         content = f.read()
 
-    patterns = re.findall(r"# (.*?)\n(.*?)(?=\n# |\Z)", content, re.DOTALL)
+    patterns = re.findall(r"## (.*?)\n(.*?)(?=\n## |\Z)", content, re.DOTALL)
     paradigm_dict = {key.strip(): value.strip() for key, value in patterns}
     return paradigm_dict
 
-def get_paradigm(paradigm, symptom):
+def get_paradigm(paradigm, symptom,sentences):
     paradigms = load_paradigm_md()
     paradigm_prompt = paradigms.get(paradigm, "未找到匹配的范式，请检查 `role` 是否正确。")
 
@@ -167,6 +167,29 @@ def get_paradigm(paradigm, symptom):
     - 表达层级：{symptom['句子级别']}
     
     {paradigm_prompt}
+
+    ## 参考文章关键信息：
+    1. **文章主题**：请阅读用户提供的参考文章，提取其中的主要观点、情感氛围以及核心心理机制。
+    2. **核心情境**：分析文章涉及的情境，确保生成的句子符合该背景。
+    3. **关键心理机制**：归纳文章传递的核心心理策略，如：接纳、韧性、现实适配、主动调节等。
+
+    ## 生成规则：
+    1. **基于文章内容重新创作**：
+       - 句子必须体现参考文章的核心思想，而不仅仅是泛化或替换已有范式例句。
+       - 结合文章内容、情境和心理机制，创造新的表达方式。
+    
+    2. **降低对固定范式例句的依赖**：
+       - 不能直接从范式例句复制或稍作改动，必须进行深度改写。
+       - 允许使用隐喻、情境描述或具象化的表达，但要保持易读性。
+
+    3. **确保句子多样化**：
+       - 句式要有所变化，可以使用短句、对比句、递进句等不同结构。
+       - 避免所有句子都是简单的肯定句，适当使用强调、转折、递进等方式。
+       - 禁止使用比喻以及意向或者两层以上的逻辑语义。
+
+    4. **强化创新**：
+       - 允许创造符合语境的新短语，但必须保持自然、通俗易懂。
+       - 结合具体场景生成有代入感的句子。
 
     ## 输出格式要求
     - 严格遵循JSON格式输出：
