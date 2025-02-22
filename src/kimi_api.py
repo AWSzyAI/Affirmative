@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
+
 # 从 .env 文件中加载环境变量
 load_dotenv()
 
@@ -11,6 +12,9 @@ client = OpenAI(api_key=KIMI_API_KEY, base_url=BASE_URL)
 MODEL_NAME = "moonshot-v1-auto"
 # MODEL_NAME = "kimi-latest"
 # MODEL_NAME = "deepseek-r1:14b"
+
+
+
 
 # Utils
 def send_messages(messages, model=MODEL_NAME, tools=None):

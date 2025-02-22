@@ -20,68 +20,101 @@ import coloredlogs
 import openai
 import ast
 from datetime import datetime
-# logging.basicConfig(level=logging.INFO)
-# logger = logging.getLogger(__name__)
-# coloredlogs.install(level='INFO', logger=logger)
+from pathlib import Path
+
 
 
 # 配置日志
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
+file_handler = None
+console_handler = None
+# logging.basicConfig(level=logging.INFO)
+# logger = logging.getLogger(__name__)
+# coloredlogs.install(level='INFO', logger=logger)
+def init_log(log_file):
+    global logger, file_handler, console_handler 
+    print(f"Initializing log with file: {log_file}")
 
-# 创建文件处理器并设置日志文件路径
+    # 移除已有的处理器（避免重复添加）
+    if logger.hasHandlers():
+        logger.handlers.clear()
 
-log_file = './Log/'+datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '.log'
-print(log_file)
+    # file_handler = logging.FileHandler(log_file)
+    # file_handler.setLevel(logging.INFO)
 
-file_handler = logging.FileHandler(log_file)
-file_handler.setLevel(logging.INFO)
+    # console_handler = logging.StreamHandler()
+    # console_handler.setLevel(logging.INFO)
 
-# 创建控制台输出处理器
-console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
+    # formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    # file_handler.setFormatter(formatter)
+    # console_handler.setFormatter(formatter)
 
-# 创建日志格式
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-file_handler.setFormatter(formatter)
-console_handler.setFormatter(formatter)
+    # logger.addHandler(file_handler)
+    # logger.addHandler(console_handler)
+    # coloredlogs.install(level='DEBUG', logger=logger)
+    try:
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setLevel(logging.INFO)
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.INFO)
 
-# 添加处理器到logger
-logger.addHandler(file_handler)
-logger.addHandler(console_handler)
-coloredlogs.install(level='INFO', logger=logger)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        file_handler.setFormatter(formatter)
+        console_handler.setFormatter(formatter)
 
-DEBUG = True
+        logger.addHandler(file_handler)
+        logger.addHandler(console_handler)
+        coloredlogs.install(level='DEBUG', logger=logger)
 
-def debug(*args, **kwargs):
-    message = " ".join(str(arg) for arg in args)  # 确保所有参数都转换为字符串
-    logger.debug(message, **kwargs)
+        print("Log initialization complete.")
+    except Exception as e:
+        print(f"Error initializing log: {e}")
+
+# DEBUG = True
+# DEBUG = False
+
+
 
 # 切换日志级别的函数
 def set_log_level(level: str):
+    """
+    set_log_level("DEBUG")  # 切换到DEBUG模式
+    set_log_level("INFO")   # 切换回INFO模式
+    """
+    global logger, file_handler, console_handler
+    # 移除已有的处理器（避免重复添加）
+    if logger.hasHandlers():
+        logger.handlers.clear()
+
     level = level.upper()
-    logger.setLevel(logging.DEBUG)
-    file_handler.setLevel(logging.DEBUG)
-    console_handler.setLevel(logging.DEBUG)
-    coloredlogs.install(level='DEBUG', logger=logger)
-    # if level == 'DEBUG':
-    #     logger.setLevel(logging.DEBUG)
-    #     file_handler.setLevel(logging.DEBUG)
-    #     console_handler.setLevel(logging.DEBUG)
-    #     coloredlogs.install(level='DEBUG', logger=logger)
-    # else:
-    #     logger.setLevel(logging.INFO)
-    #     file_handler.setLevel(logging.INFO)
-    #     console_handler.setLevel(logging.INFO)
-    #     coloredlogs.install(level='INFO', logger=logger)
+    # logger.setLevel(logging.DEBUG)
+    # file_handler.setLevel(logging.DEBUG)
+    # console_handler.setLevel(logging.DEBUG)
+    # coloredlogs.install(level='DEBUG', logger=logger)
+    try:
+        if level == 'DEBUG':
+            logger.setLevel(logging.DEBUG)
+            file_handler.setLevel(logging.DEBUG)
+            console_handler.setLevel(logging.DEBUG)
+            coloredlogs.install(level='DEBUG', logger=logger)
+        else:
+            logger.setLevel(logging.INFO)
+            file_handler.setLevel(logging.INFO)
+            console_handler.setLevel(logging.INFO)
+            coloredlogs.install(level='INFO', logger=logger)
+        print(f"Log level set to: {level}")
+    except Exception as e:
+        print(f"Error setting log level: {e}")
 
-# set_log_level("DEBUG")  # 切换到DEBUG模式
-# set_log_level("INFO")   # 切换回INFO模式
-
-
-# HEADERS = ['自我肯定语', '生产者', '参考需求','用户问题/症状', '用户1级需求', '用户2级需求', 'zhihu_link']
+def debug(*args, **kwargs):
+    if DEBUG:
+        message = " ".join(str(arg) for arg in args)  # 确保所有参数都转换为字符串
+        logger.debug(message, **kwargs)
+    else:
+        print("DEBUG mode is off, not logging.")
+    
 HEADERS = ['自我肯定语','句子范式','role','model','生产者', '场景','子场景','场景描述','用户需求','心理作用机制与功能','句子级别', 'zhihu_link']
-# HEADERS = ['自我肯定语']
 HEADERS_structured_article = ['发问：思考、反省', '价值观', '行动：可效仿的行动指南', '慈悲：理解、接受、宽恕', '状态描述：成为这样的我']
 checkpoint_lock = threading.Lock()  # 线程锁，用于保护检查点文件的更新
 BAN_WORDS = ["子女", "女儿", "儿子", "孩子","防疫", "3D", "儿童", "幼儿", "幼年", "父母", "妈妈","情绪","疫情"]
@@ -118,6 +151,9 @@ paradigms = [
 # matched_paradigms = paradigms_matcher(paradigms,symptom)
 matched_paradigms = [
     '情绪应对式: 简单-情绪应对式',
+    "情绪应对式: 认知行为-情绪应对式",
+    "情绪应对式: 正念-情绪应对式",
+    "情绪应对式: 道家-情绪应对式",
     '安抚接纳式: 简单-自我接纳式',
     '安抚接纳式: 简单-环境接纳式',
     "外源锚定式: 简单-外源锚定式",
@@ -156,30 +192,7 @@ matched_paradigms = [
 # FILE I/O
 def make_data_item(type,symptom,self_affirmative_phrase=None,user_problem=None, need_1=None, need_2=None, need=None, structured_articles=None,zhihu_link=None, think_log=None,role=None,model=None):
     """构造数据项"""
-    if type=='3':
-        return {
-            '用户问题/症状': user_problem,
-            '用户1级需求': need_1,
-            '用户2级需求': need_2,
-            '参考需求': need,
-            '自我肯定语': self_affirmative_phrase,
-            '生产者':'3号',
-            'zhihu_link': zhihu_link,
-            '反思日志': think_log,
-            'model':model
-        }
-    elif type=='2':
-        return {
-            '用户问题/症状': user_problem,
-            '用户1级需求': need_1,
-            '用户2级需求': need_2,
-            '参考需求': need,
-            '自我肯定语': self_affirmative_phrase,
-            '生产者':'2号',
-            'zhihu_link': zhihu_link,
-            '反思日志': think_log
-        }
-    elif type == 'structured_article':
+    if type == 'structured_article':
         return {
             '发问：思考、反省':structured_articles.get('发问：思考、反省', 'N/A'),
             '价值观':structured_articles.get('价值观', 'N/A'),
@@ -288,25 +301,25 @@ def update_checkpoint(checkpoint_file, index):
             json.dump(checkpoint_data, f)
 
 # Caritas API
-def get_encouragements(message, k=5):
-    """利用 message 检索鼓励语 quote"""
-    encouragement_url = "http://test.caritas.pro:5001/query_excerpt_data"
-    payload = {
-        "query_text": message,
-        "top_k": k
-    }
-    headers = {
-        "Content-Type": "application/json"
-    }
-    response = requests.post(encouragement_url, json=payload, headers=headers)
-    encouragement_quotes = []
-    if response.status_code == 200:
-        data = response.json()
-        for item in data["data"]:
-            encouragement_quotes.append(item["entity"]["quote"])
-    else:
-        print("请求失败: %s %s", response.status_code, response.text)
-    return encouragement_quotes
+# def get_encouragements(message, k=5):
+#     """利用 message 检索鼓励语 quote"""
+#     encouragement_url = "http://test.caritas.pro:5001/query_excerpt_data"
+#     payload = {
+#         "query_text": message,
+#         "top_k": k
+#     }
+#     headers = {
+#         "Content-Type": "application/json"
+#     }
+#     response = requests.post(encouragement_url, json=payload, headers=headers)
+#     encouragement_quotes = []
+#     if response.status_code == 200:
+#         data = response.json()
+#         for item in data["data"]:
+#             encouragement_quotes.append(item["entity"]["quote"])
+#     else:
+#         print("请求失败: %s %s", response.status_code, response.text)
+#     return encouragement_quotes
 
 def query_article(query_text, top_k=2):
     """查询文章数据"""
@@ -355,15 +368,22 @@ def generate_self_affirmative_phrase_concurrent(
         n, 
         delay, 
         max_retries,
-        DEBUG, 
+        DEBUG_model, 
         max_length,
         use_concurrency=False,
-        timeout=1800  # 新增超时参数，默认30分钟
+        timeout=1800,
+        log_file=None
     ):
-    if DEBUG==True:
+    init_log(log_file)
+    global DEBUG
+    if DEBUG_model==True:
+        print("DEBUG模式开启")
         set_log_level("DEBUG") 
+        DEBUG=True
     else:
         set_log_level("INFO")
+        DEBUG=False
+    
     symptoms_data = load_csv(symptoms_file)
     completed_indices = set(get_checkpoint(checkpoint_file)) 
     print(f"从检查点文件读取到已完成的索引: {completed_indices}")
@@ -379,10 +399,13 @@ def generate_self_affirmative_phrase_concurrent(
                         pbar.update(1)  # 更新进度条
                         continue
                     # print(symptoms_data[i])
+                    
                     future = executor.submit(
                         generate_affirmation_for_symptom, i, symptoms_data[i], n, delay, max_retries, csv_file, max_length=max_length, DEBUG=DEBUG
                     )
                     futures[future] = i  # 将 future 和索引关联起来
+
+
                 for future in concurrent.futures.as_completed(futures):
                     index = futures[future]  # 获取当前任务的索引
                     try:
@@ -403,17 +426,17 @@ def generate_self_affirmative_phrase_concurrent(
                     continue
                 # print(symptoms_data[i])
                 try:
+                    
+                    
                     generate_affirmation_for_symptom(i, symptoms_data[i], n, delay, max_retries, csv_file,  max_length=max_length,DEBUG=DEBUG)
+                    
+                    
                     pbar.update(1)  # 更新进度条
                     update_checkpoint(checkpoint_file, i)  # 更新检查点文件
                 except Exception as e:
                     print(f"任务 {i} 失败: {e}")
                     if DEBUG:
                         raise
-                    
-                
-                    
-
     print(f"所有未生成过的自我肯定语已保存到 {csv_file.replace('.csv','_*.csv')}")
     if os.path.exists(checkpoint_file):
         os.remove(checkpoint_file)
@@ -567,6 +590,11 @@ def make_Affirmative_by_need(symptom,paradigm, sentences,zhihu_link, output_file
 
     paradigm_prompt = get_paradigm(paradigm,symptom=symptom,sentences=sentences)
     
+    # file_object = client.files.create(file=Path("/home/acszy/2025/Affirmative/data/艾里希·弗洛姆三部曲（社会心理学大师经典著作，爱的艺术+论不服从+存在的艺术） (艾里希·弗洛姆 [艾里希·弗洛姆]) (Z-Library).txt"), purpose="file-extract")
+    # file_object = client.files.create(file=Path("/home/acszy/2025/Affirmative/data/book_1.txt"), purpose="file-extract")
+    # file_content_bytes = client.files.content(file_id=file_object.id).content  # 获取二进制内容
+    # file_content = file_content_bytes.decode("utf-8")  # 以 UTF-8 解码
+    # messages.append({"role": "system","content": "用这本书的内容作为素材来生成句子："+file_content})
     messages.append({"role": "user", "content": paradigm_prompt})
     debug(messages)
     # debug(role_prompt)
@@ -575,18 +603,19 @@ def make_Affirmative_by_need(symptom,paradigm, sentences,zhihu_link, output_file
     for attempt in range(max_retries):
         try:
             response = extract_json(send_messages(messages))
-            debug(response)
+            debug("API Response: ", response)
             
             try:
                 response_dict = json.loads(response)
                 # debug("Response is valid JSON.")
                 if "self_affirmation" in response_dict and isinstance(response_dict["self_affirmation"], list):
                     response_data = response_dict["self_affirmation"]
-                    debug("API Response: ", response)
+                    # debug("API Response: ", response)
                 else:
                     print("Error: Unexpected API response format.")
-                    debug("API Response: ", response)
+                    # debug("API Response: ", response)
                     return
+                
                 for i, item in enumerate(response_data):
                     if not (isinstance(item, dict) and "self_affirmative_phrase" in item):
                         print(f"Error: Invalid item format in response data: {item}")
@@ -603,6 +632,7 @@ def make_Affirmative_by_need(symptom,paradigm, sentences,zhihu_link, output_file
                         role = paradigm,
                         model = MODEL_NAME
                         )
+                    # print(output_file.replace('.csv','_3.csv'))
                     save_to_csv(output_file.replace('.csv','_3.csv'), data_item,HEADERS)                
                 return 
             
@@ -683,6 +713,25 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
         debug(f"article去重：{len(article_data)} -> {len(unique_article_data)}")
         article_data = unique_article_data # 缺少这一步会导致重复
 
+    # # query_book
+    # book_PATH = "/home/acszy/2025/Affirmative/data/book_1.txt"
+    # # 建立向量数据库
+    # book_embeddings = embeddings.embed_documents(book_PATH)
+    # # 将向量数据库保存到文件
+    # with open('book_embeddings.pkl', 'wb') as f:
+    #     pickle.dump(book_embeddings, f)
+
+    # # 从文件中加载向量数据库
+    # with open('book_embeddings.pkl', 'rb') as f:
+    #     book_embeddings = pickle.load(f)
+    
+    # # 使用向量数据库进行查询
+    # query_vector = embeddings.embed_query(symptom['用户需求'])
+    # book_data = 
+
+
+
+
     zhihu_link = ' '.join([article['entity']['zhihu_link'] for article in article_data]) if article_data else "无链接"
     debug(zhihu_link)
     articles = ' '.join([article['entity']['content'] for article in article_data])
@@ -737,7 +786,11 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
     # make_Affirmative_by_need(symptom, articles, sentences, zhihu_link, csv_file,"style-fliter-0204",messages=messages,max_length=max_length)
     # 根据symptom判断范式
     
-    ALL=1
+    # ALL=1
+    ALL=0
+
+    # ?  [简单-情绪应对式］都扩展为[简单-情绪应对式,认知行为-情绪应对式,正念-情绪应对式,道家-情绪应对式]
+    
     for paradigm in matched_paradigms:
         
         if ALL==1:

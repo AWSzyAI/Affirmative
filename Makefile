@@ -9,7 +9,7 @@ make:
 
 run:
 	python main.py -n $(k) -m $(m)
-	python test/word_count_checker.py -n $(k) -m $(m)
+	# python test/word_count_checker.py -n $(k) -m $(m)
 
 wc:
 	python test/word_count_checker.py -n $(k) -m $(m)

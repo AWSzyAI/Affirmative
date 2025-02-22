@@ -48,6 +48,9 @@ MODEL_NAME = "deepseek-chat"
 # MODEL_NAME = "deepseek-r1"
 
 
+# (3) 星河社区
+
+
 # Utils
 def send_messages(messages, model=MODEL_NAME, tools=None):
     completion = client.chat.completions.create(

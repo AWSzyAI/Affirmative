@@ -1,0 +1,18 @@
+{
+    "file_paths": {
+        "output_base_dir": "./output/",
+        "input_data_dir": "./data/",
+        "input_data_template": "select_{n}.csv",
+        "default_input_file": "肯定语体系【Caritas】 - 场景-症状-需求_去重后.csv"
+    },
+    "timestamp_format": "%Y-%m-%d_%H-%M-%S",
+    "backup_input_file": true,
+    "function_params": {
+        "delay": 0.5,
+        "max_retries": 5,
+        "n": 5,
+        "timeout": 1800,
+        "debug": true,
+        "use_concurrency": true
+    }
+}
