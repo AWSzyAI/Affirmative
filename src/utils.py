@@ -23,96 +23,32 @@ from datetime import datetime
 from pathlib import Path
 
 
+DEBUG = True
 
-# 配置日志
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-file_handler = None
-console_handler = None
-# logging.basicConfig(level=logging.INFO)
-# logger = logging.getLogger(__name__)
-# coloredlogs.install(level='INFO', logger=logger)
-def init_log(log_file):
-    global logger, file_handler, console_handler 
-    print(f"Initializing log with file: {log_file}")
-
-    # 移除已有的处理器（避免重复添加）
-    if logger.hasHandlers():
-        logger.handlers.clear()
-
-    # file_handler = logging.FileHandler(log_file)
-    # file_handler.setLevel(logging.INFO)
-
-    # console_handler = logging.StreamHandler()
-    # console_handler.setLevel(logging.INFO)
-
-    # formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    # file_handler.setFormatter(formatter)
-    # console_handler.setFormatter(formatter)
-
-    # logger.addHandler(file_handler)
-    # logger.addHandler(console_handler)
-    # coloredlogs.install(level='DEBUG', logger=logger)
-    try:
-        file_handler = logging.FileHandler(log_file)
-        file_handler.setLevel(logging.INFO)
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.INFO)
-
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        file_handler.setFormatter(formatter)
-        console_handler.setFormatter(formatter)
-
-        logger.addHandler(file_handler)
-        logger.addHandler(console_handler)
-        coloredlogs.install(level='DEBUG', logger=logger)
-
-        print("Log initialization complete.")
-    except Exception as e:
-        print(f"Error initializing log: {e}")
-
-# DEBUG = True
-# DEBUG = False
-
-
+def debug(*args, **kwargs):
+    message = " ".join(str(arg) for arg in args)  # 确保所有参数都转换为字符串
+    logger.debug(message, **kwargs)
 
 # 切换日志级别的函数
 def set_log_level(level: str):
-    """
-    set_log_level("DEBUG")  # 切换到DEBUG模式
-    set_log_level("INFO")   # 切换回INFO模式
-    """
-    global logger, file_handler, console_handler
-    # 移除已有的处理器（避免重复添加）
-    if logger.hasHandlers():
-        logger.handlers.clear()
-
     level = level.upper()
-    # logger.setLevel(logging.DEBUG)
-    # file_handler.setLevel(logging.DEBUG)
-    # console_handler.setLevel(logging.DEBUG)
-    # coloredlogs.install(level='DEBUG', logger=logger)
-    try:
-        if level == 'DEBUG':
-            logger.setLevel(logging.DEBUG)
-            file_handler.setLevel(logging.DEBUG)
-            console_handler.setLevel(logging.DEBUG)
-            coloredlogs.install(level='DEBUG', logger=logger)
-        else:
-            logger.setLevel(logging.INFO)
-            file_handler.setLevel(logging.INFO)
-            console_handler.setLevel(logging.INFO)
-            coloredlogs.install(level='INFO', logger=logger)
-        print(f"Log level set to: {level}")
-    except Exception as e:
-        print(f"Error setting log level: {e}")
+    logger.setLevel(logging.DEBUG)
+    file_handler.setLevel(logging.DEBUG)
+    console_handler.setLevel(logging.DEBUG)
+    coloredlogs.install(level='DEBUG', logger=logger)
+    # if level == 'DEBUG':
+    #     logger.setLevel(logging.DEBUG)
+    #     file_handler.setLevel(logging.DEBUG)
+    #     console_handler.setLevel(logging.DEBUG)
+    #     coloredlogs.install(level='DEBUG', logger=logger)
+    # else:
+    #     logger.setLevel(logging.INFO)
+    #     file_handler.setLevel(logging.INFO)
+    #     console_handler.setLevel(logging.INFO)
+    #     coloredlogs.install(level='INFO', logger=logger)
 
-def debug(*args, **kwargs):
-    if DEBUG:
-        message = " ".join(str(arg) for arg in args)  # 确保所有参数都转换为字符串
-        logger.debug(message, **kwargs)
-    else:
-        print("DEBUG mode is off, not logging.")
+# set_log_level("DEBUG")  # 切换到DEBUG模式
+# set_log_level("INFO")   # 切换回INFO模式
     
 HEADERS = ['自我肯定语','句子范式','role','model','生产者', '场景','子场景','场景描述','用户需求','心理作用机制与功能','句子级别', 'zhihu_link']
 HEADERS_structured_article = ['发问：思考、反省', '价值观', '行动：可效仿的行动指南', '慈悲：理解、接受、宽恕', '状态描述：成为这样的我']
@@ -372,9 +308,39 @@ def generate_self_affirmative_phrase_concurrent(
         max_length,
         use_concurrency=False,
         timeout=1800,
-        log_file=None
+        log_file=None 
     ):
-    init_log(log_file)
+    
+    global logger,file_handler,console_handler
+
+    # 配置日志
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
+    # 创建文件处理器并设置日志文件路径
+
+    # log_file = './Log/'+datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '.log'
+    print(log_file)
+
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setLevel(logging.INFO)
+
+    # 创建控制台输出处理器
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+
+    # 创建日志格式
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    console_handler.setFormatter(formatter)
+
+    # 添加处理器到logger
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+    coloredlogs.install(level='INFO', logger=logger)
+
+
+
     global DEBUG
     if DEBUG_model==True:
         print("DEBUG模式开启")
@@ -383,7 +349,11 @@ def generate_self_affirmative_phrase_concurrent(
     else:
         set_log_level("INFO")
         DEBUG=False
-    
+    # 在代码中记录调试日志
+    if DEBUG:
+        logger.debug("This is a debug message with detailed info.")
+    else:
+        logger.info("This is an info message.")
     symptoms_data = load_csv(symptoms_file)
     completed_indices = set(get_checkpoint(checkpoint_file)) 
     print(f"从检查点文件读取到已完成的索引: {completed_indices}")
@@ -712,7 +682,7 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
         unique_article_data = remove_duplicates(article_data)
         debug(f"article去重：{len(article_data)} -> {len(unique_article_data)}")
         article_data = unique_article_data # 缺少这一步会导致重复
-
+    print(article_data)
     # # query_book
     # book_PATH = "/home/acszy/2025/Affirmative/data/book_1.txt"
     # # 建立向量数据库

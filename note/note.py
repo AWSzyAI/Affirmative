@@ -45,9 +45,6 @@ def get_content_by_type(row, type):
         自我肯定语: {row['自我肯定语']}
         场景: {row['场景']}
         子场景: {row['子场景']}
-        用户需求: {row['用户需求']}
-        心理作用机制与功能: {row['心理作用机制与功能']}
-        句子级别: {row['句子级别']}
         
         1. 判断这个自我肯定语是否适合推送给以下标签的用户：["情感疗愈", "自信", "平和心境", "治愈之旅", "人际交往", "自我关怀", "个人成长", "成为英雄"]。
         2. 选择一个或多个标签进行标注，**不要**捏造标签，确保标签与自我肯定语的情感和语境相符。
@@ -67,9 +64,6 @@ def get_content_by_type(row, type):
         自我肯定语: {row['自我肯定语']}
         场景: {row['场景']}
         子场景: {row['子场景']}
-        用户需求: {row['用户需求']}
-        心理作用机制与功能: {row['心理作用机制与功能']}
-        句子级别: {row['句子级别']}
 
         1. 判断该自我肯定语及其场景描述是否适合以下感情状况的用户：
         ["正在恋爱", "最近刚分手", "处在一段艰难的亲密关系中", "快乐地单身着", "单身但准备好了开始新的恋情", "有点辛苦的暗恋"]。
@@ -91,9 +85,6 @@ def get_content_by_type(row, type):
         自我肯定语: {row['自我肯定语']}
         场景: {row['场景']}
         子场景: {row['子场景']}
-        用户需求: {row['用户需求']}
-        心理作用机制与功能: {row['心理作用机制与功能']}
-        句子级别: {row['句子级别']}
 
         1. 判断该自我肯定语及其场景描述是否适合推送给以下情感状态的用户：
         ["开心", "很好", "一般", "不好", "糟糕"]。
@@ -168,9 +159,9 @@ def process_row(index, row, checkpoint_file, input_file, pbar):
     # 更新其它列
     row_results.update({'场景': row['场景']})
     row_results.update({'子场景': row['子场景']})
-    row_results.update({'用户需求': row['用户需求']})
-    row_results.update({'心理作用机制与功能': row['心理作用机制与功能']})
-    row_results.update({'句子级别': row['句子级别']})
+    # row_results.update({'用户需求': row['用户需求']})
+    # row_results.update({'心理作用机制与功能': row['心理作用机制与功能']})
+    # row_results.update({'句子级别': row['句子级别']})
 
     # 存储处理结果到文件
     save_results(row_results, input_file)
@@ -286,7 +277,8 @@ def get_annotation(row, type='合集'):
         return {}
 
 if __name__ == "__main__":
-    input_file = '../data/0205标注协作表 - 上线句子清单0205.csv'
+    input_file = '../data/0219好句子清单 - 最终好句子清单.csv'
+    # input_file = '../data/test.csv'
     # checkpoint_file = input_file.replace('.csv','_checkpoint.txt')
     # process_file(input_file, checkpoint_file)
     process_file(input_file)
