@@ -1,0 +1,221 @@
+2025-02-27 11:27:02,610 - INFO - 程序开始运行
+2025-02-27 11:27:02,611 - INFO - 开始处理文章: 悲观与乐观
+2025-02-27 11:27:08,009 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:08,108 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:08,203 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:08,221 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:09,487 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:09,494 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:09,530 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:09,582 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:09,963 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:10,235 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:14,718 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:14,820 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:14,906 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:14,948 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:15,438 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:15,546 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:15,618 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:15,619 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:16,312 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:16,314 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:21,743 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:21,737 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:22,120 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:22,276 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:22,376 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:22,576 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:22,749 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:22,777 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:22,901 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:23,043 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:24,325 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:24,334 - INFO - Retrying request to /chat/completions in 0.399608 seconds
+2025-02-27 11:27:24,889 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:24,890 - INFO - Retrying request to /chat/completions in 0.889693 seconds
+2025-02-27 11:27:26,106 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:26,609 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:26,611 - INFO - Retrying request to /chat/completions in 0.419937 seconds
+2025-02-27 11:27:27,272 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:27,303 - INFO - Retrying request to /chat/completions in 0.938659 seconds
+2025-02-27 11:27:28,453 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:28,626 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:28,765 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:29,044 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:29,633 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:30,099 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:30,111 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:30,184 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:30,191 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:30,224 - INFO - Retrying request to /chat/completions in 0.398923 seconds
+2025-02-27 11:27:30,240 - INFO - Retrying request to /chat/completions in 0.496349 seconds
+2025-02-27 11:27:30,286 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:30,287 - INFO - Retrying request to /chat/completions in 0.486893 seconds
+2025-02-27 11:27:30,610 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:30,630 - INFO - Retrying request to /chat/completions in 0.433623 seconds
+2025-02-27 11:27:30,956 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:30,983 - INFO - Retrying request to /chat/completions in 0.891525 seconds
+2025-02-27 11:27:31,023 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:31,028 - INFO - Retrying request to /chat/completions in 0.808762 seconds
+2025-02-27 11:27:31,061 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:31,075 - INFO - Retrying request to /chat/completions in 0.972487 seconds
+2025-02-27 11:27:31,419 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:31,460 - INFO - Retrying request to /chat/completions in 0.803154 seconds
+2025-02-27 11:27:31,897 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:31,913 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:32,097 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:32,098 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:32,272 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:32,347 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:32,360 - INFO - Retrying request to /chat/completions in 0.412644 seconds
+2025-02-27 11:27:32,366 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:32,436 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:32,442 - INFO - Retrying request to /chat/completions in 0.452125 seconds
+2025-02-27 11:27:32,501 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:32,571 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:32,621 - INFO - Retrying request to /chat/completions in 0.480254 seconds
+2025-02-27 11:27:32,745 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:32,749 - INFO - Retrying request to /chat/completions in 0.480805 seconds
+2025-02-27 11:27:33,088 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:33,103 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:33,146 - INFO - Retrying request to /chat/completions in 0.945041 seconds
+2025-02-27 11:27:33,306 - INFO - Retrying request to /chat/completions in 0.497122 seconds
+2025-02-27 11:27:33,328 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:33,374 - INFO - Retrying request to /chat/completions in 0.910184 seconds
+2025-02-27 11:27:33,571 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:33,579 - INFO - Retrying request to /chat/completions in 0.768432 seconds
+2025-02-27 11:27:33,599 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:33,600 - INFO - Retrying request to /chat/completions in 0.895084 seconds
+2025-02-27 11:27:34,070 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:34,071 - INFO - Retrying request to /chat/completions in 0.967514 seconds
+2025-02-27 11:27:34,396 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:34,541 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:34,633 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:34,695 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:34,962 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:35,102 - INFO - Retrying request to /chat/completions in 0.438566 seconds
+2025-02-27 11:27:35,509 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:35,680 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:35,708 - INFO - Retrying request to /chat/completions in 0.403364 seconds
+2025-02-27 11:27:35,766 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:35,783 - INFO - Retrying request to /chat/completions in 0.381656 seconds
+2025-02-27 11:27:35,828 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:35,829 - INFO - Retrying request to /chat/completions in 0.751024 seconds
+2025-02-27 11:27:36,202 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:36,404 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:36,950 - INFO - Retrying request to /chat/completions in 0.456053 seconds
+2025-02-27 11:27:37,006 - INFO - Retrying request to /chat/completions in 0.449630 seconds
+2025-02-27 11:27:37,193 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:37,215 - INFO - Retrying request to /chat/completions in 0.927102 seconds
+2025-02-27 11:27:37,347 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:37,358 - INFO - Retrying request to /chat/completions in 0.848527 seconds
+2025-02-27 11:27:37,438 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:37,744 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:37,756 - INFO - Retrying request to /chat/completions in 0.948215 seconds
+2025-02-27 11:27:38,028 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:38,036 - INFO - Retrying request to /chat/completions in 0.917861 seconds
+2025-02-27 11:27:38,189 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:38,207 - INFO - Retrying request to /chat/completions in 0.404573 seconds
+2025-02-27 11:27:38,504 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:38,585 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:38,979 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:39,087 - INFO - Retrying request to /chat/completions in 0.837446 seconds
+2025-02-27 11:27:39,306 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:39,320 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:39,395 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:39,636 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:39,739 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:39,749 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:39,818 - INFO - Retrying request to /chat/completions in 0.489050 seconds
+2025-02-27 11:27:39,912 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:39,913 - INFO - Retrying request to /chat/completions in 0.476901 seconds
+2025-02-27 11:27:40,094 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:40,113 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:40,213 - INFO - Retrying request to /chat/completions in 0.388208 seconds
+2025-02-27 11:27:40,215 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:40,842 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:40,905 - INFO - Retrying request to /chat/completions in 0.900843 seconds
+2025-02-27 11:27:40,950 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:40,967 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:40,969 - INFO - Retrying request to /chat/completions in 0.764321 seconds
+2025-02-27 11:27:40,973 - INFO - Retrying request to /chat/completions in 0.782002 seconds
+2025-02-27 11:27:42,051 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:42,063 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:42,116 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:42,696 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:42,881 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:42,905 - INFO - Retrying request to /chat/completions in 0.408020 seconds
+2025-02-27 11:27:43,765 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:43,846 - INFO - Retrying request to /chat/completions in 0.499675 seconds
+2025-02-27 11:27:43,942 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:44,003 - INFO - Retrying request to /chat/completions in 0.770130 seconds
+2025-02-27 11:27:44,845 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:44,856 - INFO - Retrying request to /chat/completions in 0.975963 seconds
+2025-02-27 11:27:45,276 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:46,138 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:46,163 - INFO - Retrying request to /chat/completions in 0.424476 seconds
+2025-02-27 11:27:46,363 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:46,993 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:46,998 - INFO - Retrying request to /chat/completions in 0.841389 seconds
+2025-02-27 11:27:47,206 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:47,207 - INFO - Retrying request to /chat/completions in 0.478767 seconds
+2025-02-27 11:27:47,977 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:47,997 - INFO - Retrying request to /chat/completions in 0.928816 seconds
+2025-02-27 11:27:48,244 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:48,771 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:49,180 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:49,418 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:49,423 - INFO - 开始处理文章: 财富观
+2025-02-27 11:27:50,016 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:50,046 - INFO - Retrying request to /chat/completions in 0.381601 seconds
+2025-02-27 11:27:50,204 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:50,207 - INFO - Retrying request to /chat/completions in 0.425039 seconds
+2025-02-27 11:27:50,408 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:50,410 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:50,421 - INFO - Retrying request to /chat/completions in 0.395245 seconds
+2025-02-27 11:27:50,423 - INFO - Retrying request to /chat/completions in 0.448584 seconds
+2025-02-27 11:27:50,585 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:50,589 - INFO - Retrying request to /chat/completions in 0.820222 seconds
+2025-02-27 11:27:50,739 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:50,741 - INFO - Retrying request to /chat/completions in 0.974089 seconds
+2025-02-27 11:27:51,800 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:51,821 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:52,006 - INFO - Retrying request to /chat/completions in 0.960963 seconds
+2025-02-27 11:27:52,227 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:52,231 - INFO - Retrying request to /chat/completions in 0.986108 seconds
+2025-02-27 11:27:52,244 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:52,316 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:52,465 - INFO - Retrying request to /chat/completions in 0.482398 seconds
+2025-02-27 11:27:52,618 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:52,618 - INFO - Retrying request to /chat/completions in 0.484823 seconds
+2025-02-27 11:27:53,442 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:53,502 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:53,744 - INFO - Retrying request to /chat/completions in 0.820777 seconds
+2025-02-27 11:27:53,987 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:54,186 - INFO - Retrying request to /chat/completions in 0.831706 seconds
+2025-02-27 11:27:54,430 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:54,436 - INFO - Retrying request to /chat/completions in 0.442281 seconds
+2025-02-27 11:27:54,428 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:54,626 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:54,627 - INFO - Retrying request to /chat/completions in 0.461960 seconds
+2025-02-27 11:27:54,741 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:54,888 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:54,889 - INFO - Retrying request to /chat/completions in 0.483245 seconds
+2025-02-27 11:27:55,034 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:55,035 - INFO - Retrying request to /chat/completions in 0.873014 seconds
+2025-02-27 11:27:55,121 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-02-27 11:27:55,128 - INFO - 成功处理范式: 爱之循环式: 简单-爱之循环式
+2025-02-27 11:27:55,148 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:55,183 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:55,206 - INFO - Retrying request to /chat/completions in 0.986877 seconds
+2025-02-27 11:27:55,477 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:55,725 - INFO - Retrying request to /chat/completions in 0.406680 seconds
+2025-02-27 11:27:55,852 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:55,900 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:55,924 - INFO - Retrying request to /chat/completions in 0.491274 seconds
+2025-02-27 11:27:55,983 - INFO - Retrying request to /chat/completions in 0.943796 seconds
+2025-02-27 11:27:56,263 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:56,387 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-02-27 11:27:56,481 - INFO - Retrying request to /chat/completions in 0.917502 seconds
+2025-02-27 11:27:56,489 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 429 Too Many Requests"

@@ -47,6 +47,7 @@ def main():
     output_file = os.path.join(timestamp_folder, symptoms_file_basename.replace('.csv', '_result.csv'))
     checkpoint_file = os.path.join(timestamp_folder, checkpoint_filename)
     log_file = os.path.join(timestamp_folder, symptoms_file_basename.replace('.csv', '.log'))
+    paradigm_md_path = "./data/paradigm.md"
 
     print(f"Output File: {output_file}")
     print(f"Checkpoint File: {checkpoint_file}")
@@ -60,6 +61,7 @@ def main():
         symptoms_file, 
         output_file, 
         checkpoint_file, 
+        paradigm_md_path,
         n=5, 
         DEBUG_model=True, 
         delay=delay, 

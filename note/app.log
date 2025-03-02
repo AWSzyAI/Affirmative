@@ -1,0 +1,714 @@
+2025-03-02 12:21:33,347 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:33,360 - INFO - 成功获取合集标注
+2025-03-02 12:21:33,646 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:33,648 - INFO - 成功获取合集标注
+2025-03-02 12:21:33,979 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:33,981 - INFO - 成功获取合集标注
+2025-03-02 12:21:34,016 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:34,017 - INFO - 成功获取合集标注
+2025-03-02 12:21:34,110 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:34,111 - INFO - 成功获取合集标注
+2025-03-02 12:21:34,382 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:34,384 - INFO - 成功获取合集标注
+2025-03-02 12:21:34,448 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:34,449 - INFO - 成功获取合集标注
+2025-03-02 12:21:34,840 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:34,842 - INFO - 成功获取合集标注
+2025-03-02 12:21:34,874 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:34,876 - INFO - 成功获取合集标注
+2025-03-02 12:21:34,882 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:34,894 - INFO - 成功获取合集标注
+2025-03-02 12:21:36,007 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:36,009 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:36,722 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:36,724 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:36,793 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:36,795 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:37,056 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:37,058 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:37,829 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:37,830 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:37,844 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:37,851 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:38,031 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:38,033 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:38,134 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:38,135 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:38,141 - INFO - 已更新checkpoint，已处理行：8
+2025-03-02 12:21:38,761 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:38,762 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:38,780 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:38,784 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:38,787 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:38,789 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:38,809 - INFO - 已更新checkpoint，已处理行：9
+2025-03-02 12:21:39,960 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:39,962 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:39,965 - INFO - 已更新checkpoint，已处理行：3
+2025-03-02 12:21:40,017 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:40,018 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:40,312 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:40,313 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:40,316 - INFO - 已更新checkpoint，已处理行：4
+2025-03-02 12:21:40,427 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:40,429 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:40,433 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:40,434 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:40,437 - INFO - 已更新checkpoint，已处理行：2
+2025-03-02 12:21:40,458 - INFO - 已更新checkpoint，已处理行：7
+2025-03-02 12:21:41,283 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:41,285 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:41,289 - INFO - 已更新checkpoint，已处理行：1
+2025-03-02 12:21:41,449 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:41,451 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:41,454 - INFO - 已更新checkpoint，已处理行：6
+2025-03-02 12:21:41,602 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:41,604 - INFO - 成功获取合集标注
+2025-03-02 12:21:41,935 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:41,937 - INFO - 成功获取合集标注
+2025-03-02 12:21:42,086 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:42,088 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:42,091 - INFO - 已更新checkpoint，已处理行：0
+2025-03-02 12:21:43,561 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:43,563 - INFO - 成功获取合集标注
+2025-03-02 12:21:43,689 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:43,691 - INFO - 成功获取合集标注
+2025-03-02 12:21:43,736 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:43,738 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:43,741 - INFO - 已更新checkpoint，已处理行：5
+2025-03-02 12:21:43,763 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:43,767 - INFO - 成功获取合集标注
+2025-03-02 12:21:43,784 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:43,789 - INFO - 成功获取合集标注
+2025-03-02 12:21:44,338 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:44,340 - INFO - 成功获取合集标注
+2025-03-02 12:21:44,930 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:44,932 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:45,333 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:45,335 - INFO - 成功获取合集标注
+2025-03-02 12:21:45,831 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:45,833 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:45,988 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:45,990 - INFO - 成功获取合集标注
+2025-03-02 12:21:46,977 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:46,979 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:47,058 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:47,059 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:47,220 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:47,221 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:47,704 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:47,706 - INFO - 成功获取合集标注
+2025-03-02 12:21:47,723 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:47,727 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:47,754 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:47,756 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:49,203 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:49,204 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:49,208 - INFO - 已更新checkpoint，已处理行：10
+2025-03-02 12:21:49,297 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:49,299 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:49,302 - INFO - 已更新checkpoint，已处理行：14
+2025-03-02 12:21:49,497 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:49,499 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:49,502 - INFO - 已更新checkpoint，已处理行：11
+2025-03-02 12:21:49,533 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:49,535 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:50,031 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:50,032 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:50,035 - INFO - 已更新checkpoint，已处理行：15
+2025-03-02 12:21:50,091 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:50,093 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:50,096 - INFO - 已更新checkpoint，已处理行：17
+2025-03-02 12:21:50,247 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:50,249 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:51,687 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:51,689 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:51,690 - INFO - 已更新checkpoint，已处理行：12
+2025-03-02 12:21:51,870 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:51,872 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:51,875 - INFO - 已更新checkpoint，已处理行：13
+2025-03-02 12:21:52,030 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:52,032 - INFO - 成功获取合集标注
+2025-03-02 12:21:52,539 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:52,541 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:52,544 - INFO - 已更新checkpoint，已处理行：19
+2025-03-02 12:21:52,826 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:52,828 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:52,831 - INFO - 已更新checkpoint，已处理行：16
+2025-03-02 12:21:53,305 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:53,306 - INFO - 成功获取合集标注
+2025-03-02 12:21:53,326 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:53,328 - INFO - 成功获取合集标注
+2025-03-02 12:21:53,347 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:53,349 - INFO - 成功获取合集标注
+2025-03-02 12:21:53,437 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:53,438 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:53,778 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:53,780 - INFO - 成功获取合集标注
+2025-03-02 12:21:54,246 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:54,249 - INFO - 成功获取合集标注
+2025-03-02 12:21:54,590 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:54,591 - INFO - 成功获取合集标注
+2025-03-02 12:21:55,389 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:55,390 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:55,473 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:55,474 - INFO - 成功获取合集标注
+2025-03-02 12:21:56,272 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:56,273 - INFO - 成功获取合集标注
+2025-03-02 12:21:56,654 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:56,656 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:56,731 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:56,732 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:57,792 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:57,793 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:57,795 - INFO - 已更新checkpoint，已处理行：20
+2025-03-02 12:21:57,865 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:57,866 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:57,910 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:57,911 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:58,169 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:58,170 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:58,282 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:58,283 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:58,803 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:58,804 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:58,806 - INFO - 已更新checkpoint，已处理行：18
+2025-03-02 12:21:58,918 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:58,919 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:58,920 - INFO - 已更新checkpoint，已处理行：22
+2025-03-02 12:21:59,038 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:59,040 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:59,217 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:59,219 - INFO - 成功获取感情状况标注
+2025-03-02 12:21:59,291 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:59,293 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:59,296 - INFO - 已更新checkpoint，已处理行：23
+2025-03-02 12:21:59,959 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:21:59,960 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:21:59,961 - INFO - 已更新checkpoint，已处理行：26
+2025-03-02 12:22:00,646 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:00,647 - INFO - 成功获取合集标注
+2025-03-02 12:22:01,071 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:01,073 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:01,076 - INFO - 已更新checkpoint，已处理行：21
+2025-03-02 12:22:01,816 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:01,817 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:01,819 - INFO - 已更新checkpoint，已处理行：24
+2025-03-02 12:22:01,838 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:01,838 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:01,840 - INFO - 已更新checkpoint，已处理行：28
+2025-03-02 12:22:02,084 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:02,086 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:02,089 - INFO - 已更新checkpoint，已处理行：27
+2025-03-02 12:22:02,252 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:02,253 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:02,256 - INFO - 已更新checkpoint，已处理行：25
+2025-03-02 12:22:02,352 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:02,353 - INFO - 成功获取合集标注
+2025-03-02 12:22:02,886 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:02,887 - INFO - 成功获取合集标注
+2025-03-02 12:22:03,217 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:03,219 - INFO - 成功获取合集标注
+2025-03-02 12:22:03,798 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:03,798 - INFO - 成功获取合集标注
+2025-03-02 12:22:03,927 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:03,928 - INFO - 成功获取合集标注
+2025-03-02 12:22:04,446 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:04,447 - INFO - 成功获取合集标注
+2025-03-02 12:22:04,855 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:04,856 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:04,943 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:04,944 - INFO - 成功获取合集标注
+2025-03-02 12:22:05,003 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:05,004 - INFO - 成功获取合集标注
+2025-03-02 12:22:05,190 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:05,190 - INFO - 成功获取合集标注
+2025-03-02 12:22:06,473 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:06,475 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:06,709 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:06,711 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:07,119 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:07,121 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:07,318 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:07,318 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:07,520 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:07,521 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:07,523 - INFO - 已更新checkpoint，已处理行：29
+2025-03-02 12:22:07,739 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:07,740 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:08,319 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:08,320 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:08,548 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:08,549 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:09,292 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:09,293 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:09,319 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:09,319 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:09,793 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:09,794 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:09,796 - INFO - 已更新checkpoint，已处理行：31
+2025-03-02 12:22:10,462 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:10,463 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:10,464 - INFO - 已更新checkpoint，已处理行：32
+2025-03-02 12:22:10,749 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:10,750 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:10,752 - INFO - 已更新checkpoint，已处理行：35
+2025-03-02 12:22:10,885 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:10,886 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:10,888 - INFO - 已更新checkpoint，已处理行：30
+2025-03-02 12:22:10,982 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:10,983 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:10,985 - INFO - 已更新checkpoint，已处理行：33
+2025-03-02 12:22:11,082 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:11,083 - INFO - 成功获取合集标注
+2025-03-02 12:22:11,618 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:11,619 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:11,620 - INFO - 已更新checkpoint，已处理行：38
+2025-03-02 12:22:12,580 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:12,582 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:12,585 - INFO - 已更新checkpoint，已处理行：36
+2025-03-02 12:22:12,901 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:12,903 - INFO - 成功获取合集标注
+2025-03-02 12:22:13,259 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:13,261 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:13,264 - INFO - 已更新checkpoint，已处理行：34
+2025-03-02 12:22:13,540 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:13,541 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:13,542 - INFO - 已更新checkpoint，已处理行：37
+2025-03-02 12:22:14,011 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:14,012 - INFO - 成功获取合集标注
+2025-03-02 12:22:14,330 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:14,331 - INFO - 成功获取合集标注
+2025-03-02 12:22:14,440 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:14,441 - INFO - 成功获取合集标注
+2025-03-02 12:22:14,896 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:14,898 - INFO - 成功获取合集标注
+2025-03-02 12:22:14,915 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:14,919 - INFO - 成功获取合集标注
+2025-03-02 12:22:15,379 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:15,380 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:15,413 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:15,414 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:16,527 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:16,529 - INFO - 成功获取合集标注
+2025-03-02 12:22:16,682 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:16,683 - INFO - 成功获取合集标注
+2025-03-02 12:22:16,890 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:16,893 - INFO - 成功获取合集标注
+2025-03-02 12:22:17,214 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:17,216 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:17,251 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:17,253 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:17,589 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:17,591 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:17,608 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:17,612 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:18,068 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:18,069 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:18,073 - INFO - 已更新checkpoint，已处理行：40
+2025-03-02 12:22:18,642 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:18,643 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:18,645 - INFO - 已更新checkpoint，已处理行：39
+2025-03-02 12:22:18,790 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:18,791 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:19,302 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:19,305 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:19,906 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:19,908 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:19,912 - INFO - 已更新checkpoint，已处理行：44
+2025-03-02 12:22:20,355 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:20,357 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:20,529 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:20,531 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:20,534 - INFO - 已更新checkpoint，已处理行：42
+2025-03-02 12:22:20,579 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:20,581 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:20,778 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:20,780 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:20,783 - INFO - 已更新checkpoint，已处理行：41
+2025-03-02 12:22:21,361 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:21,362 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:21,365 - INFO - 已更新checkpoint，已处理行：43
+2025-03-02 12:22:21,391 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:21,392 - INFO - 成功获取合集标注
+2025-03-02 12:22:22,022 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:22,023 - INFO - 成功获取合集标注
+2025-03-02 12:22:22,164 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:22,165 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:22,168 - INFO - 已更新checkpoint，已处理行：45
+2025-03-02 12:22:22,319 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:22,320 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:22,323 - INFO - 已更新checkpoint，已处理行：47
+2025-03-02 12:22:22,776 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:22,778 - INFO - 成功获取合集标注
+2025-03-02 12:22:23,146 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:23,147 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:23,150 - INFO - 已更新checkpoint，已处理行：48
+2025-03-02 12:22:23,171 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:23,173 - INFO - 成功获取合集标注
+2025-03-02 12:22:23,867 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:23,868 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:23,872 - INFO - 已更新checkpoint，已处理行：46
+2025-03-02 12:22:23,893 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:23,895 - INFO - 成功获取合集标注
+2025-03-02 12:22:24,440 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:24,441 - INFO - 成功获取合集标注
+2025-03-02 12:22:24,845 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:24,846 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:24,912 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:24,913 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:25,145 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:25,147 - INFO - 成功获取合集标注
+2025-03-02 12:22:25,223 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:25,224 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:25,536 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:25,537 - INFO - 成功获取合集标注
+2025-03-02 12:22:25,915 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:25,916 - INFO - 成功获取合集标注
+2025-03-02 12:22:26,447 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:26,449 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:26,551 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:26,553 - INFO - 成功获取合集标注
+2025-03-02 12:22:27,499 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:27,500 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:27,504 - INFO - 已更新checkpoint，已处理行：50
+2025-03-02 12:22:27,883 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:27,886 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:28,327 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:28,328 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:28,332 - INFO - 已更新checkpoint，已处理行：49
+2025-03-02 12:22:28,545 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:28,547 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:28,819 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:28,820 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:28,861 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:28,863 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:28,866 - INFO - 已更新checkpoint，已处理行：51
+2025-03-02 12:22:29,008 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:29,009 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:29,065 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:29,067 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:29,070 - INFO - 已更新checkpoint，已处理行：53
+2025-03-02 12:22:29,356 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:29,357 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:30,071 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:30,072 - INFO - 成功获取合集标注
+2025-03-02 12:22:31,000 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:31,001 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:31,005 - INFO - 已更新checkpoint，已处理行：54
+2025-03-02 12:22:31,124 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:31,126 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:31,184 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:31,186 - INFO - 成功获取合集标注
+2025-03-02 12:22:31,450 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:31,451 - INFO - 成功获取合集标注
+2025-03-02 12:22:31,487 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:31,488 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:31,490 - INFO - 已更新checkpoint，已处理行：55
+2025-03-02 12:22:31,509 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:31,510 - INFO - 成功获取合集标注
+2025-03-02 12:22:32,235 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:32,236 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:32,238 - INFO - 已更新checkpoint，已处理行：56
+2025-03-02 12:22:32,513 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:32,514 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:32,516 - INFO - 已更新checkpoint，已处理行：52
+2025-03-02 12:22:32,759 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:32,759 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:32,761 - INFO - 已更新checkpoint，已处理行：57
+2025-03-02 12:22:33,050 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:33,052 - INFO - 成功获取合集标注
+2025-03-02 12:22:33,362 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:33,363 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:33,368 - INFO - 已更新checkpoint，已处理行：58
+2025-03-02 12:22:33,480 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:33,481 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:34,274 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:34,276 - INFO - 成功获取合集标注
+2025-03-02 12:22:34,343 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:34,344 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:34,476 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:34,478 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:34,827 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:34,828 - INFO - 成功获取合集标注
+2025-03-02 12:22:34,913 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:34,915 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:35,088 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:35,090 - INFO - 成功获取合集标注
+2025-03-02 12:22:35,276 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:35,278 - INFO - 成功获取合集标注
+2025-03-02 12:22:35,911 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:35,912 - INFO - 成功获取合集标注
+2025-03-02 12:22:36,120 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:36,122 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:36,125 - INFO - 已更新checkpoint，已处理行：59
+2025-03-02 12:22:36,420 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:36,422 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:36,425 - INFO - 已更新checkpoint，已处理行：60
+2025-03-02 12:22:37,609 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:37,611 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:37,631 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:37,633 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:37,636 - INFO - 已更新checkpoint，已处理行：61
+2025-03-02 12:22:37,932 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:37,934 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:38,066 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:38,067 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:38,071 - INFO - 已更新checkpoint，已处理行：62
+2025-03-02 12:22:38,134 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:38,136 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:38,512 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:38,513 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:38,537 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:38,538 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:39,175 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:39,177 - INFO - 成功获取合集标注
+2025-03-02 12:22:39,696 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:39,698 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:40,271 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:40,272 - INFO - 成功获取合集标注
+2025-03-02 12:22:40,765 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:40,766 - INFO - 成功获取合集标注
+2025-03-02 12:22:40,804 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:40,805 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:40,809 - INFO - 已更新checkpoint，已处理行：67
+2025-03-02 12:22:41,153 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:41,154 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:41,158 - INFO - 已更新checkpoint，已处理行：65
+2025-03-02 12:22:41,218 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:41,220 - INFO - 成功获取合集标注
+2025-03-02 12:22:41,403 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:41,405 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:41,408 - INFO - 已更新checkpoint，已处理行：64
+2025-03-02 12:22:41,975 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:41,977 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:41,980 - INFO - 已更新checkpoint，已处理行：63
+2025-03-02 12:22:42,057 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:42,058 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:42,062 - INFO - 已更新checkpoint，已处理行：68
+2025-03-02 12:22:42,083 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:42,085 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:42,088 - INFO - 已更新checkpoint，已处理行：66
+2025-03-02 12:22:42,418 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:42,419 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:43,760 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:43,761 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:43,782 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:43,783 - INFO - 成功获取合集标注
+2025-03-02 12:22:44,049 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:44,051 - INFO - 成功获取合集标注
+2025-03-02 12:22:44,075 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:44,077 - INFO - 成功获取合集标注
+2025-03-02 12:22:44,821 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:44,823 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:45,227 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:45,229 - INFO - 成功获取合集标注
+2025-03-02 12:22:45,356 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:45,358 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:45,445 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:45,447 - INFO - 成功获取合集标注
+2025-03-02 12:22:45,542 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:45,543 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:45,547 - INFO - 已更新checkpoint，已处理行：69
+2025-03-02 12:22:45,622 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:45,624 - INFO - 成功获取合集标注
+2025-03-02 12:22:47,012 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:47,014 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:47,048 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:47,050 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:47,054 - INFO - 已更新checkpoint，已处理行：72
+2025-03-02 12:22:47,144 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:47,146 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:47,500 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:47,502 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:47,880 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:47,881 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:47,885 - INFO - 已更新checkpoint，已处理行：71
+2025-03-02 12:22:48,502 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:48,504 - INFO - 成功获取合集标注
+2025-03-02 12:22:48,701 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:48,703 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:48,706 - INFO - 已更新checkpoint，已处理行：70
+2025-03-02 12:22:48,737 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:48,738 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:49,668 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:49,670 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:49,673 - INFO - 已更新checkpoint，已处理行：75
+2025-03-02 12:22:49,821 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:49,823 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:50,155 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:50,157 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:50,161 - INFO - 已更新checkpoint，已处理行：74
+2025-03-02 12:22:50,364 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:50,366 - INFO - 成功获取合集标注
+2025-03-02 12:22:50,487 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:50,488 - INFO - 成功获取合集标注
+2025-03-02 12:22:50,876 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:50,877 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:50,880 - INFO - 已更新checkpoint，已处理行：73
+2025-03-02 12:22:51,633 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:51,635 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:51,638 - INFO - 已更新checkpoint，已处理行：78
+2025-03-02 12:22:51,769 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:51,770 - INFO - 成功获取合集标注
+2025-03-02 12:22:52,381 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:52,383 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:52,486 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:52,488 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:52,601 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:52,602 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:52,675 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:52,677 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:52,680 - INFO - 已更新checkpoint，已处理行：76
+2025-03-02 12:22:52,771 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:52,772 - INFO - 成功获取合集标注
+2025-03-02 12:22:52,889 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:52,891 - INFO - 成功获取合集标注
+2025-03-02 12:22:53,006 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:53,008 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:54,131 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:54,133 - INFO - 成功获取合集标注
+2025-03-02 12:22:54,488 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:54,490 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:54,782 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:54,784 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:54,787 - INFO - 已更新checkpoint，已处理行：79
+2025-03-02 12:22:54,808 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:54,810 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:54,814 - INFO - 已更新checkpoint，已处理行：81
+2025-03-02 12:22:54,911 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:54,913 - INFO - 成功获取合集标注
+2025-03-02 12:22:55,331 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:55,333 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:55,338 - INFO - 已更新checkpoint，已处理行：77
+2025-03-02 12:22:55,501 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:55,503 - INFO - 成功获取合集标注
+2025-03-02 12:22:55,987 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:55,989 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:56,075 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:56,076 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:56,079 - INFO - 已更新checkpoint，已处理行：80
+2025-03-02 12:22:56,117 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:56,119 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:57,356 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:57,357 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:57,359 - INFO - 成功获取合集标注
+2025-03-02 12:22:57,361 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:57,384 - INFO - 已更新checkpoint，已处理行：82
+2025-03-02 12:22:57,962 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:57,964 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:58,046 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:58,047 - INFO - 成功获取感情状况标注
+2025-03-02 12:22:58,269 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:58,271 - INFO - 成功获取合集标注
+2025-03-02 12:22:58,798 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:58,799 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:58,803 - INFO - 已更新checkpoint，已处理行：83
+2025-03-02 12:22:59,041 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:59,043 - INFO - 成功获取合集标注
+2025-03-02 12:22:59,602 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:59,604 - INFO - 成功获取合集标注
+2025-03-02 12:22:59,971 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:22:59,973 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:22:59,976 - INFO - 已更新checkpoint，已处理行：84
+2025-03-02 12:23:00,351 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:00,352 - INFO - 成功获取感情状况标注
+2025-03-02 12:23:00,423 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:00,424 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:00,427 - INFO - 已更新checkpoint，已处理行：85
+2025-03-02 12:23:00,637 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:00,639 - INFO - 成功获取感情状况标注
+2025-03-02 12:23:00,767 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:00,769 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:00,772 - INFO - 已更新checkpoint，已处理行：86
+2025-03-02 12:23:01,033 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:01,034 - INFO - 成功获取感情状况标注
+2025-03-02 12:23:01,207 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:01,209 - INFO - 成功获取合集标注
+2025-03-02 12:23:02,149 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:02,150 - INFO - 成功获取感情状况标注
+2025-03-02 12:23:02,433 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:02,435 - INFO - 成功获取感情状况标注
+2025-03-02 12:23:02,790 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:02,792 - INFO - 成功获取合集标注
+2025-03-02 12:23:03,149 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:03,151 - INFO - 成功获取合集标注
+2025-03-02 12:23:03,170 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:03,172 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:03,175 - INFO - 已更新checkpoint，已处理行：87
+2025-03-02 12:23:03,503 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:03,505 - INFO - 成功获取合集标注
+2025-03-02 12:23:03,835 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:03,837 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:03,840 - INFO - 已更新checkpoint，已处理行：89
+2025-03-02 12:23:04,125 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:04,127 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:04,130 - INFO - 已更新checkpoint，已处理行：88
+2025-03-02 12:23:04,241 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:04,243 - INFO - 成功获取合集标注
+2025-03-02 12:23:04,605 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:04,607 - INFO - 成功获取感情状况标注
+2025-03-02 12:23:04,742 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:04,744 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:04,747 - INFO - 已更新checkpoint，已处理行：91
+2025-03-02 12:23:05,665 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:05,667 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:05,670 - INFO - 已更新checkpoint，已处理行：90
+2025-03-02 12:23:06,032 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:06,034 - INFO - 成功获取感情状况标注
+2025-03-02 12:23:06,367 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:06,370 - INFO - 成功获取感情状况标注
+2025-03-02 12:23:06,932 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:06,934 - INFO - 成功获取合集标注
+2025-03-02 12:23:06,997 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:06,999 - INFO - 成功获取合集标注
+2025-03-02 12:23:07,741 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:07,743 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:07,746 - INFO - 已更新checkpoint，已处理行：95
+2025-03-02 12:23:07,792 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:07,794 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:07,797 - INFO - 已更新checkpoint，已处理行：92
+2025-03-02 12:23:07,844 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:07,846 - INFO - 成功获取合集标注
+2025-03-02 12:23:08,784 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:08,786 - INFO - 成功获取感情状况标注
+2025-03-02 12:23:09,108 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:09,110 - INFO - 成功获取感情状况标注
+2025-03-02 12:23:10,147 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:10,150 - INFO - 成功获取感情状况标注
+2025-03-02 12:23:10,621 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:10,623 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:10,627 - INFO - 已更新checkpoint，已处理行：94
+2025-03-02 12:23:11,213 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:11,215 - INFO - 成功获取感情状况标注
+2025-03-02 12:23:11,326 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:11,328 - INFO - 成功获取感情状况标注
+2025-03-02 12:23:12,145 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:12,148 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:12,152 - INFO - 已更新checkpoint，已处理行：96
+2025-03-02 12:23:12,473 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:12,474 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:12,478 - INFO - 已更新checkpoint，已处理行：99
+2025-03-02 12:23:14,054 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:14,058 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:14,064 - INFO - 已更新checkpoint，已处理行：98
+2025-03-02 12:23:14,085 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:14,087 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:14,091 - INFO - 已更新checkpoint，已处理行：93
+2025-03-02 12:23:14,327 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:23:14,329 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:23:14,333 - INFO - 已更新checkpoint，已处理行：97
+2025-03-02 12:26:23,927 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:26:23,940 - INFO - 成功获取合集标注
+2025-03-02 12:26:23,969 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:26:23,971 - INFO - 成功获取合集标注
+2025-03-02 12:26:26,782 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:26:26,784 - INFO - 成功获取感情状况标注
+2025-03-02 12:26:28,005 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:26:28,007 - INFO - 成功获取感情状况标注
+2025-03-02 12:26:29,088 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:26:29,090 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:26:29,096 - INFO - 已更新checkpoint，已处理行：0
+2025-03-02 12:26:30,512 - INFO - HTTP Request: POST https://api.moonshot.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2025-03-02 12:26:30,515 - INFO - 成功获取最近的感觉标注
+2025-03-02 12:26:30,519 - INFO - 已更新checkpoint，已处理行：1

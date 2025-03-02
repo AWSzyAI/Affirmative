@@ -242,8 +242,8 @@ def load_paradigm_md(filepath="./data/paradigm.md"):
     paradigm_dict = {key.strip(): value.strip() for key, value in patterns}
     return paradigm_dict
 
-def get_paradigm(paradigm, symptom,sentences):
-    paradigms = load_paradigm_md()
+def get_paradigm(paradigm, symptom,sentences,paradigm_md_path):
+    paradigms = load_paradigm_md(paradigm_md_path)
     paradigm_prompt = paradigms.get(paradigm, "未找到匹配的范式，请检查 `role` 是否正确。")
 
     message = f"""

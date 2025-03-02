@@ -7,12 +7,25 @@ import requests
 import concurrent
 import re
 import threading
+
 from tqdm import tqdm
 from openai import RateLimitError  # 导入 RateLimitError 异常
-from src.milvus_utils import embeddings, query_article_data
-from src.kimi_api import client,MODEL_NAME,send_messages # kimi
 # from src.deepseek_api import client,MODEL_NAME,send_messages # Deepseek
-from src.prompt import get_role_prompt,get_paradigm
+# from src.milvus_utils import embeddings, query_article_data
+# from src.kimi_api import client,MODEL_NAME,send_messages # kimi
+# from src.prompt import get_role_prompt,get_paradigm
+
+import sys
+import os
+
+# 获取项目根目录的绝对路径
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+# 添加 src 目录到 sys.path 中
+sys.path.append(os.path.join(root_dir, 'src'))
+from milvus_utils import embeddings, query_article_data
+# from kimi_api import client,MODEL_NAME,send_messages # kimi
+from ark_api import client,MODEL_NAME,send_messages # doubao
+from prompt import get_role_prompt,get_paradigm
 from tenacity import retry, wait_exponential, retry_if_exception_type, stop_after_attempt,before_sleep_log
 import logging
 from loguru import logger
@@ -25,31 +38,6 @@ from pathlib import Path
 
 DEBUG = True
 
-def debug(*args, **kwargs):
-    message = " ".join(str(arg) for arg in args)  # 确保所有参数都转换为字符串
-    logger.debug(message, **kwargs)
-
-# 切换日志级别的函数
-def set_log_level(level: str):
-    level = level.upper()
-    logger.setLevel(logging.DEBUG)
-    file_handler.setLevel(logging.DEBUG)
-    console_handler.setLevel(logging.DEBUG)
-    coloredlogs.install(level='DEBUG', logger=logger)
-    # if level == 'DEBUG':
-    #     logger.setLevel(logging.DEBUG)
-    #     file_handler.setLevel(logging.DEBUG)
-    #     console_handler.setLevel(logging.DEBUG)
-    #     coloredlogs.install(level='DEBUG', logger=logger)
-    # else:
-    #     logger.setLevel(logging.INFO)
-    #     file_handler.setLevel(logging.INFO)
-    #     console_handler.setLevel(logging.INFO)
-    #     coloredlogs.install(level='INFO', logger=logger)
-
-# set_log_level("DEBUG")  # 切换到DEBUG模式
-# set_log_level("INFO")   # 切换回INFO模式
-    
 HEADERS = ['自我肯定语','句子范式','role','model','生产者', '场景','子场景','场景描述','用户需求','心理作用机制与功能','句子级别', 'zhihu_link']
 HEADERS_structured_article = ['发问：思考、反省', '价值观', '行动：可效仿的行动指南', '慈悲：理解、接受、宽恕', '状态描述：成为这样的我']
 checkpoint_lock = threading.Lock()  # 线程锁，用于保护检查点文件的更新
@@ -121,8 +109,35 @@ matched_paradigms = [
     # "独特价值宣言式: 简单-独特价值宣言式",
     # "对抗超升式: 权力意志-对抗超升式",
     ]
+max_retries = 5
 
 
+
+def debug(*args, **kwargs):
+    message = " ".join(str(arg) for arg in args)  # 确保所有参数都转换为字符串
+    logger.debug(message, **kwargs)
+
+# 切换日志级别的函数
+def set_log_level(level: str):
+    level = level.upper()
+    logger.setLevel(logging.DEBUG)
+    file_handler.setLevel(logging.DEBUG)
+    console_handler.setLevel(logging.DEBUG)
+    coloredlogs.install(level='DEBUG', logger=logger)
+    # if level == 'DEBUG':
+    #     logger.setLevel(logging.DEBUG)
+    #     file_handler.setLevel(logging.DEBUG)
+    #     console_handler.setLevel(logging.DEBUG)
+    #     coloredlogs.install(level='DEBUG', logger=logger)
+    # else:
+    #     logger.setLevel(logging.INFO)
+    #     file_handler.setLevel(logging.INFO)
+    #     console_handler.setLevel(logging.INFO)
+    #     coloredlogs.install(level='INFO', logger=logger)
+
+# set_log_level("DEBUG")  # 切换到DEBUG模式
+# set_log_level("INFO")   # 切换回INFO模式
+    
 
 
 # FILE I/O
@@ -282,7 +297,7 @@ def query_article(query_text, top_k=2):
         return []
 
 
-max_retries = 5
+
 @retry(
     wait=wait_exponential(multiplier=1, min=4, max=60),  # 指数退避，初始4秒，最大60秒
     retry=retry_if_exception_type(RateLimitError),
@@ -300,7 +315,8 @@ def update_progress(pbar):
 def generate_self_affirmative_phrase_concurrent(
         symptoms_file, 
         csv_file, 
-        checkpoint_file, 
+        checkpoint_file,
+        paradigm_md_path, 
         n, 
         delay, 
         max_retries,
@@ -371,7 +387,7 @@ def generate_self_affirmative_phrase_concurrent(
                     # print(symptoms_data[i])
                     
                     future = executor.submit(
-                        generate_affirmation_for_symptom, i, symptoms_data[i], n, delay, max_retries, csv_file, max_length=max_length, DEBUG=DEBUG
+                        generate_affirmation_for_symptom, i, symptoms_data[i], n, delay, max_retries, csv_file, paradigm_md_path,max_length=max_length, DEBUG=DEBUG
                     )
                     futures[future] = i  # 将 future 和索引关联起来
 
@@ -398,7 +414,7 @@ def generate_self_affirmative_phrase_concurrent(
                 try:
                     
                     
-                    generate_affirmation_for_symptom(i, symptoms_data[i], n, delay, max_retries, csv_file,  max_length=max_length,DEBUG=DEBUG)
+                    generate_affirmation_for_symptom(i, symptoms_data[i], n, delay, max_retries, csv_file ,paradigm_md_path,  max_length=max_length,DEBUG=DEBUG)
                     
                     
                     pbar.update(1)  # 更新进度条
@@ -423,7 +439,7 @@ def extract_json(response):
     else:
         return response  # 如果没有匹配到，返回原始内容
 #  pipeline LLM API
-def get_structured_articles(article_data, client, role):
+def get_structured_articles(article_data, role):
     """
     对article_data中对每一篇article的content进行结构化转换
     """
@@ -547,7 +563,7 @@ def make_Affirmative(role,symptom,content,articles,messages):
                 raise
     return [],[]  # 如果所有重试都失败，返回空列表
 
-def make_Affirmative_by_need(symptom,paradigm, sentences,zhihu_link, output_file,messages=None):
+def make_Affirmative_by_need(symptom,paradigm, sentences,zhihu_link, output_file,paradigm_md_path,messages=None):
     # 忽略2号员工的历史对话
     # messages = []
 
@@ -558,7 +574,7 @@ def make_Affirmative_by_need(symptom,paradigm, sentences,zhihu_link, output_file
     # role_prompt = get_role_prompt(role, max_length=max_length,symptom=symptom, style=style, articles=article, sentence=sentences)
     # messages.append({"role": "user", "content": role_prompt})
 
-    paradigm_prompt = get_paradigm(paradigm,symptom=symptom,sentences=sentences)
+    paradigm_prompt = get_paradigm(paradigm,symptom=symptom,sentences=sentences,paradigm_md_path = paradigm_md_path)
     
     # file_object = client.files.create(file=Path("/home/acszy/2025/Affirmative/data/艾里希·弗洛姆三部曲（社会心理学大师经典著作，爱的艺术+论不服从+存在的艺术） (艾里希·弗洛姆 [艾里希·弗洛姆]) (Z-Library).txt"), purpose="file-extract")
     # file_object = client.files.create(file=Path("/home/acszy/2025/Affirmative/data/book_1.txt"), purpose="file-extract")
@@ -633,7 +649,7 @@ def make_Affirmative_by_need(symptom,paradigm, sentences,zhihu_link, output_file
                 raise
 
 
-def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file, max_length,DEBUG=False):
+def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file,paradigm_md_path, max_length,DEBUG=False):
 
     # for paradigm in matched_paradigms:
     #     # print(f"原始 symptom['句子范式']: {repr(symptom['句子范式'])}")  
@@ -706,7 +722,7 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
     debug(zhihu_link)
     articles = ' '.join([article['entity']['content'] for article in article_data])
 
-    structured_articles = get_structured_articles(article_data, client,"article-structurer")
+    structured_articles = get_structured_articles(article_data,"article-structurer")
     debug(structured_articles)
     sentences = []
     messages = []
@@ -764,7 +780,7 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
     for paradigm in matched_paradigms:
         
         if ALL==1:
-            make_Affirmative_by_need(symptom, paradigm, sentences, zhihu_link, csv_file, messages=messages)
+            make_Affirmative_by_need(symptom, paradigm, sentences, zhihu_link, csv_file, paradigm_md_path,messages=messages)
             return 
         
         # print(f"原始 symptom['句子范式']: {repr(symptom['句子范式'])}")  
@@ -788,7 +804,7 @@ def generate_affirmation_for_symptom(i, symptom, n, delay, max_retries, csv_file
         # 2️⃣ 检查 paradigm 是否在 symptom_list 里
         if query_paradigm in symptom_list:
             # print(f"✅ paradigm '{paradigm}' 匹配成功！")
-            make_Affirmative_by_need(symptom, paradigm, sentences, zhihu_link, csv_file, messages=messages)
+            make_Affirmative_by_need(symptom, paradigm, sentences, zhihu_link, csv_file, paradigm_md_path,messages=messages)
         else:
             # print(f"❌ paradigm '{paradigm}' 未匹配！")
             pass

@@ -43,18 +43,81 @@ def get_content_by_type(row, type):
         请根据以下自我肯定语及其相关信息，判断它们是否适合推送给具有特定标签的用户，并根据适配的标签返回JSON格式的结果。
 
         自我肯定语: {row['自我肯定语']}
-        场景: {row['场景']}
-        子场景: {row['子场景']}
         
-        1. 判断这个自我肯定语是否适合推送给以下标签的用户：["情感疗愈", "自信", "平和心境", "治愈之旅", "人际交往", "自我关怀", "个人成长", "成为英雄"]。
+
+        背景信息：
+        自我肯定语的能量级别反映了其情感强度和目标导向。根据能量级别，可以将自我肯定语分为以下两类：
+        1. **低能量级别**：
+        - 通常涉及情感疗愈、心理修复或平和心境，适合需要安抚或支持的用户。
+        - 示例标签：情感疗愈、治愈之旅、平和心境。
+        2. **高能量级别**：
+        - 通常具有强烈的激励性、目标导向或自我提升的性质，适合追求成长或积极行动的用户。
+        - 示例标签：自信、个人成长、成为英雄。
+        - **注意**：高能量级别的自我肯定语（如“我是最棒的”）不得标注为“情感疗愈”或“治愈之旅”，因为这些标签更适合低能量级别的情感支持场景。
+        
+        能量层级定义与标准
+        L1（低能量级）
+        定义：生存防护层，主要应对危机，提供即时安全感，维持心理存续。
+        示例：
+        情绪应对式：简单-情绪应对式
+        描述：L1生存防护层——应对危机，提供即时安全感，维持心理存续。
+        标注标准：句子或描述主要关注即时的安全感和危机应对。
+        L2（低能量级）
+        定义：稳态修复层，目标为修复创伤，重建内在平衡，培养积极心态。
+        示例：
+        安抚接纳式：简单-自我接纳式
+        描述：L2稳态修复层，目标为修复创伤，重建内在平衡，培养积极心态。
+        标注标准：句子或描述聚焦于修复和平衡，强调创伤后的恢复。
+        L3（中能量级）
+        定义：潜能认知层，目标为承认自身优点，提升自信，校正认知。
+        示例：
+        主体自信式：简单-主体自信式
+        描述：L3潜能认知层，目标为承认自身优点，提升自信，校正认知。
+        标注标准：句子或描述关注自我认知的提升和潜能的确认。
+        L4（中能量级）
+        定义：行动实现层，通过具体行动实现目标，重塑认知。
+        示例：
+        心念成长式：简单-心念培育式
+        描述：L4行动实现层，通过微小、持续的心理操作，将抽象成长目标转化为可执行的行动，通过持续行为重塑认知。
+        标注标准：句子或描述强调通过行动实现目标，注重行为的持续性和可执行性。
+        L5（高能量级）
+        定义：意义构建层，目标为构建价值和意义。
+        示例：
+        意义构建式：简单-主体意义式
+        描述：L5意义构建层，目标为构建价值和意义。
+        标注标准：句子或描述聚焦于价值和意义的构建，强调目标的深远性。
+        L6（高能量级）
+        定义：超越整合层，目标为超越自我，与更大的场域连接。
+        示例：
+        主权宣告式：简单-主权宣告式
+        描述：L6超越整合层，目标为超越自我，与更大的场域连接。
+        标注标准：句子或描述强调超越自我，连接更高层次的价值或目标。
+
+        任务要求：
+        1. 判断这个自我肯定语是否适合推送给以下标签的用户：
+        - 情感疗愈
+        - 自信
+        - 平和心境
+        - 治愈之旅
+        - 人际交往
+        - 自我关怀
+        - 个人成长
+        - 成为英雄
         2. 选择一个或多个标签进行标注，**不要**捏造标签，确保标签与自我肯定语的情感和语境相符。
         3. 如果不选择某些标签，则在"note"中给出理由。选择的标签不用给出。
+        4. **特别注意**：对于能量级别很高的自我肯定语（如“我是最棒的”），不得标注为“情感疗愈”或“治愈之旅”。
 
-        请返回符合条件的标签列表，并以标准JSON格式返回结果，如下所示：
+        返回结果的格式要求：
+        - `"key"`：固定值 `"合集"`。
+        - `"value"`：一个列表，包含选择的标签。
+        - `"note"`：一个字符串，说明未选择某些标签的理由。
+
+        返回结果的示例格式：
+        ```json
         {{
             "key": "合集",
-            "value": ["情感疗愈", "自信", "治愈之旅"],
-            "note":"不放一些标签的理由"
+            "value": ["自信", "个人成长"],
+            "note": "未选择'情感疗愈'和'治愈之旅'，因为该自我肯定语能量级别较高，不适合情感疗愈场景；未选择'平和心境'，因为语句更倾向于激励而非平静。"
         }}
         """
     elif type == '感情状况':
@@ -62,8 +125,7 @@ def get_content_by_type(row, type):
         根据以下自我肯定语及其相关信息，判断是否适合推送给处于特定感情状况的用户，并根据适合的感情状况返回JSON格式的结果。
 
         自我肯定语: {row['自我肯定语']}
-        场景: {row['场景']}
-        子场景: {row['子场景']}
+    
 
         1. 判断该自我肯定语及其场景描述是否适合以下感情状况的用户：
         ["正在恋爱", "最近刚分手", "处在一段艰难的亲密关系中", "快乐地单身着", "单身但准备好了开始新的恋情", "有点辛苦的暗恋"]。
@@ -83,8 +145,6 @@ def get_content_by_type(row, type):
         请根据以下自我肯定语及其相关信息，判断它们是否适合推送给具有特定情感状态的用户，并根据用户的情感状态返回相应的JSON格式结果。
 
         自我肯定语: {row['自我肯定语']}
-        场景: {row['场景']}
-        子场景: {row['子场景']}
 
         1. 判断该自我肯定语及其场景描述是否适合推送给以下情感状态的用户：
         ["开心", "很好", "一般", "不好", "糟糕"]。
@@ -141,8 +201,42 @@ def update_checkpoint(checkpoint_file, index):
 def save_results(row_results, input_file):
     """保存处理结果到文件"""
     output_file = input_file.replace('.csv', '_result.csv')
+    retry_output_file = input_file.replace('.csv', '_result_retry.csv')
+
+    # 检查'合集'中的值是否是["情感疗愈","自信","平和心境","治愈之旅",人际交往,自我关怀,个人成长,成为英雄]的子集
+    # '感情状况' ["正在恋爱", "最近刚分手", "处在一段艰难的亲密关系中", "快乐地单身着", "单身但准备好了开始新的恋情", "有点辛苦的暗恋"]
+    # '最近的感觉' ["开心", "很好", "一般", "不好", "糟糕"]
+    # "什么让你有这种感觉" ["家庭", "朋友", "工作", "健康", "感情", "学业", "自己"]
+    # 如果有一项不满足，则划分到row_results_retry_df
+    # 允许的值
+    valid_collections = {"情感疗愈", "自信", "平和心境", "治愈之旅", "人际交往", "自我关怀", "个人成长", "成为英雄"}
+    valid_relationships = {"正在恋爱", "最近刚分手", "处在一段艰难的亲密关系中", "快乐地单身着", "单身但准备好了开始新的恋情", "有点辛苦的暗恋"}
+    valid_feelings = {"开心", "很好", "一般", "不好", "糟糕"}
+    valid_causes = {"家庭", "朋友", "工作", "健康", "感情", "学业", "自己"}
+
+    # 确保 "合集" 是合法子集
+    collection_set = set(row_results.get("合集", []))  # "合集" 是一个列表
+    if not collection_set.issubset(valid_collections):
+        save_file = retry_output_file
+    else:
+        # 确保 "感情状况" 中的每个值都在允许的集合中
+        relationship_list = row_results.get("感情状况", [])
+        feeling_list = row_results.get("最近的感觉", [])
+        cause_list = row_results.get("什么让你有这种感觉", [])
+
+        relationship_valid = all(r in valid_relationships for r in relationship_list)
+        feeling_valid = all(f in valid_feelings for f in feeling_list)
+        cause_valid = all(c in valid_causes for c in cause_list)
+
+        # 只要有一个不符合，就存入 retry 文件
+        if not (relationship_valid and feeling_valid and cause_valid):
+            save_file = retry_output_file
+        else:
+            save_file = output_file
+
+
     row_results_df = pd.DataFrame([row_results])
-    row_results_df.to_csv(output_file, mode='a', header=not os.path.exists(output_file), index=False)
+    row_results_df.to_csv(save_file, mode='a', header=not os.path.exists(output_file), index=False)
 
 def process_row(index, row, checkpoint_file, input_file, pbar):
     """处理每一行数据并保存进度"""
@@ -157,8 +251,8 @@ def process_row(index, row, checkpoint_file, input_file, pbar):
         row_results.update(annotation_result)
     
     # 更新其它列
-    row_results.update({'场景': row['场景']})
-    row_results.update({'子场景': row['子场景']})
+    # row_results.update({'场景': row['场景']})
+    # row_results.update({'子场景': row['子场景']})
     # row_results.update({'用户需求': row['用户需求']})
     # row_results.update({'心理作用机制与功能': row['心理作用机制与功能']})
     # row_results.update({'句子级别': row['句子级别']})
@@ -277,7 +371,7 @@ def get_annotation(row, type='合集'):
         return {}
 
 if __name__ == "__main__":
-    input_file = '../data/0219好句子清单 - 最终好句子清单.csv'
+    input_file = '../data/0205标注协作表 - 0302新增好句子_result_retry.csv'
     # input_file = '../data/test.csv'
     # checkpoint_file = input_file.replace('.csv','_checkpoint.txt')
     # process_file(input_file, checkpoint_file)
