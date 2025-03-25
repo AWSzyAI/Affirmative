@@ -203,11 +203,6 @@ def save_results(row_results, input_file):
     output_file = input_file.replace('.csv', '_result.csv')
     retry_output_file = input_file.replace('.csv', '_result_retry.csv')
 
-    # 检查'合集'中的值是否是["情感疗愈","自信","平和心境","治愈之旅",人际交往,自我关怀,个人成长,成为英雄]的子集
-    # '感情状况' ["正在恋爱", "最近刚分手", "处在一段艰难的亲密关系中", "快乐地单身着", "单身但准备好了开始新的恋情", "有点辛苦的暗恋"]
-    # '最近的感觉' ["开心", "很好", "一般", "不好", "糟糕"]
-    # "什么让你有这种感觉" ["家庭", "朋友", "工作", "健康", "感情", "学业", "自己"]
-    # 如果有一项不满足，则划分到row_results_retry_df
     # 允许的值
     valid_collections = {"情感疗愈", "自信", "平和心境", "治愈之旅", "人际交往", "自我关怀", "个人成长", "成为英雄"}
     valid_relationships = {"正在恋爱", "最近刚分手", "处在一段艰难的亲密关系中", "快乐地单身着", "单身但准备好了开始新的恋情", "有点辛苦的暗恋"}
@@ -371,7 +366,7 @@ def get_annotation(row, type='合集'):
         return {}
 
 if __name__ == "__main__":
-    input_file = '../data/0205标注协作表 - 0302新增好句子_result_retry.csv'
+    input_file = '../data/0315句子更新 - 汇总表_result_retry.csv'
     # input_file = '../data/test.csv'
     # checkpoint_file = input_file.replace('.csv','_checkpoint.txt')
     # process_file(input_file, checkpoint_file)
