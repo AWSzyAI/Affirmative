@@ -62,4 +62,4 @@ Flask_Cors==5.0.0
 progressbar2
 loguru
 coloredlogs
-'volcengine-python-sdk[ark]'
+
