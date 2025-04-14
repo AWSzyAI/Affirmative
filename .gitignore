@@ -5,3 +5,4 @@ results/
 data/*
 output/
 cluster/Log/
+note/*.log

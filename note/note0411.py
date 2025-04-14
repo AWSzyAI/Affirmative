@@ -39,80 +39,16 @@ checkpoint_lock = Lock()
 
 def get_content_by_type(row, type):
     if type == '合集':
-        message = f"""
-        请根据以下“自我肯定语”内容，判断其适合推送给哪类用户，并返回推荐标签。
+        # 读取 note-合集.md 文件内容
+        try:
+            with open('./mod/note-合集.md', 'r', encoding='utf-8') as file:
+                note_content = file.read()
+        except FileNotFoundError:
+            logger.error("note-合集.md 文件未找到")
+            return {}
 
-        自我肯定语: {row['自我肯定语']}
-
-        ### 背景说明：
-
-        我们将所有合集按照下列类别划分，每类代表用户的一种心理需求：
-
-        1. **疗愈类（40%）**：平静内心、抗击抑郁、感恩练习、减压放松、心碎疗愈、艰难时刻
-           - 特征：L1~L2能量级，关注心理支持、恢复与安抚。
-           - 标签推荐：情感疗愈、治愈之旅、平和心境、自我关怀
-        
-        2. **成长/激励类（60%）**：
-           - 自我关怀：爱我的身体、爱自己、自我关怀、自尊心
-           - 积极思考：积极心态、愉悦心情、焕发生命力、点燃动力
-           - 自信：自信
-           - 女性主义：拥抱女性身份、女性力量
-           - 人际关系：亲密关系、人际交往、爱家人、原谅
-           - 个人成长：个人成长、事业成功
-           - 成为英雄：擦拭信念、追梦无悔、勇气
-           - 特征：L3~L6能量级，更具激励性、行动导向。
-           - 标签推荐：自信、个人成长、人际交往、成为英雄
-
-合集名称,类别
-平静内心,疗愈类
-抗击抑郁,疗愈类
-感恩练习,疗愈类
-减压放松,疗愈类
-心碎疗愈,疗愈类
-艰难时刻,疗愈类
-爱我的身体,自我关怀
-爱自己,自我关怀
-自我关怀,自我关怀
-自尊心,自我关怀
-积极心态,积极思考
-愉悦心情,积极思考
-焕发生命力,积极思考
-点燃动力,积极思考
-自信,自信
-拥抱女性身份,女性主义
-女性力量,女性主义
-亲密关系,人际关系
-人际交往,人际关系
-爱家人,人际关系
-原谅,人际关系
-个人成长,个人成长
-事业成功,个人成长
-擦拭信念,成为英雄
-追梦无悔,成为英雄
-勇气,成为英雄
-
-
-        ### 任务要求：
-
-        1. 判断该自我肯定语更适合属于哪个合集类别（可多选）。
-        2. 按照图中合集名称与类别的对应关系，从以下标签中选择适配的内容：
-           - 情感疗愈、治愈之旅、平和心境、自我关怀（适合疗愈类合集）
-           - 自信、个人成长、成为英雄、人际交往（适合成长/激励类合集）
-        3. 结合语句的能量级别（L1~L6）判断是否适合标注某些标签，避免“高能量”语句被错误标注为“情感疗愈”等。
-        4. 返回 JSON 格式结果，包括：
-            - "key": 固定值 "合集"
-            - "value": 合适的标签列表
-            - "note": 简要说明未选某些标签的理由（例如能量级不符）
-
-        ### 示例返回格式：
-        ```json
-        {{
-            "key": "合集",
-            "value": ["个人成长", "自信"],
-            "note": "未选‘情感疗愈’和‘治愈之旅’，因该语句强调目标与成就，情感支持不明显。"
-        }}
-        ```
-        """
+        # 格式化传参，将自我肯定语插入到文件内容的适当位置
+        message = note_content.format(self_affirmation=row['自我肯定语'])
     elif type == '感情状况':
         message = f"""
         根据以下自我肯定语及其相关信息，判断是否适合推送给处于特定感情状况的用户，并根据适合的感情状况返回JSON格式的结果。
@@ -197,7 +133,35 @@ def save_results(row_results, input_file):
     retry_output_file = input_file.replace('.csv', '_result_retry.csv')
 
     # 允许的值
-    valid_collections = {"情感疗愈", "自信", "平和心境", "治愈之旅", "人际交往", "自我关怀", "个人成长", "成为英雄"}
+    # valid_collections = {"情感疗愈", "自信", "平和心境", "治愈之旅", "人际交往", "自我关怀", "个人成长", "成为英雄"}
+    valid_collections = [
+        '艰难时刻',
+        '平静内心',
+        '抗击抑郁',
+        '心碎疗愈',
+        '自我关怀',
+        '减压放松',
+        '感恩练习',
+        '爱我的身体',
+        '爱自己',
+        '自尊心',
+        '积极心态',
+        '愉悦心情',
+        '焕发生命力',
+        '点燃动力',
+        '自信',
+        '拥抱女性身份',
+        '女性力量',
+        '亲密关系',
+        '人际交往',
+        '爱家人',
+        '原谅',
+        '个人成长',
+        '事业成功',
+        '擦拭信念',
+        '追梦无悔',
+        '勇气'
+    ]
     valid_relationships = {"正在恋爱", "最近刚分手", "处在一段艰难的亲密关系中", "快乐地单身着", "单身但准备好了开始新的恋情", "有点辛苦的暗恋"}
     valid_feelings = {"开心", "很好", "一般", "不好", "糟糕"}
     valid_causes = {"家庭", "朋友", "工作", "健康", "感情", "学业", "自己"}
@@ -268,10 +232,11 @@ def load_checkpoint(checkpoint_file):
     checkpoint_data = set(get_checkpoint(checkpoint_file)) 
     return checkpoint_data
 
-def process_file(input_file):
+def process_file(input_file,k=None):
     """主任务函数：处理文件中的每一行数据"""
     data = pd.read_csv(input_file)
-    # data = data.sample(10)
+    if k:
+        data = data.sample(k)
     checkpoint_file = input_file.replace('.csv','_checkpoint.txt')
     output_file = input_file.replace('.csv','_result.csv')
     
@@ -360,10 +325,12 @@ def get_annotation(row, type='合集'):
 
 if __name__ == "__main__":
     input_file = '../data/0315句子更新 - 汇总表_result_retry.csv'
+    input_file = '../data/0401句子更新 - Sheet1.csv'
+    
     # input_file = '../data/test.csv'
     # checkpoint_file = input_file.replace('.csv','_checkpoint.txt')
     # process_file(input_file, checkpoint_file)
-    process_file(input_file)
+    process_file(input_file, k=100)
 
 
 # import pandas as pd
