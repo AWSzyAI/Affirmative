@@ -1,5 +1,6 @@
 # Caritas 自我肯定语内容生产
-
+![](https://caritas.pro/affirm/assets/images/icons/nav-icon.png)
+APP链接：https://caritas.pro/affirm/ 
 
 1. 配置`.env`
 ```
